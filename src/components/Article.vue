@@ -1,16 +1,20 @@
 <template lang="">
   <div class="w-full flex flex-col items-center mt-10 min-w-[1000px]">
-    <table class="table w-[800px] mx-3">
+    <table class="table w-[800px] mx-5">
       <!-- head -->
       <thead>
         <tr>
-          <th class="w-[60%]">Title</th>
-          <th class="w-[20%]">Author</th>
-          <th class="w-[10%]">Date</th>
+          <th class="w-[60%] bg-base-100 border-b tracking-widest">Title</th>
+          <th class="w-[20%] bg-base-100 border-b tracking-widest">Author</th>
+          <th class="w-[10%] bg-base-100 border-b tracking-widest">Date</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(data, index) in mockupData" :key="index" class="hover">
+        <tr
+          v-for="(data, index) in mockupData"
+          :key="index"
+          class="hover:border-l-2 hover:border-primary"
+        >
           <td>
             <p>{{ truncate(data.title) }}</p>
           </td>
@@ -26,11 +30,7 @@
         v-for="n in 4"
         :key="n"
         :class="{ 'btn-selected': isActive === n }"
-        @click="
-          () => {
-            isActive = n;
-          }
-        "
+        @click="handleButtonClick(n)"
       >
         {{ n }}
       </button>
@@ -40,7 +40,10 @@
 <script setup>
 import { ref } from 'vue';
 
-let isActive = ref(0);
+let isActive = ref(1);
+const handleButtonClick = (n) => {
+  isActive.value = n;
+};
 const truncate = (text, maxLength = 50) => {
   if (text.length > maxLength) {
     return text.substring(0, maxLength) + '...';
