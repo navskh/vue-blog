@@ -4,9 +4,9 @@
       <!-- head -->
       <thead>
         <tr>
-          <th class="w-[60%] bg-base-100 border-b tracking-widest">Title</th>
-          <th class="w-[20%] bg-base-100 border-b tracking-widest">Author</th>
-          <th class="w-[10%] bg-base-100 border-b tracking-widest">Date</th>
+          <th class="w-[60%] tracking-widest">Title</th>
+          <th class="w-[20%] tracking-widest">Author</th>
+          <th class="w-[10%] tracking-widest">Date</th>
         </tr>
       </thead>
       <tbody>
