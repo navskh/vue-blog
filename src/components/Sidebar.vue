@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="h-[calc(100vh-168px)]">
+  <div class="h-[calc(100vh-140px)]">
     <ul
       class="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content border-r-2 h-full"
     >

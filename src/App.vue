@@ -1,10 +1,14 @@
 <template>
-  <Header />
-  <div class="flex">
-    <Sidebar />
-    <Article />
+  <div class="flex justify-center">
+    <div class="max-w-[1800px]">
+      <Header />
+      <div class="flex">
+        <Sidebar />
+        <Article />
+      </div>
+      <Footer />
+    </div>
   </div>
-  <Footer />
 </template>
 
 <script>
