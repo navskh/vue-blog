@@ -1,28 +1,26 @@
 <template lang="">
-  <div class="w-full flex flex-col items-center mt-10">
-    <div class="overflow-x-auto min-w-[1000px]">
-      <table class="table w-[950px] mx-3">
-        <!-- head -->
-        <thead>
-          <tr>
-            <th class="w-[60%]">Title</th>
-            <th class="w-[20%]">Author</th>
-            <th class="w-[10%]">Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(data, index) in mockupData" :key="index" class="hover">
-            <td>
-              <p>{{ truncate(data.title) }}</p>
-            </td>
-            <td>
-              <p>{{ truncate(data.author, 10) }}</p>
-            </td>
-            <td>{{ data.date }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="w-full flex flex-col items-center mt-10 min-w-[1000px]">
+    <table class="table w-[800px] mx-3">
+      <!-- head -->
+      <thead>
+        <tr>
+          <th class="w-[60%]">Title</th>
+          <th class="w-[20%]">Author</th>
+          <th class="w-[10%]">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(data, index) in mockupData" :key="index" class="hover">
+          <td>
+            <p>{{ truncate(data.title) }}</p>
+          </td>
+          <td>
+            <p>{{ truncate(data.author, 10) }}</p>
+          </td>
+          <td>{{ data.date }}</td>
+        </tr>
+      </tbody>
+    </table>
     <div class="w-full m-7 px-7 flex justify-center gap-3 text-lg">
       <button
         v-for="n in 4"
@@ -43,7 +41,7 @@
 import { ref } from 'vue';
 
 let isActive = ref(0);
-const truncate = (text, maxLength = 70) => {
+const truncate = (text, maxLength = 50) => {
   if (text.length > maxLength) {
     return text.substring(0, maxLength) + '...';
   } else {
@@ -56,16 +54,18 @@ const mockupData = [
   { title: '오잉 또잉', author: 'yes', date: '2022-05-15' },
   {
     title:
-      "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.",
+      '그것을 내는 구하지 앞이 천하를 얼마나 품었기 것이 든 것이다. 천지는 따뜻한 고동을 것은 새가 듣는다. 바이며, 있는 우리 위하여, 운다. 가치를 인간은 불어 역사를 쓸쓸한 있다. 방지하는 노년에게서 무한한 봄날의 바이며, 봄바람이다. 속잎나고, 이것은 그러므로 바이며, 우리는 청춘에서만 우리의 이상 피다. 아니더면, 보이는 우리 원질이 부패뿐이다. 피어나기 어디 일월과 새가 속에서 거선의 할지니, 황금시대다. 불어 어디 뜨고, 위하여서 청춘의 곳으로 돋고, 얼음에 뿐이다.',
     author: 'yes',
     date: '2022-05-15',
   },
   {
     title: 'hi',
     author:
-      "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.",
+      '그것을 내는 구하지 앞이 천하를 얼마나 품었기 것이 든 것이다. 천지는 따뜻한 고동을 것은 새가 듣는다. 바이며, 있는 우리 위하여, 운다. 가치를 인간은 불어 역사를 쓸쓸한 있다. 방지하는 노년에게서 무한한 봄날의 바이며, 봄바람이다. 속잎나고, 이것은 그러므로 바이며, 우리는 청춘에서만 우리의 이상 피다. 아니더면, 보이는 우리 원질이 부패뿐이다. 피어나기 어디 일월과 새가 속에서 거선의 할지니, 황금시대다. 불어 어디 뜨고, 위하여서 청춘의 곳으로 돋고, 얼음에 뿐이다.',
     date: '2022-05-15',
   },
+  { title: 'hi', author: 'yes', date: '2022-05-15' },
+  { title: 'hi', author: 'yes', date: '2022-05-15' },
   { title: 'hi', author: 'yes', date: '2022-05-15' },
   { title: 'hi', author: 'yes', date: '2022-05-15' },
   { title: 'hi', author: 'yes', date: '2022-05-15' },
