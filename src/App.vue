@@ -1,5 +1,7 @@
 <template>
-  <router-view />
+  <div class="max-w-[1500px] m-auto">
+    <router-view />
+  </div>
   <!-- <Header />
   <div class="flex">
     <Sidebar />
