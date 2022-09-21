@@ -1,5 +1,7 @@
 <template>
-  <div class="w-full mt-10 min-w-[1000px] overflow-y-auto overflow-x-hidden">
+  <div
+    class="w-full mt-10 min-w-[1000px] min-h-[800px] overflow-y-auto overflow-x-hidden"
+  >
     <h1 class="text-2xl mb-7 mx-6">Page name</h1>
     <div class="flex flex-col items-center"></div>
     <table class="table w-[800px] mx-5">
