@@ -2,44 +2,47 @@
   <div
     class="w-full mt-10 min-w-[1000px] min-h-[800px] overflow-y-auto overflow-x-hidden"
   >
-    <h1 class="text-2xl mb-7 mx-6">Page name</h1>
-    <div class="flex flex-col items-center"></div>
-    <table class="table w-[800px] mx-5">
-      <!-- head -->
-      <thead>
-        <tr>
-          <th class="min-w-[700px] tracking-widest">뭐를</th>
-          <th class="w-[20%] tracking-widest">누가</th>
-          <th class="w-[10%] tracking-widest">언제</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(data, index) in mockupData" :key="index">
-          <td>
-            <router-link to="/1">
-              <p
-                class="hover:cursor-pointer w-max hover:after:content-['#'] hover:after:ml-2 hover:after:font-semibold hover:after:text-secondary-focus hover:text-secondary-focus"
-              >
-                {{ truncate(data.title) }}
-              </p>
-            </router-link>
-          </td>
-          <td>
-            <p>{{ truncate(data.author, 10) }}</p>
-          </td>
-          <td>{{ formatDate(data.date) }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="w-full m-7 px-7 flex justify-center gap-3 text-lg">
-      <button
-        v-for="n in 4"
-        :key="n"
-        :class="{ 'btn-selected': isActive === n }"
-        @click="handleButtonClick(n)"
-      >
-        {{ n }}
-      </button>
+    <div class="flex flex-col items-center">
+      <div class="-translate-x-[400px]">
+        <h1 class="text-2xl mb-7">Page name</h1>
+      </div>
+      <table class="table w-[800px] mx-5">
+        <!-- head -->
+        <thead>
+          <tr>
+            <th class="min-w-[700px] tracking-widest">뭐를</th>
+            <th class="w-[20%] tracking-widest">누가</th>
+            <th class="w-[10%] tracking-widest">언제</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(data, index) in mockupData" :key="index">
+            <td>
+              <router-link to="/1">
+                <p
+                  class="hover:cursor-pointer w-max hover:after:content-['#'] hover:after:ml-2 hover:after:font-semibold hover:after:text-secondary-focus hover:text-secondary-focus"
+                >
+                  {{ truncate(data.title) }}
+                </p>
+              </router-link>
+            </td>
+            <td>
+              <p>{{ truncate(data.author, 10) }}</p>
+            </td>
+            <td>{{ formatDate(data.date) }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="w-full m-7 px-7 flex justify-center gap-3 text-lg">
+        <button
+          v-for="n in 4"
+          :key="n"
+          :class="{ 'btn-selected': isActive === n }"
+          @click="handleButtonClick(n)"
+        >
+          {{ n }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
