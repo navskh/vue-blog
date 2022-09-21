@@ -16,11 +16,13 @@
       <tbody>
         <tr v-for="(data, index) in mockupData" :key="index">
           <td>
-            <p
-              class="hover:cursor-pointer w-max hover:after:content-['#'] hover:after:ml-2 hover:after:font-semibold hover:after:text-secondary-focus hover:text-secondary-focus"
-            >
-              {{ truncate(data.title) }}
-            </p>
+            <router-link to="/1">
+              <p
+                class="hover:cursor-pointer w-max hover:after:content-['#'] hover:after:ml-2 hover:after:font-semibold hover:after:text-secondary-focus hover:text-secondary-focus"
+              >
+                {{ truncate(data.title) }}
+              </p>
+            </router-link>
           </td>
           <td>
             <p>{{ truncate(data.author, 10) }}</p>
