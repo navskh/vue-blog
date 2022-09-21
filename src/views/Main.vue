@@ -1,7 +1,21 @@
 <template>
-  <div></div>
+  <Header />
+  <div class="flex">
+    <Sidebar />
+    <Article />
+  </div>
+  <Footer />
 </template>
+
 <script>
-export default {};
+import Header from "../components/Header.vue";
+import Sidebar from "../components/sidebar/Sidebar.vue";
+import Footer from "../components/Footer.vue";
+import Article from "../components/Article.vue";
+export default {
+  name: "Main",
+  components: { Header, Sidebar, Footer, Article },
+};
 </script>
+
 <style></style>
