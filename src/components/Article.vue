@@ -1,22 +1,24 @@
 <template>
-  <div class="w-full flex flex-col items-center mt-10 min-w-[1000px]">
+  <div class="w-full mt-10 min-w-[1000px]">
+    <h1 class="text-2xl mb-7 mx-6">Page name</h1>
+    <div class="flex flex-col items-center"></div>
     <table class="table w-[800px] mx-5">
       <!-- head -->
       <thead>
         <tr>
-          <th class="w-[60%] tracking-widest">뭔데?</th>
-          <th class="w-[20%] tracking-widest">누가 씀?</th>
-          <th class="w-[10%] tracking-widest">언제?</th>
+          <th class="min-w-[700px] tracking-widest">뭐를</th>
+          <th class="w-[20%] tracking-widest">누가</th>
+          <th class="w-[10%] tracking-widest">언제</th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(data, index) in mockupData"
-          :key="index"
-          class="hover:border-l-2 hover:border-primary"
-        >
+        <tr v-for="(data, index) in mockupData" :key="index">
           <td>
-            <p>{{ truncate(data.title) }}</p>
+            <p
+              class="w-max hover:after:content-['#'] hover:after:ml-2 hover:after:font-semibold hover:after:text-secondary-focus hover:text-secondary-focus"
+            >
+              {{ truncate(data.title) }}
+            </p>
           </td>
           <td>
             <p>{{ truncate(data.author, 10) }}</p>
@@ -44,7 +46,7 @@ let isActive = ref(1);
 const handleButtonClick = (n) => {
   isActive.value = n;
 };
-const truncate = (text, maxLength = 50) => {
+const truncate = (text, maxLength = 45) => {
   if (text.length > maxLength) {
     return text.substring(0, maxLength) + '...';
   } else {
