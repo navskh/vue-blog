@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full mt-10 min-w-[1000px] overflow-y-auto">
+  <div class="w-full mt-10 min-w-[1000px] overflow-y-auto overflow-x-hidden">
     <h1 class="text-2xl mb-7 mx-6">Page name</h1>
     <div class="flex flex-col items-center"></div>
     <table class="table w-[800px] mx-5">
@@ -15,7 +15,7 @@
         <tr v-for="(data, index) in mockupData" :key="index">
           <td>
             <p
-              class="w-max hover:after:content-['#'] hover:after:ml-2 hover:after:font-semibold hover:after:text-secondary-focus hover:text-secondary-focus"
+              class="hover:cursor-pointer w-max hover:after:content-['#'] hover:after:ml-2 hover:after:font-semibold hover:after:text-secondary-focus hover:text-secondary-focus"
             >
               {{ truncate(data.title) }}
             </p>
