@@ -1,20 +1,21 @@
 <template>
-  <Header />
+  <router-view />
+  <!-- <Header />
   <div class="flex">
     <Sidebar />
     <Article />
   </div>
-  <Footer />
+  <Footer /> -->
 </template>
 
 <script>
-import Header from './components/Header.vue';
-import Sidebar from './components/Sidebar.vue';
-import Footer from './components/Footer.vue';
-import Article from './components/Article.vue';
+// import Header from "./components/Header.vue";
+// import Sidebar from "./components/Sidebar.vue";
+// import Footer from "./components/Footer.vue";
+// import Article from "./components/Article.vue";
 export default {
-  name: 'App',
-  components: { Header, Sidebar, Footer, Article },
+  name: "App",
+  // components: { Header, Sidebar, Footer, Article },
 };
 </script>
 
