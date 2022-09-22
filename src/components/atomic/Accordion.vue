@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col">
+  <div class="">
     <div class="flex flex-wrap items-center justify-between cursor-pointer">
       <router-link
         :to="{ name: 'main', params: params }"
@@ -15,7 +15,7 @@
         <ChevronDownIcon class="h-6 w-6 text-gray-700" v-show="!isOpen" />
       </div>
     </div>
-    <div v-if="isOpen" class="flex flex-col pl-2">
+    <div v-if="isOpen" class="pl-2">
       <slot></slot>
     </div>
   </div>
@@ -54,7 +54,7 @@ export default defineComponent({
   },
 });
 </script>
-<style>
+<style scoped>
 .selected {
   @apply text-secondary-focus font-bold;
 }

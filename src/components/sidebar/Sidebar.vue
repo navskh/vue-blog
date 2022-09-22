@@ -38,8 +38,3 @@ export default defineComponent({
   },
 });
 </script>
-<style>
-.side-link {
-  @apply py-2 px-3 hover:font-bold rounded-full;
-}
-</style>

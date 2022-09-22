@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col" v-for="item in list" :key="item.name">
+  <div class="py-2 px-3" v-for="item in list" :key="item.name">
     <Accordion
       :header="item.name"
       :params="item.params"
@@ -34,8 +34,11 @@ export default defineComponent({
   },
 });
 </script>
-<style>
+<style scoped>
 .selected {
   @apply text-secondary-focus font-bold;
+}
+.side-link {
+  @apply hover:font-bold rounded-full;
 }
 </style>
