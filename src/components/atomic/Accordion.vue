@@ -2,9 +2,9 @@
   <div class="flex flex-col">
     <div class="flex flex-wrap items-center justify-between cursor-pointer">
       <router-link
-        :to="router"
+        :to="{ name: 'main', params: params }"
         class="side-link"
-        :class="selectParam === path && 'selected'"
+        :class="selectPath === path && 'selected'"
       >
         <h3 class="text-md hover:font-bold">
           {{ header }}
@@ -31,23 +31,31 @@ export default defineComponent({
     header: {
       required: true,
     },
-    router: {
+    params: {
       required: true,
     },
-    selectParam: {},
+    path: {
+      required: true,
+    },
+    selectPath: {
+      required: true,
+    },
   },
   components: { ChevronUpIcon, ChevronDownIcon },
-  setup(props) {
+  setup() {
     const isOpen = ref(false);
-    const path = "/" + props.router.params.nav.join("/");
 
     const open = (e) => {
       e.preventDefault();
       isOpen.value = !isOpen.value;
     };
 
-    return { open, isOpen, path };
+    return { open, isOpen };
   },
 });
 </script>
-<style></style>
+<style>
+.selected {
+  @apply text-secondary-focus font-bold;
+}
+</style>
