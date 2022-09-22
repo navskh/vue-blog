@@ -4,7 +4,7 @@ import PostDetailVue from "@/views/PostDetail.vue";
 
 const routes = [
   {
-    path: "/:divOne?/:divTwo?/:divThree?/:postNo?",
+    path: "/:nav*/:postNo?",
     name: "main",
     component: Main,
   },

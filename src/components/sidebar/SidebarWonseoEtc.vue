@@ -3,28 +3,29 @@
     :to="{
       name: 'main',
       params: {
-        divOne: 'wonseo',
-        divTwo: 'etc',
-        divThree: 'non-object',
+        nav: ['wonseo', 'etc', 'non-object'],
       },
     }"
     class="side-link"
+    :class="selectParam === '/wonseo/etc/non-object' && 'selected'"
     >NonObject</router-link
   >
   <router-link
     :to="{
       name: 'main',
-      params: { divOne: 'wonseo', divTwo: 'etc', divThree: 'validate' },
+      params: { nav: ['wonseo', 'etc', 'validate'] },
     }"
     class="side-link"
+    :class="selectParam === '/wonseo/etc/validate' && 'selected'"
     >원서 데이터 오류 검증</router-link
   >
   <router-link
     :to="{
       name: 'main',
-      params: { divOne: 'wonseo', divTwo: 'etc', divThree: 'oz' },
+      params: { nav: ['wonseo', 'etc', 'oz'] },
     }"
     class="side-link"
+    :class="selectParam === '/wonseo/etc/oz' && 'selected'"
     >오즈</router-link
   >
 </template>
@@ -33,5 +34,8 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "SidebarWonseoEtc",
+  props: {
+    selectParam: {},
+  },
 });
 </script>

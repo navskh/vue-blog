@@ -1,7 +1,11 @@
 <template>
   <div class="flex flex-col">
     <div class="flex flex-wrap items-center justify-between cursor-pointer">
-      <router-link :to="parameter" class="side-link">
+      <router-link
+        :to="router"
+        class="side-link"
+        :class="selectParam === path && 'selected'"
+      >
         <h3 class="text-md hover:font-bold">
           {{ header }}
         </h3>
@@ -27,21 +31,22 @@ export default defineComponent({
     header: {
       required: true,
     },
-    parameter: {
+    router: {
       required: true,
     },
+    selectParam: {},
   },
   components: { ChevronUpIcon, ChevronDownIcon },
   setup(props) {
-    console.log("param", props.parameter);
     const isOpen = ref(false);
+    const path = "/" + props.router.params.nav.join("/");
 
     const open = (e) => {
       e.preventDefault();
       isOpen.value = !isOpen.value;
     };
 
-    return { open, isOpen };
+    return { open, isOpen, path };
   },
 });
 </script>

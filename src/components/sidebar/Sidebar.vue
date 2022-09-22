@@ -6,69 +6,81 @@
       <button type="button" class="btn btn-primary w-full mb-6">글쓰기</button>
       <Accordion
         header="원서"
-        :parameter="{
+        :router="{
           name: 'main',
-          params: { divOne: 'wonseo' },
+          params: { nav: ['wonseo'] },
         }"
+        :selectParam="selectParam"
       >
-        <SidebarWonseo>
+        <SidebarWonseo :selectParam="selectParam">
           <template v-slot:exception>
-            <SidebarWonseoException />
+            <SidebarWonseoException :selectParam="selectParam" />
           </template>
           <template v-slot:etc>
-            <SidebarWonseoEtc />
+            <SidebarWonseoEtc :selectParam="selectParam" />
           </template>
         </SidebarWonseo>
       </Accordion>
 
       <router-link
-        :to="{ name: 'main', params: { divOne: 'admin' } }"
+        :to="{ name: 'main', params: { nav: ['admin'] } }"
         class="side-link"
+        :class="selectParam === '/admin' && 'selected'"
         >대학관리자</router-link
       >
       <router-link
-        :to="{ name: 'main', params: { divOne: 'moa' } }"
+        :to="{ name: 'main', params: { nav: ['moa'] } }"
         class="side-link"
+        :class="selectParam === '/moa' && 'selected'"
         >내부관리자(MOA)</router-link
       >
       <Accordion
         header="입학상담앱"
-        :parameter="{
+        :router="{
           name: 'main',
-          params: { divOne: 'consulting' },
+          params: { nav: ['consulting'] },
         }"
+        :selectParam="selectParam"
       >
-        <SidebarConsulting />
+        <SidebarConsulting :selectParam="selectParam" />
       </Accordion>
       <router-link
-        :to="{ name: 'main', params: { divOne: 'nesin' } }"
+        :to="{ name: 'main', params: { nav: ['nesin'] } }"
         class="side-link"
+        :class="selectParam === '/nesin' && 'selected'"
         >내신산출</router-link
       >
       <router-link
-        :to="{ name: 'main', params: { divOne: 'pims' } }"
+        :to="{ name: 'main', params: { nav: ['pims'] } }"
         class="side-link"
+        :class="selectParam === '/pims' && 'selected'"
         >PIMS</router-link
       >
       <router-link
-        :to="{ name: 'main', params: { divOne: 'univ' } }"
+        :to="{ name: 'main', params: { nav: ['univ'] } }"
         class="side-link"
+        :class="selectParam === '/univ' && 'selected'"
         >대학별 특이사항</router-link
       >
       <router-link
-        :to="{ name: 'main', params: { divOne: 'ens' } }"
+        :to="{ name: 'main', params: { nav: ['ens'] } }"
         class="side-link"
+        :class="selectParam === '/ens' && 'selected'"
         >콜/ENS/원격제어</router-link
       >
       <router-link
-        :to="{ name: 'main', params: { divOne: 'host-sample' } }"
+        :to="{ name: 'main', params: { nav: ['host-sample'] } }"
         class="side-link"
+        :class="selectParam === '/host-sample' && 'selected'"
         >Host Sample</router-link
       >
     </div>
   </div>
 </template>
 <script>
+import { computed, onBeforeMount } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
 import { defineComponent } from "vue";
 import Accordion from "../atomic/Accordion.vue";
 import SidebarWonseo from "./SidebarWonseo.vue";
@@ -85,10 +97,27 @@ export default defineComponent({
     SidebarWonseoException,
     SidebarWonseoEtc,
   },
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+
+    onBeforeMount(async () => {
+      await router.isReady();
+    });
+
+    const selectParam = computed(() => {
+      return route.path;
+    });
+
+    return { selectParam };
+  },
 });
 </script>
 <style>
 .side-link {
   @apply py-2 px-3 hover:font-bold rounded-full;
+}
+.selected {
+  @apply text-secondary-focus font-bold;
 }
 </style>

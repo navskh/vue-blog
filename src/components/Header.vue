@@ -2,7 +2,9 @@
   <div
     class="navbar bg-base-100 flex justify-between px-4 border-b-2 h-[100px]"
   >
-    <a class="btn btn-ghost uppercase text-2xl">Treasure Blog</a>
+    <router-link to="/" class="btn btn-ghost uppercase text-2xl"
+      >Treasure Blog</router-link
+    >
     <input
       type="text"
       placeholder="Search..."
