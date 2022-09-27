@@ -19,19 +19,13 @@
     >
   </div>
 </template>
-<script>
-import { defineComponent } from "vue";
+<script setup>
+import { defineProps } from "vue";
 import Accordion from "../atomic/Accordion.vue";
 
-export default defineComponent({
-  name: "SidebarItem",
-  props: {
-    list: { required: true },
-    selectPath: { required: true },
-  },
-  components: {
-    Accordion,
-  },
+defineProps({
+  list: { required: true },
+  selectPath: { required: true },
 });
 </script>
 <style scoped>

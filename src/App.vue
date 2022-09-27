@@ -9,15 +9,10 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import Header from "./components/Header.vue";
 import Sidebar from "./components/sidebar/Sidebar.vue";
 import Footer from "./components/Footer.vue";
-
-export default {
-  name: "App",
-  components: { Header, Sidebar, Footer },
-};
 </script>
 
 <style></style>

@@ -21,38 +21,30 @@
   </div>
 </template>
 
-<script>
-import { ref, defineComponent } from "vue";
+<script setup>
+import { ref, defineProps } from "vue";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/vue/24/solid";
 
-export default defineComponent({
-  name: "Accordion",
-  props: {
-    header: {
-      required: true,
-    },
-    params: {
-      required: true,
-    },
-    path: {
-      required: true,
-    },
-    selectPath: {
-      required: true,
-    },
+defineProps({
+  header: {
+    required: true,
   },
-  components: { ChevronUpIcon, ChevronDownIcon },
-  setup() {
-    const isOpen = ref(false);
-
-    const open = (e) => {
-      e.preventDefault();
-      isOpen.value = !isOpen.value;
-    };
-
-    return { open, isOpen };
+  params: {
+    required: true,
+  },
+  path: {
+    required: true,
+  },
+  selectPath: {
+    required: true,
   },
 });
+const isOpen = ref(false);
+
+const open = (e) => {
+  e.preventDefault();
+  isOpen.value = !isOpen.value;
+};
 </script>
 <style scoped>
 .selected {
