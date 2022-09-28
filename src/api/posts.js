@@ -10,9 +10,15 @@ export function getPostById(id) {
 	return axios.get(`${baseURL}/treasure/detail`, { params: { id: id } });
 }
 
-// export function createPost(data) {
-// 	return axios.post('http://localhost:5000/posts', data);
-// }
+export function getCategory(type, condition) {
+	return axios.get(`${baseURL}/treasure/category`, {
+		params: { type: type, condition: condition },
+	});
+}
+
+export function createPost(data) {
+	return axios.post(`${baseURL}/treasure/post`, data);
+}
 
 // export function updatePost(id, data) {
 // 	return axios.put(`http://localhost:5000/posts/${id}`, data);

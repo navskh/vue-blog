@@ -1,18 +1,22 @@
 <template>
-  <div class="max-w-[1500px] m-auto">
-    <Header />
-    <div class="flex">
-      <Sidebar />
-      <router-view />
-    </div>
-    <Footer />
-  </div>
+	<div class="max-w-[1500px] m-auto">
+		<Header />
+		<div class="flex">
+			<Sidebar />
+			<router-view />
+		</div>
+		<Footer />
+	</div>
 </template>
 
 <script setup>
-import Header from "./components/Header.vue";
-import Sidebar from "./components/sidebar/Sidebar.vue";
-import Footer from "./components/Footer.vue";
+import Header from './components/Header.vue';
+import Sidebar from './components/sidebar/Sidebar.vue';
+import Footer from './components/Footer.vue';
 </script>
 
-<style></style>
+<style>
+body {
+	overflow: hidden;
+}
+</style>

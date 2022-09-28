@@ -12,23 +12,26 @@
 		<div class="flex justify-between items-center">
 			<div class="text-sm">
 				<span class="mr-1">{{ formatDate(props.createdAt) }}</span>
-				<span>{{ props.author }}</span>
+				<span> 마지막으로 수정한 사람 : {{ props.author }}</span>
 			</div>
 			<div>
 				<button class="btn btn-ghost">
 					<ShareIcon class="w-5 h-5" />
 				</button>
-				<button class="ml-0.5 btn btn-ghost">
+				<button class="ml-0.5 btn btn-ghost" @click="goEdit(1)">
 					<PencilIcon class="w-5 h-5" />
 				</button>
 			</div>
 		</div>
 	</div>
-	{{ props.content }}
+	<div v-html="props.content"></div>
 </template>
 <script setup>
 import { ShareIcon, PencilIcon } from '@heroicons/vue/24/solid';
+import { useRouter } from 'vue-router';
 import { defineProps } from 'vue';
+
+const router = useRouter();
 
 const props = defineProps({
 	title: String,
@@ -40,6 +43,16 @@ const props = defineProps({
 const formatDate = dateData => {
 	var thisData = dateData?.substring(0, 10).replaceAll('-', '.');
 	return thisData;
+};
+
+const goEdit = id => {
+	router.push({
+		name: 'edit',
+		params: {
+			nav: 'wonseo',
+			id: id,
+		},
+	});
 };
 </script>
 <style></style>
