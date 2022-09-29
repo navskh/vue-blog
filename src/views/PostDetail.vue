@@ -1,10 +1,14 @@
 <template>
-	<div class="w-8/12 max-w-4xl px-5 py-3 bg-base-100">
+	<div class="w-max px-5 py-3 bg-base-100">
 		<PostInfoBar
+			v-if="post.title !== null"
 			:title="post.title"
 			:createdAt="post.createdAt"
 			:content="post.content"
 			:author="post.author"
+			:upper="post.upperCategory"
+			:sub="post.subCategory"
+			:detail="post.detailCategory"
 		/>
 	</div>
 </template>
@@ -26,6 +30,9 @@ const post = ref({
 	content: null,
 	createdAt: null,
 	author: null,
+	upperCategory: null,
+	subCategory: null,
+	detailCategory: null,
 });
 
 const fetchPost = async () => {
@@ -37,16 +44,26 @@ const fetchPost = async () => {
 	}
 };
 
-const setPost = ({ Title, TreasureContent, Author, WriteTime }) => {
+const setPost = ({
+	Title,
+	TreasureContent,
+	Author,
+	WriteTime,
+	UpdateTime,
+	UpperCategoryName,
+	SubCategoryName,
+	DetailCategoryName,
+}) => {
 	post.value.title = Title;
 	post.value.content = TreasureContent;
 	post.value.author = Author;
-	post.value.createdAt = WriteTime;
+	post.value.createdAt = UpdateTime ?? WriteTime;
+	post.value.upperCategory = UpperCategoryName;
+	post.value.subCategory = SubCategoryName;
+	post.value.detailCategory = DetailCategoryName;
 };
 
 fetchPost();
-
-watchEffect(fetchPost);
 </script>
 
 <style></style>

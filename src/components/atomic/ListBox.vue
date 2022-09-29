@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUpdated, ref } from 'vue';
+import { ref } from 'vue';
 import {
 	Listbox,
 	ListboxButton,
@@ -82,13 +82,23 @@ const categorys = ref({});
 const selected = ref({ Name: null });
 const props = defineProps({
 	type: {},
+	code: String,
 });
+
 const emit = defineEmits(['update:modelValue']);
 
 const fetchCategory = async condition => {
+	console.log(props.code);
 	const { data } = await getCategory(props.type?.value, condition);
-	categorys.value = [{ Code: 0, Name: '전체선택' }, ...data];
-	selected.value = categorys.value[0];
+	categorys.value = [...data];
+
+	if (props.code) {
+		console.log(data);
+		var result = data.find(d => d.Name == props.code);
+		selected.value = result;
+	} else {
+		selected.value = categorys.value[0];
+	}
 };
 
 const initCondition = {

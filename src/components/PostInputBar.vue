@@ -9,6 +9,7 @@
 					><ListBox
 						ref="thisUpper"
 						:type="ref('UpperCategory')"
+						:code="props.upper"
 						@update:model-value="changeUpper"
 					></ListBox
 				></li>
@@ -16,11 +17,16 @@
 					><ListBox
 						ref="thisSub"
 						:type="ref('SubCategory')"
+						:code="props.sub"
 						@update:model-value="changeSub"
 					></ListBox
 				></li>
 				<li
-					><ListBox ref="thisDetail" :type="ref('DetailCategory')"></ListBox
+					><ListBox
+						ref="thisDetail"
+						:code="props.detail"
+						:type="ref('DetailCategory')"
+					></ListBox
 				></li>
 			</ul>
 		</div>
@@ -44,11 +50,11 @@
 				/>
 			</div>
 			<div>
-				<button class="btn btn-ghost">
-					<ShareIcon class="w-5 h-5" />
-				</button>
-				<button class="ml-0.5 btn btn-ghost" @click="doSave()">
-					<PencilIcon class="w-5 h-5" />
+				<button
+					class="btn btn-outline min-h-0 h-8 w-24 flex-row flex-nowrap"
+					@click="doSave()"
+				>
+					<FolderArrowDownIcon class="mr-2 w-6" />완료
 				</button>
 			</div>
 		</div>
@@ -56,15 +62,18 @@
 	<Editor v-model:modelValue="content" />
 </template>
 <script setup>
-import { ShareIcon, PencilIcon } from '@heroicons/vue/24/solid';
+import { FolderArrowDownIcon } from '@heroicons/vue/24/outline';
 import ListBox from '@/components/atomic/ListBox.vue';
 import { ref } from 'vue';
 import Editor from './atomic/Editor.vue';
-import { createPost } from '@/api/posts';
-import { useRouter } from 'vue-router';
-import Swal from 'sweetalert2';
+import { createPost, updatePost } from '@/api/posts';
+import { useRoute, useRouter } from 'vue-router';
+import { sweetalert } from '@/assets/common';
 
 const router = useRouter();
+
+const route = useRoute();
+const id = route.params.id;
 
 const formatDate = () => {
 	var dateData = new Date().toISOString();
@@ -76,9 +85,11 @@ const props = defineProps({
 	title: String,
 	content: String,
 	author: String,
+	isEdit: Boolean,
+	upper: String,
+	sub: String,
+	detail: String,
 });
-
-console.log(props);
 
 const thisUpper = ref('');
 const thisSub = ref('');
@@ -92,49 +103,41 @@ async function doSave() {
 		thisUpper: thisUpper.value.bringCategory(),
 		thisSub: thisSub.value.bringCategory(),
 		thisDetail: thisDetail.value.bringCategory(),
-		headTitle: headTitle.value,
+		headTitle: headTitle.value.replaceAll("'", "''"),
 		author: author.value,
-		content: content.value,
+		content: content.value.replaceAll("'", "''"),
+		idx: id,
 	};
 
 	if (doValidate(params)) {
-		var response = await createPost(params);
-		if (response.data.rowsAffected[0] >= 1) {
-			sweetalert('글이 등록되었습니다!', 'success', function () {
-				router.push({
-					name: 'main',
-					params: {
-						nav: 'wonseo',
-					},
+		var response = {};
+		if (props.isEdit == false) {
+			response = await createPost(params);
+			if (response.data.rowsAffected[0] >= 1) {
+				sweetalert('글이 등록되었습니다!', 'success', function () {
+					router.push({ name: 'main', params: { nav: 'wonseo' } });
 				});
-			});
+			}
+		} else {
+			response = await updatePost(params);
+			if (response.data.rowsAffected[0] >= 1) {
+				sweetalert('글이 수정되었습니다!', 'success', function () {
+					router.push({ name: 'detail', params: { nav: 'wonseo', id: id } });
+				});
+			}
 		}
 	}
 }
 
-function sweetalert(textData, iconType, callback) {
-	var text = '';
-	if (iconType == 'error') text = '안돼 돌아가';
-	else if (iconType == 'success') text = '조아써!';
-	Swal.fire(
-		{
-			title: textData,
-			text: text,
-			icon: iconType,
-			confirmButtonText: 'Ok',
-		},
-		callback(),
-	);
-}
-
 function doValidate(params) {
-	if (params.headTitle == '') {
+	console.log('validate!', params);
+	if (params.headTitle == undefined || params.headTitle == '') {
 		sweetalert('제목 입력안했어요!', 'error');
 		return false;
-	} else if (params.author == '') {
+	} else if (params.author == undefined || params.author == '') {
 		sweetalert('저자 입력안했어요!', 'error');
 		return false;
-	} else if (params.content == '') {
+	} else if (params.content == undefined || params.content == '') {
 		sweetalert('내용 입력안했어요!', 'error');
 		return false;
 	} else return true;

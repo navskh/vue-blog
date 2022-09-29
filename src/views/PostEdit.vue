@@ -1,9 +1,14 @@
 <template>
 	<div class="w-8/12 px-5 py-3 bg-base-100">
 		<PostInputBar
-			:title="post.title"
-			:content="post.content"
-			:author="post.author"
+			v-if="post.title !== null"
+			:title="post?.title"
+			:content="post?.content"
+			:author="post?.author"
+			:isEdit="true"
+			:upper="post.upperCategory"
+			:sub="post.subCategory"
+			:detail="post.detailCategory"
 		/>
 	</div>
 </template>
@@ -35,14 +40,25 @@ const fetchPost = async () => {
 	}
 };
 
-const setPost = ({ Title, TreasureContent, Author, WriteTime }) => {
+const setPost = ({
+	Title,
+	TreasureContent,
+	Author,
+	WriteTime,
+	UpperCategoryName,
+	SubCategoryName,
+	DetailCategoryName,
+}) => {
 	post.value.title = Title;
 	post.value.content = TreasureContent;
 	post.value.author = Author;
 	post.value.createdAt = WriteTime;
+	post.value.upperCategory = UpperCategoryName;
+	post.value.subCategory = SubCategoryName;
+	post.value.detailCategory = DetailCategoryName;
 };
 
-fetchPost();
+watchEffect(fetchPost);
 </script>
 
 <style></style>

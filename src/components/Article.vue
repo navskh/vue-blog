@@ -1,16 +1,31 @@
 <template>
 	<div
-		class="w-full mt-10 min-w-[1000px] min-h-[800px] overflow-y-auto overflow-x-hidden"
+		class="w-full mt-4 min-w-[1000px] min-h-[800px] overflow-y-auto overflow-x-hidden"
 	>
-		<div class="flex flex-col items-center">
-			<div class="-translate-x-[400px]">
-				<h1 class="text-2xl mb-7">Page name</h1>
+		<div class="flex flex-col">
+			<div class="w-[900px] pl-5">
+				<div class="w-full">
+					<div class="text-sm breadcrumbs text-primary-focus flex-row">
+						<ul>
+							<li
+								><a>{{ pageRoute[0] }}</a></li
+							>
+							<li
+								><a>{{ pageRoute[1] }}</a></li
+							>
+							<li
+								><a>{{ pageRoute[2] }}</a></li
+							>
+						</ul>
+					</div>
+					<h1 class="text-2xl font-bold mb-7">{{ pageName }}</h1>
+				</div>
 			</div>
-			<table class="table w-[800px] mx-5">
+			<table class="table w-[900px] mx-5">
 				<!-- head -->
 				<thead>
 					<tr>
-						<th class="min-w-[700px] tracking-widest">뭐를</th>
+						<th class="min-w-[900px] tracking-widest">뭐를</th>
 						<th class="w-[20%] tracking-widest">누가</th>
 						<th class="w-[10%] tracking-widest">언제</th>
 					</tr>
@@ -28,13 +43,13 @@
 						<td>
 							<p>{{ truncate(data.Author, 10) }}</p>
 						</td>
-						<td>{{ formatDate(data.WriteTime) }}</td>
+						<td>{{ formatDate(data.UpdateTime ?? data.WriteTime) }}</td>
 					</tr>
 				</tbody>
 			</table>
 			<div class="w-full m-7 px-7 flex justify-center gap-3 text-lg">
 				<button
-					v-for="n in 4"
+					v-for="n in totalCnt"
 					:key="n"
 					:class="{ 'btn-selected': isActive === n }"
 					@click="handleButtonClick(n)"
@@ -48,16 +63,58 @@
 
 <script setup>
 /* eslint-disable */
-import { ref, watchEffect } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, onBeforeMount, ref, watchEffect, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useAxios } from '@/hooks/useAxios';
 import { getLists } from '@/api/posts';
+import sidebarCategory from '@/assets/sidebarCategory';
+import { inject } from 'vue';
 
 const router = useRouter();
 
-let isActive = ref(1);
-const handleButtonClick = n => {
-	isActive.value = n;
+const route = useRoute();
+
+const pageName = ref('');
+const pageRoute = ref([]);
+const searchKeyword = ref('');
+
+var isSearch = false;
+const emitter = inject('emitter');
+emitter.on('Search', e => {
+	searchKeyword.value = e.value;
+	searchResult();
+	isSearch = true;
+});
+
+const searchResult = () => {
+	pageRoute.value[0] = '-';
+	pageRoute.value[1] = '-';
+	pageRoute.value[2] = '-';
+	pageName.value = `'${searchKeyword.value}' 검색결과`;
+};
+
+const matchName = thisRoute => {
+	var result1 = {},
+		result2 = {},
+		result3 = {};
+	result1 = sidebarCategory.find(
+		category => category.params.nav[0] == thisRoute.nav[0],
+	);
+	result2 = result1?.children.find(
+		category => category.params.nav[1] == thisRoute.nav[1],
+	);
+	result3 = result2?.children.find(
+		category => category.params.nav[2] == thisRoute.nav[2],
+	);
+
+	pageRoute.value[0] = result1 == undefined ? '전체' : result1.name;
+	pageRoute.value[1] = result2 == undefined ? '전체' : result2.name;
+	pageRoute.value[2] = result3 == undefined ? '전체' : result3.name;
+
+	pageName.value = '전체';
+	pageRoute.value.forEach(ele => {
+		if (ele != '전체') pageName.value = ele;
+	});
 };
 
 const truncate = (text, maxLength = 45) => {
@@ -78,27 +135,50 @@ const goPage = dataMap => {
 		name: 'detail',
 		params: {
 			nav: 'wonseo',
-			id: dataMap.Idx,
+			id: dataMap.idx,
 		},
 	});
 };
 
-var posts = ref();
+var posts = ref([]);
+var totalCnt = ref(null);
+var allData = [];
 
-// const { response, data: posts, error, loading } = useAxios('/treasure/list');
+let isActive = ref(1);
+const handleButtonClick = n => {
+	isActive.value = n;
+	posts.value = allData[n - 1];
+};
 
 const fetchList = async () => {
+	var condition = [];
+	condition[0] = pageRoute.value[0];
+	condition[1] = pageRoute.value[1];
+	condition[2] = pageRoute.value[2];
+	condition[3] = searchKeyword.value;
 	try {
-		const { data } = await getLists();
-		posts.value = data;
-		console.log(data);
+		const { data } = await getLists(condition);
+		for (var i = 0; i <= data.length / 10; i++) {
+			allData[i] = data.slice(i * 10, i * 10 + 10);
+		}
+		totalCnt.value = allData.length;
+		posts.value = allData[0];
 	} catch (err) {
 		console.error(err);
 	}
 };
+const monitorRoute = () => {
+	var thisRoute = route.params;
+	matchName(thisRoute);
+	if (isSearch) {
+		searchResult();
+	}
+	fetchList();
+	isSearch = false;
+	searchKeyword.value = '';
+};
 
-// 가져온 것들을 그대로 실행하려면 watchEffect
-watchEffect(fetchList);
+watchEffect(monitorRoute);
 </script>
 <style>
 .btn-selected {

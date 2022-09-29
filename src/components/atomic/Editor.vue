@@ -65,6 +65,10 @@
 				:class="{ 'btn-active': editor.isActive('blockquote') }"
 				@click="editor.chain().focus().toggleBlockquote().run()"
 			/>
+			<button
+				class="btn btn-ghost my-btn ri-arrow-left-right-line h-8"
+				@click="changeMarkdown(props.modelValue)"
+			/>
 		</div>
 		<editor-content
 			class="editor-content overflow-y-scroll editor-height"
@@ -82,7 +86,9 @@ import Highlight from '@tiptap/extension-highlight';
 import Placeholder from '@tiptap/extension-placeholder';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { lowlight } from 'lowlight';
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
+import { marked } from 'marked';
+import parseMd from '@/assets/md';
 
 const props = defineProps({
 	modelValue: {
@@ -92,6 +98,29 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:modelValue']);
+
+const changeMarkdown = data => {
+	marked.setOptions({
+		renderer: new marked.Renderer(),
+		highlight: function (code, lang) {
+			const hljs = require('highlight.js');
+			const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+			return hljs.highlight(code, { language }).value;
+		},
+		langPrefix: 'hljs language-', // highlight.js css expects a top-level 'hljs' class.
+		pedantic: false,
+		gfm: true,
+		breaks: false,
+		sanitize: false,
+		smartLists: true,
+		smartypants: false,
+		xhtml: false,
+	});
+
+	var replaceData = data.replaceAll('<p>', '').replaceAll('</p>', '');
+	console.log(marked(parseMd(replaceData)));
+	editor.view.dom.innerHTML = marked(parseMd(replaceData));
+};
 
 const editor = new Editor({
 	content: props.modelValue,

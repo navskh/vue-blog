@@ -11,7 +11,7 @@ const routes = [
 		component: Main,
 	},
 	{
-		path: '/:nav+/:id',
+		path: '/:nav+/detail/:id',
 		name: 'detail',
 		component: PostDetailVue,
 	},

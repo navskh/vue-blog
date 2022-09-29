@@ -20,6 +20,8 @@ import { computed, onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import SidebarItem from './SidebarItem.vue';
+import { inject } from 'vue';
+const emitter = inject('emitter');
 
 const route = useRoute();
 const router = useRouter();
@@ -29,6 +31,7 @@ onBeforeMount(async () => {
 });
 
 const selectPath = computed(() => {
+	emitter.emit('Init');
 	return route.path;
 });
 
