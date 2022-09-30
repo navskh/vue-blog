@@ -118,8 +118,8 @@ const changeMarkdown = (data) => {
   });
 
   var replaceData = data.replaceAll("<p>", "").replaceAll("</p>", "");
-  console.log(marked(parseMd(replaceData)));
-  editor.view.dom.innerHTML = marked(parseMd(replaceData));
+  // editor.view.dom.innerHTML = marked(parseMd(replaceData));
+  editor.view.dom.innerHTML = marked.parse(replaceData);
 };
 
 const editor = new Editor({
