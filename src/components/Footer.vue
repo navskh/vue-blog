@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="footer p-4 bg-base-100 text-primary-content fixed left-0 bottom-0 w-full h-[40px] flex justify-center items-center"
+    class="footer p-4 bg-base-200 w-full h-[40px] flex justify-center items-center"
   >
     <p>Copyright © {{ date.getFullYear() }} - All right reserved</p>
   </footer>
