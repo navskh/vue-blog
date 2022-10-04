@@ -53,7 +53,7 @@
       />
       <button
         class="btn btn-ghost my-btn ri-mark-pen-line h-8"
-        @click="goEdit(1)"
+        @click="editor.chain().focus().toggleHighlight().run()"
       />
       <button
         class="btn btn-ghost my-btn ri-code-view h-8"
@@ -118,8 +118,8 @@ const changeMarkdown = (data) => {
   });
 
   var replaceData = data.replaceAll("<p>", "").replaceAll("</p>", "");
-  console.log(marked(parseMd(replaceData)));
-  editor.view.dom.innerHTML = marked(parseMd(replaceData));
+  // editor.view.dom.innerHTML = marked(parseMd(replaceData));
+  editor.view.dom.innerHTML = marked.parse(replaceData);
 };
 
 const editor = new Editor({
@@ -260,6 +260,5 @@ const editor = new Editor({
 /* 썸(thumb) 추가 */
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--p));
-  border-radius: 15px;
 }
 </style>
