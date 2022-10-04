@@ -185,4 +185,7 @@ watchEffect(monitorRoute);
   font-weight: 600;
   font-size: 1.2rem;
 }
+.CONTENT::-webkit-scrollbar {
+  display: none;
+}
 </style>

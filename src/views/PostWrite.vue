@@ -1,7 +1,7 @@
 <template>
-	<div class="w-8/12 max-w-4xl px-5 py-3 bg-base-100">
-		<PostInputBar />
-	</div>
+  <div class="w-8/12 max-w-4xl pl-11 py-3 bg-base-100">
+    <PostInputBar />
+  </div>
 </template>
 <script setup>
 /* eslint-disable */

@@ -10,7 +10,7 @@
       >
         글쓰기
       </button>
-      <div class="h-[calc(100vh-150px)] pb-11 overflow-y-auto">
+      <div class="SIDEBAR h-[calc(100vh-150px)] pb-11 overflow-y-auto">
         <SidebarItem :list="sidebarCategory" :selectPath="selectPath" />
       </div>
     </div>
@@ -47,7 +47,7 @@ const goWrite = async () => {
 };
 </script>
 <style>
-::-webkit-scrollbar {
+.SIDEBAR::-webkit-scrollbar {
   display: none;
 }
 </style>
