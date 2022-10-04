@@ -1,12 +1,12 @@
 <template>
-	<div class="max-w-[1500px] m-auto">
-		<Header />
-		<div class="flex">
-			<Sidebar />
-			<router-view />
-		</div>
-		<Footer />
-	</div>
+  <div class="max-w-[1500px] m-auto h-screen">
+    <Header />
+    <div class="flex">
+      <Sidebar />
+      <router-view />
+    </div>
+    <Footer />
+  </div>
 </template>
 
 <script setup>
@@ -17,6 +17,6 @@ import Footer from './components/Footer.vue';
 
 <style>
 body {
-	overflow: hidden;
+  overflow: hidden;
 }
 </style>

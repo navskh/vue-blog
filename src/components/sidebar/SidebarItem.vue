@@ -20,8 +20,8 @@
   </div>
 </template>
 <script setup>
-import { defineProps } from "vue";
-import Accordion from "../atomic/Accordion.vue";
+import { defineProps } from 'vue';
+import Accordion from '../atomic/Accordion.vue';
 
 defineProps({
   list: { required: true },

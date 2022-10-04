@@ -1,61 +1,61 @@
 <template>
-  <div
-    class="w-full mt-4 min-w-[1000px] min-h-[800px] overflow-y-auto overflow-x-hidden"
-  >
-    <div class="flex flex-col">
-      <div class="w-[900px] pl-5">
-        <div class="w-full">
-          <div class="text-sm breadcrumbs text-primary-focus flex-row">
-            <ul>
-              <li>
-                <a>{{ pageRoute[0] }}</a>
-              </li>
-              <li v-if="pageRoute[1] != '전체'">
-                <a>{{ pageRoute[1] }}</a>
-              </li>
-              <li v-if="pageRoute[2] != '전체'">
-                <a>{{ pageRoute[2] }}</a>
-              </li>
-            </ul>
-          </div>
-          <h1 class="text-2xl font-bold mb-7">{{ pageName }}</h1>
+  <div class="w-full mt-4 min-w-[1000px] min-h-[800px] overflow-y-auto">
+    <div class="flex flex-col items-center pl-3">
+      <div class="TITLE w-full pl-5">
+        <div class="text-sm breadcrumbs text-primary-focus flex-row">
+          <ul>
+            <li>
+              <a>{{ pageRoute[0] }}</a>
+            </li>
+            <li v-if="pageRoute[1] != '전체'">
+              <a>{{ pageRoute[1] }}</a>
+            </li>
+            <li v-if="pageRoute[2] != '전체'">
+              <a>{{ pageRoute[2] }}</a>
+            </li>
+          </ul>
         </div>
+        <h1 class="text-2xl font-bold mb-7">{{ pageName }}</h1>
       </div>
-      <table class="table w-[900px] mx-5">
-        <!-- head -->
-        <thead>
-          <tr>
-            <th class="min-w-[900px] tracking-widest">제목</th>
-            <th class="w-[20%] tracking-widest">작성자</th>
-            <th class="w-[10%] tracking-widest">작성일</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(data, index) in posts" :key="index">
-            <td>
-              <p
-                class="hover:cursor-pointer w-max hover:after:content-['#'] hover:after:ml-2 hover:after:font-semibold hover:after:text-secondary-focus hover:text-secondary-focus"
-                @click="goPage(data)"
-              >
-                {{ truncate(data.Title) }}
-              </p>
-            </td>
-            <td>
-              <p>{{ truncate(data.Author, 10) }}</p>
-            </td>
-            <td>{{ formatDate(data.UpdateTime ?? data.WriteTime) }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="w-full m-7 px-7 flex justify-center gap-3 text-lg">
-        <button
-          v-for="n in totalCnt"
-          :key="n"
-          :class="{ 'btn-selected': isActive === n }"
-          @click="handleButtonClick(n)"
-        >
-          {{ n }}
-        </button>
+      <div
+        class="CONTENT h-[calc(100vh-200px)] w-full overflow-y-auto overflow-x-hidden"
+      >
+        <table class="table w-[90%] mx-5 border-collapse">
+          <!-- head -->
+          <thead>
+            <tr class="sticky top-0 z-1">
+              <th class="tracking-widest">제목</th>
+              <th class="w-[20%] tracking-widest">작성자</th>
+              <th class="w-[15%] tracking-widest">작성일</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(data, index) in posts" :key="index">
+              <td>
+                <p
+                  class="hover:cursor-pointer w-max hover:after:content-['#'] hover:after:ml-2 hover:after:font-semibold hover:after:text-secondary-focus hover:text-secondary-focus"
+                  @click="goPage(data)"
+                >
+                  {{ truncate(data.Title) }}
+                </p>
+              </td>
+              <td>
+                <p>{{ truncate(data.Author, 10) }}</p>
+              </td>
+              <td>{{ formatDate(data.UpdateTime ?? data.WriteTime) }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="w-full m-7 px-7 flex justify-center gap-3 text-lg">
+          <button
+            v-for="n in totalCnt"
+            :key="n"
+            :class="{ 'btn-selected': isActive === n }"
+            @click="handleButtonClick(n)"
+          >
+            {{ n }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -126,7 +126,7 @@ const truncate = (text, maxLength = 45) => {
 };
 
 const formatDate = (dateData) => {
-  var thisData = dateData.substring(0, 10).replaceAll('-', '.');
+  var thisData = dateData.substring(2, 10).replaceAll('-', '.');
   return thisData;
 };
 
