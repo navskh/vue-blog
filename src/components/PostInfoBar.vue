@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full pb-1 h-[calc(100vh-150px)] overflow-y-scroll">
+  <div class="DETAIL w-full pb-1 h-[calc(100vh-150px)] overflow-y-scroll">
     <div class="flex justify-between">
       <div class="text-sm breadcrumbs text-primary-focus flex-row">
         <ul>
@@ -99,4 +99,16 @@ const doDelete = async () => {
   }
 };
 </script>
-<style></style>
+<style scoped>
+.DETAIL::-webkit-scrollbar {
+  width: 24px;
+}
+.DETAIL::-webkit-scrollbar-thumb {
+  border-left: 20px solid #fff;
+  background-clip: padding-box;
+  background-color: rgb(228, 228, 228);
+}
+.DETAIL::-webkit-scrollbar-track {
+  background-color: #fff;
+}
+</style>
