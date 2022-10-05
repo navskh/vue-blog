@@ -46,7 +46,7 @@
             </tr>
           </tbody>
         </table>
-        <div class="w-full m-7 px-7 flex justify-center gap-3 text-lg">
+        <div class="m-7 px-7 flex justify-center gap-3 text-lg">
           <button
             v-for="n in totalCnt"
             :key="n"

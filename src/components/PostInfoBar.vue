@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full border-b-2 pb-1">
+  <div class="w-full pb-1 h-[calc(100vh-150px)] overflow-y-scroll">
     <div class="flex justify-between">
       <div class="text-sm breadcrumbs text-primary-focus flex-row">
         <ul>
@@ -14,15 +14,17 @@
           </li>
         </ul>
       </div>
-      <button class="ml-0.5 btn btn-ghost" @click="confirmDelete()">
+      <button class="ml-0.5 btn-secondary px-6" @click="confirmDelete()">
         삭제
       </button>
     </div>
     <h1 class="font-bold text-3xl py-3">{{ props.title }}</h1>
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center border-b-2">
       <div class="text-sm">
         <span class="mr-1">{{ formatDate(props.createdAt) }}</span>
-        <span> 마지막으로 수정한 사람 : {{ props.author }}</span>
+        <span class="text-xs">
+          마지막으로 수정한 사람 : {{ props.author }}</span
+        >
       </div>
       <div>
         <button class="btn btn-ghost">
@@ -33,12 +35,12 @@
         </button>
       </div>
     </div>
+    <div
+      v-html="props.content"
+      class="prose prose-sm xl:prose h-max my-5"
+      style="max-width: max-content"
+    ></div>
   </div>
-  <div
-    v-html="props.content"
-    class="prose prose-sm xl:prose overflow-scroll my-5"
-    style="height: 800px; max-width: max-content"
-  ></div>
 </template>
 <script setup>
 import { ShareIcon, PencilIcon } from '@heroicons/vue/24/solid';
