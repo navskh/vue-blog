@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3001';
+const baseURL = 'http://treasure-back.jinhakapply.com';
 
 export function getLists(condition) {
 	return axios.get(`${baseURL}/treasure/list`, {
