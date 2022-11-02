@@ -1,7 +1,7 @@
 <template>
   <div class="h-[calc(100vh-100px)]">
     <div
-      class="p-4 w-80 bg-base-100 text-md text-base-content h-[calc(100vh-100px)] border-r-2"
+      class="p-4 w-80 bg-base-100 text-md text-base-content h-[calc(100vh-100px)]"
     >
       <button
         type="button"
