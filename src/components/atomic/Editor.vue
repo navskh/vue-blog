@@ -69,7 +69,7 @@
 				class="btn btn-ghost my-btn ri-arrow-left-right-line h-8"
 				@click="changeMarkdown(props.modelValue)"
 			/>
-			<input type="file" class="btn btn-ghost my-btn ri-image-line h-8" />
+			<!-- <input type="file" class="btn btn-ghost my-btn ri-image-line h-8" /> -->
 		</div>
 		<editor-content
 			class="editor-content overflow-y-scroll editor-height"
@@ -91,6 +91,7 @@ import { lowlight } from 'lowlight';
 import { ref, watchEffect } from 'vue';
 import { marked } from 'marked';
 import parseMd from '@/assets/md';
+import Iframe from '@/components/atomic/EditorComponent/Iframe';
 
 const props = defineProps({
 	modelValue: {
@@ -138,7 +139,10 @@ const editor = new Editor({
 		StarterKit,
 		Underline,
 		Highlight,
-		Image,
+		Image.configure({
+      inline: true,
+      allowBase64: true,
+    }),
 		History,
 		CodeBlockLowlight.configure({
 			languageClassPrefix: 'language-',
@@ -148,13 +152,15 @@ const editor = new Editor({
 		Placeholder.configure({
 			emptyEditorClass: 'is-editor-empty',
 			placeholder: '무엇이든 기록하세요',
-		}),
+    }),
+    Iframe,
 	],
 	editorProps: {
 		attributes: {
 			class: 'prose prose-sm sm:prose m-5 focus:outline-none',
-		},
-	},
+    },
+    autoFocus: true,
+  },
 	onUpdate: ({ editor }) => {
 		emit('update:modelValue', editor.getHTML());
 	},
