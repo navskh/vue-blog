@@ -1,5 +1,5 @@
 <template>
-	<div class="editor h-[55%]">
+	<div class="editor h-[70%]">
 		<div class="editor__header">
 			<button
 				class="btn btn-ghost my-btn ri-bold h-8"
@@ -69,6 +69,79 @@
 				class="btn btn-ghost my-btn ri-arrow-left-right-line h-8"
 				@click="changeMarkdown(props.modelValue)"
 			/>
+			<button
+				class="btn btn-ghost my-btn h-8"
+				@click="
+					editor
+						.chain()
+						.focus()
+						.insertTable({
+							rows: 3,
+							cols: 3,
+							withHeaderRow: true,
+						})
+						.run()
+				"
+			>
+				<img class="icon h-4" src="@/assets/images/icons/table.svg" />
+			</button>
+
+			<span v-if="editor.isActive('table')">
+				<button
+					class="btn btn-ghost my-btn h-8"
+					@click="editor.chain().focus().deleteTable().run()"
+				>
+					<img class="icon h-4" src="@/assets/images/icons/delete_table.svg" />
+				</button>
+				<button
+					class="btn btn-ghost my-btn h-8"
+					@click="editor.chain().focus().addColumnBefore().run()"
+				>
+					<img
+						class="icon h-4"
+						src="@/assets/images/icons/add_col_before.svg"
+					/>
+				</button>
+				<button
+					class="btn btn-ghost my-btn h-8"
+					@click="editor.chain().focus().addColumnAfter().run()"
+				>
+					<img class="icon h-4" src="@/assets/images/icons/add_col_after.svg" />
+				</button>
+				<button
+					class="btn btn-ghost my-btn h-8"
+					@click="editor.chain().focus().addRowBefore().run()"
+				>
+					<img
+						class="icon h-4"
+						src="@/assets/images/icons/add_row_before.svg"
+					/>
+				</button>
+				<button
+					class="btn btn-ghost my-btn h-8"
+					@click="editor.chain().focus().addRowAfter().run()"
+				>
+					<img class="icon h-4" src="@/assets/images/icons/add_row_after.svg" />
+				</button>
+				<button
+					class="btn btn-ghost my-btn h-8"
+					@click="editor.chain().focus().deleteColumn().run()"
+				>
+					<img class="icon h-4" src="@/assets/images/icons/delete_col.svg" />
+				</button>
+				<button
+					class="btn btn-ghost my-btn h-8"
+					@click="editor.chain().focus().deleteRow().run()"
+				>
+					<img class="icon h-4" src="@/assets/images/icons/delete_row.svg" />
+				</button>
+				<button
+					class="btn btn-ghost my-btn h-8"
+					@click="editor.chain().focus().mergeCells().run()"
+				>
+					<img class="icon h-4" src="@/assets/images/icons/combine_cells.svg" />
+				</button>
+			</span>
 			<!-- <input type="file" class="btn btn-ghost my-btn ri-image-line h-8" /> -->
 		</div>
 		<editor-content
@@ -92,6 +165,10 @@ import { ref, watchEffect } from 'vue';
 import { marked } from 'marked';
 import parseMd from '@/assets/md';
 import Iframe from '@/components/atomic/EditorComponent/Iframe';
+import Table from '@tiptap/extension-table';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
+import TableRow from '@tiptap/extension-table-row';
 
 const props = defineProps({
 	modelValue: {
@@ -140,9 +217,9 @@ const editor = new Editor({
 		Underline,
 		Highlight,
 		Image.configure({
-      inline: true,
-      allowBase64: true,
-    }),
+			inline: true,
+			allowBase64: true,
+		}),
 		History,
 		CodeBlockLowlight.configure({
 			languageClassPrefix: 'language-',
@@ -152,15 +229,21 @@ const editor = new Editor({
 		Placeholder.configure({
 			emptyEditorClass: 'is-editor-empty',
 			placeholder: '무엇이든 기록하세요',
-    }),
-    Iframe,
+		}),
+		Iframe,
+		Table.configure({
+			resizable: true,
+		}),
+		TableRow,
+		TableHeader,
+		TableCell,
 	],
 	editorProps: {
 		attributes: {
-			class: 'prose prose-sm sm:prose m-5 focus:outline-none',
-    },
-    autoFocus: true,
-  },
+			class: 'prose-lg m-5 focus:outline-none',
+		},
+		autoFocus: true,
+	},
 	onUpdate: ({ editor }) => {
 		emit('update:modelValue', editor.getHTML());
 	},
@@ -199,7 +282,7 @@ const editor = new Editor({
 			color: inherit;
 			padding: 0;
 			background: none;
-			font-size: 0.8rem;
+			font-size: 1rem;
 		}
 
 		.hljs-comment,
@@ -254,6 +337,65 @@ const editor = new Editor({
 			font-weight: 700;
 		}
 	}
+
+	table {
+		border-collapse: collapse;
+		table-layout: fixed;
+		width: 100%;
+		margin: 0;
+		overflow: hidden;
+
+		td,
+		th {
+			min-width: 1em;
+			border: 2px solid #ced4da;
+			padding: 3px 5px;
+			vertical-align: top;
+			box-sizing: border-box;
+			position: relative;
+
+			> * {
+				margin-bottom: 0;
+			}
+		}
+
+		th {
+			font-weight: bold;
+			text-align: left;
+			background-color: #f1f3f5;
+		}
+
+		.selectedCell:after {
+			z-index: 2;
+			position: absolute;
+			content: '';
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			background: rgba(200, 200, 255, 0.4);
+			pointer-events: none;
+		}
+
+		.column-resize-handle {
+			position: absolute;
+			right: -2px;
+			top: 0;
+			bottom: -2px;
+			width: 4px;
+			background-color: #adf;
+			pointer-events: none;
+		}
+
+		p {
+			margin: 0;
+		}
+	}
+}
+
+.tableWrapper {
+	padding: 1rem 0;
+	overflow-x: auto;
 }
 
 .ProseMirror:focus {
