@@ -165,6 +165,12 @@ const sidebarCategory = [
     path: "/host-sample",
     children: [],
   },
+  {
+    name: "기타",
+    params: { nav: ["etc"] },
+    path: "/etc",
+    children: [],
+  },
 ];
 
 export default sidebarCategory;
