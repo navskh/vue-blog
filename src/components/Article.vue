@@ -36,7 +36,12 @@
                   class="hover:cursor-pointer w-max hover:after:content-['#'] hover:after:ml-2 hover:after:font-semibold hover:after:text-secondary-focus hover:text-secondary-focus"
                   @click="goPage(data)"
                 >
-                  {{ truncate(data.Title) }} <span v-if=" (data.UpdateTime ?? data.WriteTime) > today()" class="badge">new</span>
+                  {{ truncate(data.Title) }}
+                  <span
+                    v-if="(data.UpdateTime ?? data.WriteTime) > today()"
+                    class="badge leading-[unset]"
+                    >new</span
+                  >
                 </p>
               </td>
               <td>
@@ -145,13 +150,13 @@ var totalCnt = ref(null);
 var allData = [];
 
 const today = () => {
-    var date = new Date();
-    var year = date.getFullYear();
-    var month = ("0" + (1 + date.getMonth())).slice(-2);
-    var day = ("0" + (date.getDate()-1)).slice(-2);
+  var date = new Date();
+  var year = date.getFullYear();
+  var month = ('0' + (1 + date.getMonth())).slice(-2);
+  var day = ('0' + (date.getDate() - 1)).slice(-2);
 
-    return year + "-" + month + "-" + day;
-}
+  return year + '-' + month + '-' + day;
+};
 
 let isActive = ref(1);
 const handleButtonClick = (n) => {
