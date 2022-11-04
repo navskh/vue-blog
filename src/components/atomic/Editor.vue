@@ -153,7 +153,12 @@
 
 <script setup>
 /*eslint-disable*/
-import { Editor, useEditor, EditorContent } from "@tiptap/vue-3";
+import {
+  Editor,
+  useEditor,
+  EditorContent,
+  VueNodeViewRenderer,
+} from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
@@ -179,10 +184,12 @@ import js from "highlight.js/lib/languages/javascript";
 import html from "highlight.js/lib/languages/xml";
 import sql from "highlight.js/lib/languages/sql";
 
-lowlight.registerLanguage("html", html);
-lowlight.registerLanguage("css", css);
-lowlight.registerLanguage("js", js);
-lowlight.registerLanguage("sql", sql);
+import CodeBlockComponent from "./EditorComponent/CodeBlockComponent.vue";
+
+// lowlight.registerLanguage('html', html);
+// lowlight.registerLanguage('css', css);
+// lowlight.registerLanguage('js', js);
+// lowlight.registerLanguage('sql', sql);
 
 const props = defineProps({
   modelValue: {
@@ -296,9 +303,13 @@ const editor = new Editor({
       allowBase64: true,
     }),
     History,
-    CodeBlockLowlight.configure({
-      languageClassPrefix: "language-",
-      defaultLanguage: "sql",
+    CodeBlockLowlight.extend({
+      addNodeView() {
+        return VueNodeViewRenderer(CodeBlockComponent);
+      },
+    }).configure({
+      // languageClassPrefix: 'language-',
+      // defaultLanguage: 'sql',
       lowlight,
     }),
     Placeholder.configure({
