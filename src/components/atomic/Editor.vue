@@ -169,6 +169,10 @@ import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
+import Text from "@tiptap/extension-text";
+import TextStyle from "@tiptap/extension-text-style";
+
+import { getMarkAttributes, mergeAttributes } from "@tiptap/core";
 
 import css from "highlight.js/lib/languages/css";
 import js from "highlight.js/lib/languages/javascript";
@@ -220,8 +224,69 @@ const addImage = () => {
   }
 };
 
+const CustomTextStyle = TextStyle.extend({
+  name: "textStyle",
+  addOptions() {
+    return {
+      HTMLAttributes: {},
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: "span",
+        getAttrs: (element) => {
+          const hasStyles = element.hasAttribute("class");
+
+          if (!hasStyles) {
+            return false;
+          }
+
+          return {};
+        },
+      },
+    ];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    console.log(HTMLAttributes);
+    return [
+      "pre",
+      [
+        "code",
+        [
+          "span",
+          mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
+          0,
+        ],
+      ],
+    ];
+  },
+
+  addCommands() {
+    return {
+      removeEmptyTextStyle:
+        () =>
+        ({ state, commands }) => {
+          const attributes = getMarkAttributes(state, this.type);
+          const hasStyles = Object.entries(attributes).some((element) =>
+            element.hasAttribute("class")
+          );
+
+          if (hasStyles) {
+            return true;
+          }
+
+          return commands.unsetMark(this.name);
+        },
+    };
+  },
+});
+
 const editor = new Editor({
   content: props.modelValue,
+  // content: `<span class="hello">This is span </span>`,
   extensions: [
     StarterKit,
     Underline,
@@ -247,6 +312,8 @@ const editor = new Editor({
     TableRow,
     TableHeader,
     TableCell,
+    Text,
+    CustomTextStyle,
   ],
   editorProps: {
     attributes: {
@@ -255,7 +322,10 @@ const editor = new Editor({
     autoFocus: true,
   },
   onUpdate: ({ editor }) => {
-    emit("update:modelValue", editor.getHTML());
+    console.log(editor.getHTML());
+    console.log(editor.view.dom.innerHTML);
+    // console.log(editor.getMarkAttributes());
+    emit("update:modelValue", editor.view.dom.innerHTML);
   },
 });
 </script>
