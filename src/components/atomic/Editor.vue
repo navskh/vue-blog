@@ -153,51 +153,58 @@
 
 <script setup>
 /*eslint-disable*/
-import { Editor, useEditor, EditorContent } from "@tiptap/vue-3";
-import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import Highlight from "@tiptap/extension-highlight";
-import Placeholder from "@tiptap/extension-placeholder";
-import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import Image from "@tiptap/extension-image";
-import { lowlight } from "lowlight";
-import { ref, watchEffect } from "vue";
-import { marked } from "marked";
-import parseMd from "@/assets/md";
-import Iframe from "@/components/atomic/EditorComponent/Iframe";
-import Table from "@tiptap/extension-table";
-import TableCell from "@tiptap/extension-table-cell";
-import TableHeader from "@tiptap/extension-table-header";
-import TableRow from "@tiptap/extension-table-row";
+import {
+  Editor,
+  useEditor,
+  EditorContent,
+  VueNodeViewRenderer,
+} from '@tiptap/vue-3';
+import StarterKit from '@tiptap/starter-kit';
+import Underline from '@tiptap/extension-underline';
+import Highlight from '@tiptap/extension-highlight';
+import Placeholder from '@tiptap/extension-placeholder';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import Image from '@tiptap/extension-image';
+import { lowlight } from 'lowlight';
+import { ref, watchEffect } from 'vue';
+import { marked } from 'marked';
+import parseMd from '@/assets/md';
+import Iframe from '@/components/atomic/EditorComponent/Iframe';
+import Table from '@tiptap/extension-table';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
+import TableRow from '@tiptap/extension-table-row';
 
-import css from "highlight.js/lib/languages/css";
-import js from "highlight.js/lib/languages/javascript";
-import html from "highlight.js/lib/languages/xml";
-import sql from "highlight.js/lib/languages/sql";
+import css from 'highlight.js/lib/languages/css';
+import js from 'highlight.js/lib/languages/javascript';
+import html from 'highlight.js/lib/languages/xml';
+import sql from 'highlight.js/lib/languages/sql';
 
-lowlight.registerLanguage("html", html);
-lowlight.registerLanguage("css", css);
-lowlight.registerLanguage("js", js);
-lowlight.registerLanguage("sql", sql);
+import CodeBlockComponent from './EditorComponent/CodeBlockComponent.vue';
+
+// lowlight.registerLanguage('html', html);
+// lowlight.registerLanguage('css', css);
+// lowlight.registerLanguage('js', js);
+// lowlight.registerLanguage('sql', sql);
 
 const props = defineProps({
   modelValue: {
     type: String,
-    default: "",
+    default: '',
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue']);
 
 const changeMarkdown = (data) => {
   marked.setOptions({
     renderer: new marked.Renderer(),
     highlight: function (code, lang) {
-      const hljs = require("highlight.js");
-      const language = hljs.getLanguage(lang) ? lang : "plaintext";
+      const hljs = require('highlight.js');
+      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
       return hljs.highlight(code, { language }).value;
     },
-    langPrefix: "hljs language-", // highlight.js css expects a top-level 'hljs' class.
+    langPrefix: 'hljs language-', // highlight.js css expects a top-level 'hljs' class.
     pedantic: false,
     gfm: true,
     breaks: false,
@@ -207,13 +214,13 @@ const changeMarkdown = (data) => {
     xhtml: false,
   });
 
-  var replaceData = data.replaceAll("<p>", "").replaceAll("</p>", "");
+  var replaceData = data.replaceAll('<p>', '').replaceAll('</p>', '');
   // editor.view.dom.innerHTML = marked(parseMd(replaceData));
   editor.view.dom.innerHTML = marked.parse(replaceData);
 };
 
 const addImage = () => {
-  const url = window.prompt("URL : ");
+  const url = window.prompt('URL : ');
 
   if (url) {
     editor.chain().focus().setImage({ src: url }).run();
@@ -231,14 +238,18 @@ const editor = new Editor({
       allowBase64: true,
     }),
     History,
-    CodeBlockLowlight.configure({
-      languageClassPrefix: "language-",
-      defaultLanguage: "sql",
+    CodeBlockLowlight.extend({
+      addNodeView() {
+        return VueNodeViewRenderer(CodeBlockComponent);
+      },
+    }).configure({
+      // languageClassPrefix: 'language-',
+      // defaultLanguage: 'sql',
       lowlight,
     }),
     Placeholder.configure({
-      emptyEditorClass: "is-editor-empty",
-      placeholder: "무엇이든 기록하세요",
+      emptyEditorClass: 'is-editor-empty',
+      placeholder: '무엇이든 기록하세요',
     }),
     Iframe,
     Table.configure({
@@ -250,12 +261,12 @@ const editor = new Editor({
   ],
   editorProps: {
     attributes: {
-      class: "prose-lg m-5 focus:outline-none",
+      class: 'prose-lg m-5 focus:outline-none',
     },
     autoFocus: true,
   },
   onUpdate: ({ editor }) => {
-    emit("update:modelValue", editor.getHTML());
+    emit('update:modelValue', editor.getHTML());
   },
 });
 </script>
@@ -280,11 +291,11 @@ const editor = new Editor({
 }
 .ProseMirror {
   height: fit-content;
-  font-family: "Fira Coding";
+  font-family: 'Fira Coding';
   pre {
     background: #0d0d0d;
     color: #fff;
-    font-family: "JetBrainsMono", monospace;
+    font-family: 'JetBrainsMono', monospace;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
 
@@ -378,7 +389,7 @@ const editor = new Editor({
     .selectedCell:after {
       z-index: 2;
       position: absolute;
-      content: "";
+      content: '';
       left: 0;
       right: 0;
       top: 0;
