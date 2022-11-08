@@ -315,8 +315,9 @@ const editor = new Editor({
     console.log("html : ", editor.getHTML());
     // console.log(editor.view.dom.innerHTML);
     const content = editor.getHTML();
+    console.log('test: ', content);
     let result = "";
-    if (content.indexOf("<code>")) {
+    if (content.indexOf("<pre><code") > -1) {
       result = chkCodeblock(content);
     } else {
       result = content;
