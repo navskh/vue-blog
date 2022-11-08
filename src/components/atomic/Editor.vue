@@ -174,8 +174,6 @@ import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
-import Text from "@tiptap/extension-text";
-import TextStyle from "@tiptap/extension-text-style";
 
 import { getMarkAttributes, mergeAttributes } from "@tiptap/core";
 
@@ -205,7 +203,7 @@ const changeMarkdown = (data) => {
     renderer: new marked.Renderer(),
     highlight: function (code, lang) {
       const hljs = require("highlight.js");
-      const language = hljs.getLanguage(lang) ? lang : "plaintext";
+      const language = hljs.getLanguage(lang) ? lang : "sql";
       return hljs.highlight(code, { language }).value;
     },
     langPrefix: "hljs language-", // highlight.js css expects a top-level 'hljs' class.
@@ -231,65 +229,48 @@ const addImage = () => {
   }
 };
 
-const CustomTextStyle = TextStyle.extend({
-  name: "textStyle",
-  addOptions() {
-    return {
-      HTMLAttributes: {},
-    };
-  },
+const chkCodeblock = (content) => {
+  let contents = content.split("<pre><code");
+  let codes = document.querySelectorAll("pre>code>div");
+  let result = "";
+  console.log("codes, ", codes);
+  console.log("contents, ", contents);
+  for (let i = 0; i < codes.length; i++) {
+    if (i == 0 && codes.length > 1) {
+      result += contents[0];
+      result += "<pre><code";
+      result += contents[1].split(">")[0] + ">";
+      result += codes[0].innerHTML;
+    } else if (i == 0 && codes.length <= 1) {
+      result += contents[0];
+      result += "<pre><code";
+      result += contents[1].split(">")[0] + ">";
+      result += codes[0].innerHTML;
+      result += "</code></pre>";
+      if (contents.length > codes.length) {
+        result += contents[i + 1].split("</code></pre>")[1];
+      }
+    } else if (i == codes.length - 1) {
+      result += "</code></pre>";
+      result += contents[i].split("</code></pre>")[1];
+      result += "<pre><code";
+      result += contents[i + 1].split(">")[0] + ">";
+      result += codes[i].innerHTML;
+      result += "</code></pre>";
+      if (contents.length > codes.length) {
+        result += contents[i + 1].split("</code></pre>")[1];
+      }
+    } else {
+      result += "</code></pre>";
+      result += contents[i].split("</code></pre>")[1];
+      result += "<pre><code";
+      result += contents[i + 1].split(">")[0] + ">";
+      result += codes[i].innerHTML;
+    }
+  }
 
-  parseHTML() {
-    return [
-      {
-        tag: "span",
-        getAttrs: (element) => {
-          const hasStyles = element.hasAttribute("class");
-
-          if (!hasStyles) {
-            return false;
-          }
-
-          return {};
-        },
-      },
-    ];
-  },
-
-  renderHTML({ HTMLAttributes }) {
-    console.log(HTMLAttributes);
-    return [
-      "pre",
-      [
-        "code",
-        [
-          "span",
-          mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-          0,
-        ],
-      ],
-    ];
-  },
-
-  addCommands() {
-    return {
-      removeEmptyTextStyle:
-        () =>
-        ({ state, commands }) => {
-          const attributes = getMarkAttributes(state, this.type);
-          const hasStyles = Object.entries(attributes).some((element) =>
-            element.hasAttribute("class")
-          );
-
-          if (hasStyles) {
-            return true;
-          }
-
-          return commands.unsetMark(this.name);
-        },
-    };
-  },
-});
+  return result;
+};
 
 const editor = new Editor({
   content: props.modelValue,
@@ -323,8 +304,6 @@ const editor = new Editor({
     TableRow,
     TableHeader,
     TableCell,
-    Text,
-    CustomTextStyle,
   ],
   editorProps: {
     attributes: {
@@ -333,10 +312,18 @@ const editor = new Editor({
     autoFocus: true,
   },
   onUpdate: ({ editor }) => {
-    console.log(editor.getHTML());
-    console.log(editor.view.dom.innerHTML);
-    // console.log(editor.getMarkAttributes());
-    emit("update:modelValue", editor.view.dom.innerHTML);
+    console.log("html : ", editor.getHTML());
+    // console.log(editor.view.dom.innerHTML);
+    const content = editor.getHTML();
+    let result = "";
+    if (content.indexOf("<code>")) {
+      result = chkCodeblock(content);
+    } else {
+      result = content;
+    }
+    // console.log("result : ", result);
+    emit("update:modelValue", result);
+    // emit("update:modelValue", editor.getHTML());
   },
 });
 </script>
