@@ -17,10 +17,16 @@
 
 <script>
 import { NodeViewContent, nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3';
+import css from 'highlight.js/lib/languages/css';
+import js from 'highlight.js/lib/languages/javascript';
 import html from 'highlight.js/lib/languages/xml';
+import sql from 'highlight.js/lib/languages/sql';
 import { lowlight } from 'lowlight';
 
 lowlight.registerLanguage('html', html);
+lowlight.registerLanguage('css', css);
+lowlight.registerLanguage('js', js);
+lowlight.registerLanguage('sql', sql);
 
 export default {
   components: {

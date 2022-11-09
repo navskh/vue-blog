@@ -1,8 +1,6 @@
 <template>
-  <div class="h-[calc(100vh-100px)]">
-    <div
-      class="p-4 w-[18rem] bg-base-100 text-md text-base-content h-[calc(100vh-100px)]"
-    >
+  <div class="h-[calc(100vh-100px)] sticky">
+    <div class="p-4 w-[18rem] text-md text-base-content h-full">
       <button
         type="button"
         class="btn btn-primary w-full mb-6"
@@ -25,13 +23,13 @@
   </div>
 </template>
 <script setup>
-import sidebarCategory from "@/assets/sidebarCategory.js";
-import { computed, onBeforeMount } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import sidebarCategory from '@/assets/sidebarCategory.js';
+import { computed, onBeforeMount } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-import SidebarItem from "./SidebarItem.vue";
-import { inject } from "vue";
-const emitter = inject("emitter");
+import SidebarItem from './SidebarItem.vue';
+import { inject } from 'vue';
+const emitter = inject('emitter');
 
 const route = useRoute();
 const router = useRouter();
@@ -41,15 +39,15 @@ onBeforeMount(async () => {
 });
 
 const selectPath = computed(() => {
-  emitter.emit("Init");
+  emitter.emit('Init');
   return route.path;
 });
 
 const goWrite = async () => {
   router.push({
-    name: "write",
+    name: 'write',
     params: {
-      nav: "wonseo",
+      nav: 'wonseo',
     },
   });
 };

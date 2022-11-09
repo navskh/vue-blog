@@ -180,12 +180,12 @@ import js from 'highlight.js/lib/languages/javascript';
 import html from 'highlight.js/lib/languages/xml';
 import sql from 'highlight.js/lib/languages/sql';
 
-import CodeBlockComponent from './EditorComponent/CodeBlockComponent.vue';
+// import CodeBlockComponent from './EditorComponent/CodeBlockComponent.vue';
 
-// lowlight.registerLanguage('html', html);
-// lowlight.registerLanguage('css', css);
-// lowlight.registerLanguage('js', js);
-// lowlight.registerLanguage('sql', sql);
+lowlight.registerLanguage('html', html);
+lowlight.registerLanguage('css', css);
+lowlight.registerLanguage('js', js);
+lowlight.registerLanguage('sql', sql);
 
 const props = defineProps({
   modelValue: {
@@ -238,13 +238,15 @@ const editor = new Editor({
       allowBase64: true,
     }),
     History,
-    CodeBlockLowlight.extend({
-      addNodeView() {
-        return VueNodeViewRenderer(CodeBlockComponent);
-      },
-    }).configure({
-      // languageClassPrefix: 'language-',
-      // defaultLanguage: 'sql',
+    CodeBlockLowlight
+      // .extend({
+      // addNodeView() {
+      //   return VueNodeViewRenderer(CodeBlockComponent);
+      // },
+      // })
+      .configure({
+      languageClassPrefix: 'language-',
+      defaultLanguage: 'sql',
       lowlight,
     }),
     Placeholder.configure({
