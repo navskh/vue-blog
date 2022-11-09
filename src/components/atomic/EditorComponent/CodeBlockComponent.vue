@@ -11,22 +11,16 @@
         {{ language }}
       </option>
     </select>
-    <pre><code><node-view-content /></code></pre>
+    <pre><code :class="'language-'+selectedLanguage"><node-view-content /></code></pre>
   </node-view-wrapper>
 </template>
 
 <script>
-import { NodeViewContent, nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3';
-import css from 'highlight.js/lib/languages/css';
-import js from 'highlight.js/lib/languages/javascript';
-import html from 'highlight.js/lib/languages/xml';
-import sql from 'highlight.js/lib/languages/sql';
-import { lowlight } from 'lowlight';
+import { NodeViewContent, nodeViewProps, NodeViewWrapper } from "@tiptap/vue-3";
+import html from "highlight.js/lib/languages/xml";
+import { lowlight } from "lowlight";
 
-lowlight.registerLanguage('html', html);
-lowlight.registerLanguage('css', css);
-lowlight.registerLanguage('js', js);
-lowlight.registerLanguage('sql', sql);
+lowlight.registerLanguage("html", html);
 
 export default {
   components: {

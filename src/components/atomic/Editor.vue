@@ -158,22 +158,24 @@ import {
   useEditor,
   EditorContent,
   VueNodeViewRenderer,
-} from '@tiptap/vue-3';
-import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
-import Highlight from '@tiptap/extension-highlight';
-import Placeholder from '@tiptap/extension-placeholder';
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-import Image from '@tiptap/extension-image';
-import { lowlight } from 'lowlight';
-import { ref, watchEffect } from 'vue';
-import { marked } from 'marked';
-import parseMd from '@/assets/md';
-import Iframe from '@/components/atomic/EditorComponent/Iframe';
-import Table from '@tiptap/extension-table';
-import TableCell from '@tiptap/extension-table-cell';
-import TableHeader from '@tiptap/extension-table-header';
-import TableRow from '@tiptap/extension-table-row';
+} from "@tiptap/vue-3";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Highlight from "@tiptap/extension-highlight";
+import Placeholder from "@tiptap/extension-placeholder";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import Image from "@tiptap/extension-image";
+import { lowlight } from "lowlight";
+import { ref, watchEffect } from "vue";
+import { marked } from "marked";
+import parseMd from "@/assets/md";
+import Iframe from "@/components/atomic/EditorComponent/Iframe";
+import Table from "@tiptap/extension-table";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
+
+import { getMarkAttributes, mergeAttributes } from "@tiptap/core";
 
 import css from 'highlight.js/lib/languages/css';
 import js from 'highlight.js/lib/languages/javascript';
@@ -190,21 +192,21 @@ lowlight.registerLanguage('sql', sql);
 const props = defineProps({
   modelValue: {
     type: String,
-    default: '',
+    default: "",
   },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(["update:modelValue"]);
 
 const changeMarkdown = (data) => {
   marked.setOptions({
     renderer: new marked.Renderer(),
     highlight: function (code, lang) {
-      const hljs = require('highlight.js');
-      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+      const hljs = require("highlight.js");
+      const language = hljs.getLanguage(lang) ? lang : "sql";
       return hljs.highlight(code, { language }).value;
     },
-    langPrefix: 'hljs language-', // highlight.js css expects a top-level 'hljs' class.
+    langPrefix: "hljs language-", // highlight.js css expects a top-level 'hljs' class.
     pedantic: false,
     gfm: true,
     breaks: false,
@@ -214,21 +216,65 @@ const changeMarkdown = (data) => {
     xhtml: false,
   });
 
-  var replaceData = data.replaceAll('<p>', '').replaceAll('</p>', '');
+  var replaceData = data.replaceAll("<p>", "").replaceAll("</p>", "");
   // editor.view.dom.innerHTML = marked(parseMd(replaceData));
   editor.view.dom.innerHTML = marked.parse(replaceData);
 };
 
 const addImage = () => {
-  const url = window.prompt('URL : ');
+  const url = window.prompt("URL : ");
 
   if (url) {
     editor.chain().focus().setImage({ src: url }).run();
   }
 };
 
+const chkCodeblock = (content) => {
+  let contents = content.split("<pre><code");
+  let codes = document.querySelectorAll("pre>code>div");
+  let result = "";
+  console.log("codes, ", codes);
+  console.log("contents, ", contents);
+  for (let i = 0; i < codes.length; i++) {
+    if (i == 0 && codes.length > 1) {
+      result += contents[0];
+      result += "<pre><code";
+      result += contents[1].split(">")[0] + ">";
+      result += codes[0].innerHTML;
+    } else if (i == 0 && codes.length <= 1) {
+      result += contents[0];
+      result += "<pre><code";
+      result += contents[1].split(">")[0] + ">";
+      result += codes[0].innerHTML;
+      result += "</code></pre>";
+      if (contents.length > codes.length) {
+        result += contents[i + 1].split("</code></pre>")[1];
+      }
+    } else if (i == codes.length - 1) {
+      result += "</code></pre>";
+      result += contents[i].split("</code></pre>")[1];
+      result += "<pre><code";
+      result += contents[i + 1].split(">")[0] + ">";
+      result += codes[i].innerHTML;
+      result += "</code></pre>";
+      if (contents.length > codes.length) {
+        result += contents[i + 1].split("</code></pre>")[1];
+      }
+    } else {
+      result += "</code></pre>";
+      result += contents[i].split("</code></pre>")[1];
+      result += "<pre><code";
+      result += contents[i + 1].split(">")[0] + ">";
+      result += codes[i].innerHTML;
+    }
+  }
+
+  return result;
+};
+
 const editor = new Editor({
   content: props.modelValue,
+  // content: `<span class="hello">This is span </span>`,
   extensions: [
     StarterKit,
     Underline,
@@ -250,8 +296,8 @@ const editor = new Editor({
       lowlight,
     }),
     Placeholder.configure({
-      emptyEditorClass: 'is-editor-empty',
-      placeholder: '무엇이든 기록하세요',
+      emptyEditorClass: "is-editor-empty",
+      placeholder: "무엇이든 기록하세요",
     }),
     Iframe,
     Table.configure({
@@ -263,12 +309,24 @@ const editor = new Editor({
   ],
   editorProps: {
     attributes: {
-      class: 'prose-lg m-5 focus:outline-none',
+      class: "prose-lg m-5 focus:outline-none",
     },
     autoFocus: true,
   },
   onUpdate: ({ editor }) => {
-    emit('update:modelValue', editor.getHTML());
+    console.log("html : ", editor.getHTML());
+    // console.log(editor.view.dom.innerHTML);
+    const content = editor.getHTML();
+    console.log('test: ', content);
+    let result = "";
+    if (content.indexOf("<pre><code") > -1) {
+      result = chkCodeblock(content);
+    } else {
+      result = content;
+    }
+    // console.log("result : ", result);
+    emit("update:modelValue", result);
+    // emit("update:modelValue", editor.getHTML());
   },
 });
 </script>
@@ -293,11 +351,11 @@ const editor = new Editor({
 }
 .ProseMirror {
   height: fit-content;
-  font-family: 'Fira Coding';
+  font-family: "Fira Coding";
   pre {
     background: #0d0d0d;
     color: #fff;
-    font-family: 'JetBrainsMono', monospace;
+    font-family: "JetBrainsMono", monospace;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
 
@@ -391,7 +449,7 @@ const editor = new Editor({
     .selectedCell:after {
       z-index: 2;
       position: absolute;
-      content: '';
+      content: "";
       left: 0;
       right: 0;
       top: 0;
