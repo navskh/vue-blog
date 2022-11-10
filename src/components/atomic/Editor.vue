@@ -1,5 +1,5 @@
 <template>
-  <div class="editor h-[70%]">
+  <div class="editor">
     <div class="editor__header">
       <button
         class="btn btn-ghost my-btn ri-bold h-8"
@@ -177,17 +177,17 @@ import TableRow from "@tiptap/extension-table-row";
 
 import { getMarkAttributes, mergeAttributes } from "@tiptap/core";
 
-import css from 'highlight.js/lib/languages/css';
-import js from 'highlight.js/lib/languages/javascript';
-import html from 'highlight.js/lib/languages/xml';
-import sql from 'highlight.js/lib/languages/sql';
+import css from "highlight.js/lib/languages/css";
+import js from "highlight.js/lib/languages/javascript";
+import html from "highlight.js/lib/languages/xml";
+import sql from "highlight.js/lib/languages/sql";
 
 // import CodeBlockComponent from './EditorComponent/CodeBlockComponent.vue';
 
-lowlight.registerLanguage('html', html);
-lowlight.registerLanguage('css', css);
-lowlight.registerLanguage('js', js);
-lowlight.registerLanguage('sql', sql);
+lowlight.registerLanguage("html", html);
+lowlight.registerLanguage("css", css);
+lowlight.registerLanguage("js", js);
+lowlight.registerLanguage("sql", sql);
 
 const props = defineProps({
   modelValue: {
@@ -231,7 +231,7 @@ const addImage = () => {
 
 const chkCodeblock = (content) => {
   let contents = content.split("<pre><code");
-  let codes = document.querySelectorAll("pre>code>div");
+  let codes = document.querySelectorAll("pre>code");
   let result = "";
   console.log("codes, ", codes);
   console.log("contents, ", contents);
@@ -291,10 +291,10 @@ const editor = new Editor({
       // },
       // })
       .configure({
-      languageClassPrefix: 'language-',
-      defaultLanguage: 'sql',
-      lowlight,
-    }),
+        languageClassPrefix: "language-",
+        defaultLanguage: "sql",
+        lowlight,
+      }),
     Placeholder.configure({
       emptyEditorClass: "is-editor-empty",
       placeholder: "무엇이든 기록하세요",
@@ -317,13 +317,16 @@ const editor = new Editor({
     console.log("html : ", editor.getHTML());
     // console.log(editor.view.dom.innerHTML);
     const content = editor.getHTML();
-    console.log('test: ', content);
+    console.log("prev: ", content);
     let result = "";
     if (content.indexOf("<pre><code") > -1) {
+      console.log("코드 있음");
       result = chkCodeblock(content);
     } else {
+      console.log("코드 없음");
       result = content;
     }
+    console.log("result: ", result);
     // console.log("result : ", result);
     emit("update:modelValue", result);
     // emit("update:modelValue", editor.getHTML());
