@@ -55,7 +55,6 @@
 			</div>
 		</div>
 		<div v-html="props.content" class="ProseMirror prose-lg h-max my-5"></div>
-	</div>
 </template>
 <script setup>
 import { ShareIcon, PencilIcon, TrashIcon } from '@heroicons/vue/24/solid';
@@ -116,14 +115,14 @@ const doDelete = async () => {
 </script>
 <style scoped>
 .DETAIL::-webkit-scrollbar {
-	width: 24px;
+	width: 6px;
 }
 .DETAIL::-webkit-scrollbar-thumb {
-	border-left: 20px solid #fff;
 	background-clip: padding-box;
-	background-color: rgb(228, 228, 228);
+	background-color: hsl(var(--p));
+	border-radius: 10px;
 }
 .DETAIL::-webkit-scrollbar-track {
-	background-color: #fff;
+	background-color: hsl(var(--b1));
 }
 </style>
