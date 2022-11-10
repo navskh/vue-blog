@@ -1,5 +1,4 @@
 <template>
-  <div class="bg-black/30 sticky">
     <div class="max-w-[1500px] m-auto">
       <div class="navbar flex justify-between px-4 h-[100px]">
         <router-link to="/" class="btn btn-ghost uppercase text-2xl"
@@ -17,7 +16,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 <script setup>
 import { inject, ref } from 'vue';

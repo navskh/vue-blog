@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full px-5 py-3 bg-base-100">
+	<div class="w-full px-5 py-3">
 		<PostInfoBar
 			v-if="post.title !== null"
 			:title="post.title"
