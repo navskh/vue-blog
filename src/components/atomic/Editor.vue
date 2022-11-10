@@ -1,5 +1,5 @@
 <template>
-  <div class="editor h-[70%]">
+  <div class="editor">
     <div class="editor__header">
       <button
         class="btn btn-ghost my-btn ri-bold h-8"

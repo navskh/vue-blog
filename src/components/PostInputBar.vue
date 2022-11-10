@@ -34,18 +34,18 @@
       <input
         type="text"
         v-model="headTitle"
-        class="block w-full h-10 rounded-md border-gray-300 pl-2 pr-2 focus:outline-0 sm:text-xl"
+        class="input rounded-md input-ghost w-full"
         placeholder="제목을 입력하세요"
       />
     </h1>
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center mb-3">
       <div class="flex flex-row items-center text-sm">
         <span class="mr-2">{{ formatDate() }}</span>
         <span class="inline-block w-40"> 수정한 사람 : </span>
         <input
           type="text"
           v-model="author"
-          class="block w-full h-10 pl-3 pr-12 focus:outline-0 sm:text-sm"
+          class="input rounded-md input-ghost w-full input-sm"
           placeholder="작성자(닉네임)을 입력하세요"
         />
       </div>
@@ -114,14 +114,14 @@ async function doSave() {
     if (props.isEdit == false) {
       response = await createPost(params);
       if (response.data.rowsAffected[0] >= 1) {
-        sweetalert('글이 등록되었습니다!', 'success', function () {
+        sweetalert('등록되었습니다!', 'success', function () {
           router.push({ name: 'main', params: { nav: 'wonseo' } });
         });
       }
     } else {
       response = await updatePost(params);
       if (response.data.rowsAffected[0] >= 1) {
-        sweetalert('글이 수정되었습니다!', 'success', function () {
+        sweetalert('수정되었습니다!', 'success', function () {
           router.push({ name: 'detail', params: { nav: 'wonseo', id: id } });
         });
       }
@@ -132,13 +132,13 @@ async function doSave() {
 function doValidate(params) {
   console.log('validate!', params);
   if (params.headTitle == undefined || params.headTitle == '') {
-    sweetalert('제목 입력안했어요!', 'error');
+    sweetalert('제목을 입력하세요.', 'error');
     return false;
   } else if (params.author == undefined || params.author == '') {
-    sweetalert('저자 입력안했어요!', 'error');
+    sweetalert('작성자를 입력하세요.', 'error');
     return false;
   } else if (params.content == undefined || params.content == '') {
-    sweetalert('내용 입력안했어요!', 'error');
+    sweetalert('내용을 입력하세요.', 'error');
     return false;
   } else return true;
 }
