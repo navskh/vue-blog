@@ -153,7 +153,12 @@
 
 <script setup>
 /*eslint-disable*/
-import { Editor, useEditor, EditorContent } from "@tiptap/vue-3";
+import {
+  Editor,
+  useEditor,
+  EditorContent,
+  VueNodeViewRenderer,
+} from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
@@ -170,15 +175,19 @@ import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
 
-import css from "highlight.js/lib/languages/css";
-import js from "highlight.js/lib/languages/javascript";
-import html from "highlight.js/lib/languages/xml";
-import sql from "highlight.js/lib/languages/sql";
+import { getMarkAttributes, mergeAttributes } from "@tiptap/core";
 
-lowlight.registerLanguage("html", html);
-lowlight.registerLanguage("css", css);
-lowlight.registerLanguage("js", js);
-lowlight.registerLanguage("sql", sql);
+import css from 'highlight.js/lib/languages/css';
+import js from 'highlight.js/lib/languages/javascript';
+import html from 'highlight.js/lib/languages/xml';
+import sql from 'highlight.js/lib/languages/sql';
+
+// import CodeBlockComponent from './EditorComponent/CodeBlockComponent.vue';
+
+lowlight.registerLanguage('html', html);
+lowlight.registerLanguage('css', css);
+lowlight.registerLanguage('js', js);
+lowlight.registerLanguage('sql', sql);
 
 const props = defineProps({
   modelValue: {
@@ -194,7 +203,7 @@ const changeMarkdown = (data) => {
     renderer: new marked.Renderer(),
     highlight: function (code, lang) {
       const hljs = require("highlight.js");
-      const language = hljs.getLanguage(lang) ? lang : "plaintext";
+      const language = hljs.getLanguage(lang) ? lang : "sql";
       return hljs.highlight(code, { language }).value;
     },
     langPrefix: "hljs language-", // highlight.js css expects a top-level 'hljs' class.
@@ -220,8 +229,52 @@ const addImage = () => {
   }
 };
 
+const chkCodeblock = (content) => {
+  let contents = content.split("<pre><code");
+  let codes = document.querySelectorAll("pre>code>div");
+  let result = "";
+  console.log("codes, ", codes);
+  console.log("contents, ", contents);
+  for (let i = 0; i < codes.length; i++) {
+    if (i == 0 && codes.length > 1) {
+      result += contents[0];
+      result += "<pre><code";
+      result += contents[1].split(">")[0] + ">";
+      result += codes[0].innerHTML;
+    } else if (i == 0 && codes.length <= 1) {
+      result += contents[0];
+      result += "<pre><code";
+      result += contents[1].split(">")[0] + ">";
+      result += codes[0].innerHTML;
+      result += "</code></pre>";
+      if (contents.length > codes.length) {
+        result += contents[i + 1].split("</code></pre>")[1];
+      }
+    } else if (i == codes.length - 1) {
+      result += "</code></pre>";
+      result += contents[i].split("</code></pre>")[1];
+      result += "<pre><code";
+      result += contents[i + 1].split(">")[0] + ">";
+      result += codes[i].innerHTML;
+      result += "</code></pre>";
+      if (contents.length > codes.length) {
+        result += contents[i + 1].split("</code></pre>")[1];
+      }
+    } else {
+      result += "</code></pre>";
+      result += contents[i].split("</code></pre>")[1];
+      result += "<pre><code";
+      result += contents[i + 1].split(">")[0] + ">";
+      result += codes[i].innerHTML;
+    }
+  }
+
+  return result;
+};
+
 const editor = new Editor({
   content: props.modelValue,
+  // content: `<span class="hello">This is span </span>`,
   extensions: [
     StarterKit,
     Underline,
@@ -231,9 +284,15 @@ const editor = new Editor({
       allowBase64: true,
     }),
     History,
-    CodeBlockLowlight.configure({
-      languageClassPrefix: "language-",
-      defaultLanguage: "sql",
+    CodeBlockLowlight
+      // .extend({
+      // addNodeView() {
+      //   return VueNodeViewRenderer(CodeBlockComponent);
+      // },
+      // })
+      .configure({
+      languageClassPrefix: 'language-',
+      defaultLanguage: 'sql',
       lowlight,
     }),
     Placeholder.configure({
@@ -255,7 +314,19 @@ const editor = new Editor({
     autoFocus: true,
   },
   onUpdate: ({ editor }) => {
-    emit("update:modelValue", editor.getHTML());
+    console.log("html : ", editor.getHTML());
+    // console.log(editor.view.dom.innerHTML);
+    const content = editor.getHTML();
+    console.log('test: ', content);
+    let result = "";
+    if (content.indexOf("<pre><code") > -1) {
+      result = chkCodeblock(content);
+    } else {
+      result = content;
+    }
+    // console.log("result : ", result);
+    emit("update:modelValue", result);
+    // emit("update:modelValue", editor.getHTML());
   },
 });
 </script>

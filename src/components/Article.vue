@@ -68,33 +68,33 @@
 
 <script setup>
 /* eslint-disable */
-import { computed, onBeforeMount, ref, watchEffect, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { useAxios } from "@/hooks/useAxios";
-import { getLists } from "@/api/posts";
-import sidebarCategory from "@/assets/sidebarCategory";
-import { inject } from "vue";
+import { computed, onBeforeMount, ref, watchEffect, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useAxios } from '@/hooks/useAxios';
+import { getLists } from '@/api/posts';
+import sidebarCategory from '@/assets/sidebarCategory';
+import { inject } from 'vue';
 
 const router = useRouter();
 
 const route = useRoute();
 
-const pageName = ref("");
+const pageName = ref('');
 const pageRoute = ref([]);
-const searchKeyword = ref("");
+const searchKeyword = ref('');
 
 var isSearch = false;
-const emitter = inject("emitter");
-emitter.on("Search", (e) => {
+const emitter = inject('emitter');
+emitter.on('Search', (e) => {
   searchKeyword.value = e.value;
   searchResult();
   isSearch = true;
 });
 
 const searchResult = () => {
-  pageRoute.value[0] = "-";
-  pageRoute.value[1] = "-";
-  pageRoute.value[2] = "-";
+  pageRoute.value[0] = '-';
+  pageRoute.value[1] = '-';
+  pageRoute.value[2] = '-';
   pageName.value = `'${searchKeyword.value}' 검색결과`;
 };
 
@@ -112,34 +112,34 @@ const matchName = (thisRoute) => {
     (category) => category.params.nav[2] == thisRoute.nav[2]
   );
 
-  pageRoute.value[0] = result1 == undefined ? "전체" : result1.name;
-  pageRoute.value[1] = result2 == undefined ? "전체" : result2.name;
-  pageRoute.value[2] = result3 == undefined ? "전체" : result3.name;
+  pageRoute.value[0] = result1 == undefined ? '전체' : result1.name;
+  pageRoute.value[1] = result2 == undefined ? '전체' : result2.name;
+  pageRoute.value[2] = result3 == undefined ? '전체' : result3.name;
 
-  pageName.value = "전체";
+  pageName.value = '전체';
   pageRoute.value.forEach((ele) => {
-    if (ele != "전체") pageName.value = ele;
+    if (ele != '전체') pageName.value = ele;
   });
 };
 
 const truncate = (text, maxLength = 45) => {
   if (text.length > maxLength) {
-    return text.substring(0, maxLength) + "...";
+    return text.substring(0, maxLength) + '...';
   } else {
     return text;
   }
 };
 
 const formatDate = (dateData) => {
-  var thisData = dateData.substring(2, 10).replaceAll("-", ".");
+  var thisData = dateData.substring(2, 10).replaceAll('-', '.');
   return thisData;
 };
 
 const goPage = (dataMap) => {
   router.push({
-    name: "detail",
+    name: 'detail',
     params: {
-      nav: "wonseo",
+      nav: 'wonseo',
       id: dataMap.idx,
     },
   });
@@ -152,10 +152,10 @@ var allData = [];
 const today = () => {
   var date = new Date();
   var year = date.getFullYear();
-  var month = ("0" + (1 + date.getMonth())).slice(-2);
-  var day = ("0" + (date.getDate() - 1)).slice(-2);
+  var month = ('0' + (1 + date.getMonth())).slice(-2);
+  var day = ('0' + (date.getDate() - 1)).slice(-2);
 
-  return year + "-" + month + "-" + day;
+  return year + '-' + month + '-' + day;
 };
 
 let isActive = ref(1);
@@ -170,7 +170,7 @@ const fetchList = async () => {
   condition[1] = pageRoute.value[1];
   condition[2] = pageRoute.value[2];
 
-  if (pageRoute.value[0] == "기타") condition = ["전체", "전체", "전체"];
+  if (pageRoute.value[0] == '기타') condition = ['전체', '전체', '전체'];
   condition[3] = searchKeyword.value;
   try {
     const { data } = await getLists(condition);
@@ -191,7 +191,7 @@ const monitorRoute = () => {
   }
   fetchList();
   isSearch = false;
-  searchKeyword.value = "";
+  searchKeyword.value = '';
 };
 
 watchEffect(monitorRoute);

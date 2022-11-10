@@ -1,12 +1,12 @@
 <template>
-  <div class="max-w-[1500px] m-auto h-screen">
-    <Header />
-    <div class="flex">
-      <Sidebar />
-      <router-view />
-    </div>
-    <Footer />
+  <!-- <div class="max-w-[1500px] m-auto h-screen"> -->
+  <Header />
+  <div class="max-w-[1500px] flex gap-1 m-auto">
+    <Sidebar />
+    <router-view />
   </div>
+  <Footer />
+  <!-- </div> -->
 </template>
 
 <script setup>

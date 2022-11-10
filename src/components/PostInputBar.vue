@@ -62,13 +62,13 @@
   <Editor v-model:modelValue="content" />
 </template>
 <script setup>
-import { FolderArrowDownIcon } from '@heroicons/vue/24/outline';
-import ListBox from '@/components/atomic/ListBox.vue';
-import { ref } from 'vue';
-import Editor from './atomic/Editor.vue';
-import { createPost, updatePost } from '@/api/posts';
-import { useRoute, useRouter } from 'vue-router';
-import { sweetalert } from '@/assets/common';
+import { FolderArrowDownIcon } from "@heroicons/vue/24/outline";
+import ListBox from "@/components/atomic/ListBox.vue";
+import { ref } from "vue";
+import Editor from "./atomic/Editor.vue";
+import { createPost, updatePost } from "@/api/posts";
+import { useRoute, useRouter } from "vue-router";
+import { sweetalert } from "@/assets/common";
 
 const router = useRouter();
 
@@ -77,7 +77,7 @@ const id = route.params.id;
 
 const formatDate = () => {
   var dateData = new Date().toISOString();
-  var thisData = dateData?.substring(0, 10).replaceAll('-', '.');
+  var thisData = dateData?.substring(0, 10).replaceAll("-", ".");
   return thisData;
 };
 
@@ -91,9 +91,9 @@ const props = defineProps({
   detail: String,
 });
 
-const thisUpper = ref('');
-const thisSub = ref('');
-const thisDetail = ref('');
+const thisUpper = ref("");
+const thisSub = ref("");
+const thisDetail = ref("");
 const headTitle = ref(props?.title);
 const author = ref(props?.author);
 const content = ref(props?.content);
@@ -108,21 +108,22 @@ async function doSave() {
     content: content.value.replaceAll("'", "''"),
     idx: id,
   };
+  console.log("params", params);
 
   if (doValidate(params)) {
     var response = {};
     if (props.isEdit == false) {
       response = await createPost(params);
       if (response.data.rowsAffected[0] >= 1) {
-        sweetalert('등록되었습니다!', 'success', function () {
-          router.push({ name: 'main', params: { nav: 'wonseo' } });
+        sweetalert("글이 등록되었습니다!", "success", function () {
+          router.push({ name: "main", params: { nav: "wonseo" } });
         });
       }
     } else {
       response = await updatePost(params);
       if (response.data.rowsAffected[0] >= 1) {
-        sweetalert('수정되었습니다!', 'success', function () {
-          router.push({ name: 'detail', params: { nav: 'wonseo', id: id } });
+        sweetalert("글이 수정되었습니다!", "success", function () {
+          router.push({ name: "detail", params: { nav: "wonseo", id: id } });
         });
       }
     }
@@ -144,6 +145,7 @@ function doValidate(params) {
 }
 
 function changeUpper(value) {
+  console.log("value, ", value);
   let condition = {};
   condition.upperCategoryCode = value.Code;
   thisSub.value.fetchCategory(condition);

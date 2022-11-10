@@ -37,6 +37,25 @@
 		</div>
 		<div v-html="props.content" class="ProseMirror prose-lg h-max my-5"></div>
 	</div>
+		<h1 class="font-bold text-3xl py-3">{{ props.title }}</h1>
+		<div class="flex justify-between items-center border-b-2">
+			<div class="text-sm">
+				<span class="mr-1">{{ formatDate(props.createdAt) }}</span>
+				<span class="text-xs">
+					마지막으로 수정한 사람 : {{ props.author }}</span
+				>
+			</div>
+			<div>
+				<button class="btn btn-ghost">
+					<ShareIcon class="w-5 h-5" />
+				</button>
+				<button class="ml-0.5 btn btn-ghost" @click="goEdit()">
+					<PencilIcon class="w-5 h-5" />
+				</button>
+			</div>
+		</div>
+		<div v-html="props.content" class="ProseMirror prose-lg h-max my-5"></div>
+	</div>
 </template>
 <script setup>
 import { ShareIcon, PencilIcon, TrashIcon } from '@heroicons/vue/24/solid';
@@ -52,35 +71,35 @@ const route = useRoute();
 const id = route.params.id;
 
 const props = defineProps({
-	title: String,
-	content: String,
-	author: String,
-	createdAt: String,
-	upper: String,
-	sub: String,
-	detail: String,
+  title: String,
+  content: String,
+  author: String,
+  createdAt: String,
+  upper: String,
+  sub: String,
+  detail: String,
 });
 
-const formatDate = dateData => {
-	var thisData = dateData
-		?.substring(0, 16)
-		.replaceAll('-', '.')
-		.replace('T', ' ');
-	return thisData;
+const formatDate = (dateData) => {
+  var thisData = dateData
+    ?.substring(0, 16)
+    .replaceAll('-', '.')
+    .replace('T', ' ');
+  return thisData;
 };
 
 const goEdit = () => {
-	router.push({
-		name: 'edit',
-		params: {
-			nav: 'wonseo',
-			id: id,
-		},
-	});
+  router.push({
+    name: 'edit',
+    params: {
+      nav: 'wonseo',
+      id: id,
+    },
+  });
 };
 
 const confirmDelete = () => {
-	sweetconfirm('삭제할까요?', 'warning').then(result => {
+	sweetconfirm('진짜로 삭제할건가요??', 'warning').then(result => {
 		if (result.isConfirmed) doDelete();
 		else return;
 	});
@@ -89,7 +108,7 @@ const confirmDelete = () => {
 const doDelete = async () => {
 	var response = await deletePost(id);
 	if (response.data.rowsAffected[0] >= 1) {
-		sweetalert('삭제되었습니다!', 'success', function () {
+		sweetalert('글이 삭제되었습니다!', 'success', function () {
 			router.push({ name: 'main', params: { nav: 'wonseo' } });
 		});
 	}
@@ -97,14 +116,14 @@ const doDelete = async () => {
 </script>
 <style scoped>
 .DETAIL::-webkit-scrollbar {
-	width: 5px;
+	width: 24px;
 }
 .DETAIL::-webkit-scrollbar-thumb {
-	border-radius: 5px;
+	border-left: 20px solid #fff;
 	background-clip: padding-box;
-	background-color: hsl(var(--p));
+	background-color: rgb(228, 228, 228);
 }
 .DETAIL::-webkit-scrollbar-track {
-	background-color: hsl(var(--b1));
+	background-color: #fff;
 }
 </style>

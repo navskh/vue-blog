@@ -70,10 +70,10 @@
 <script setup>
 import { ref } from 'vue';
 import {
-	Listbox,
-	ListboxButton,
-	ListboxOption,
-	ListboxOptions,
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
 } from '@headlessui/vue';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid';
 import { getCategory } from '@/api/posts';
@@ -81,39 +81,39 @@ import { getCategory } from '@/api/posts';
 const categorys = ref({});
 const selected = ref({ Name: null });
 const props = defineProps({
-	type: {},
-	code: String,
+  type: {},
+  code: String,
 });
 
 const emit = defineEmits(['update:modelValue']);
 
-const fetchCategory = async condition => {
-	console.log(props.code);
-	const { data } = await getCategory(props.type?.value, condition);
-	categorys.value = [...data];
+const fetchCategory = async (condition) => {
+  // console.log(props.code);
+  const { data } = await getCategory(props.type?.value, condition);
+  categorys.value = [...data];
 
-	if (props.code) {
-		console.log(data);
-		var result = data.find(d => d.Name == props.code);
-		selected.value = result;
-	} else {
-		selected.value = categorys.value[0];
-	}
+  if (props.code) {
+    // console.log(data);
+    var result = data.find((d) => d.Name == props.code);
+    selected.value = result;
+  } else {
+    selected.value = categorys.value[0];
+  }
 };
 
 const initCondition = {
-	upperCategoryCode: 0,
-	subCategoryCode: 0,
+  upperCategoryCode: 0,
+  subCategoryCode: 0,
 };
 
 fetchCategory(initCondition);
 
 function bringCategory() {
-	return selected.value.Code;
+  return selected.value.Code;
 }
 
 defineExpose({
-	bringCategory,
-	fetchCategory,
+  bringCategory,
+  fetchCategory,
 });
 </script>
