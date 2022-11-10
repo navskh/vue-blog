@@ -18,7 +18,7 @@
         <h1 class="text-2xl font-bold mb-7">{{ pageName }}</h1>
       </div>
       <div
-        class="CONTENT h-[calc(100vh-200px)] w-full overflow-y-auto overflow-x-hidden"
+        class="CONTENT w-full overflow-y-auto overflow-x-hidden"
       >
         <table class="table w-[90%] mx-5 border-collapse">
           <!-- head -->

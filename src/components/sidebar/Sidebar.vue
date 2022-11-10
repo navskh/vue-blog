@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[calc(100vh-100px)] sticky">
+  <div class="sticky">
     <div class="p-4 w-[18rem] text-md text-base-content h-full">
       <button
         type="button"
@@ -8,7 +8,7 @@
       >
         글쓰기
       </button>
-      <div class="SIDEBAR h-[calc(100vh-150px)] pb-11 overflow-y-auto">
+      <div class="SIDEBAR pb-11 overflow-y-auto">
         <div class="py-2 px-3">
           <router-link
             to="/"
