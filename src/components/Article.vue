@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full mt-4 min-w-[1000px] min-h-[800px] overflow-y-auto">
+  <div class="w-full mt-4 min-w-[1000px] h-full overflow-y-auto">
     <div class="flex flex-col items-center pl-3">
       <div class="TITLE w-full pl-5">
         <div class="text-sm breadcrumbs text-primary-focus flex-row">
