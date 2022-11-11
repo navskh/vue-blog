@@ -67,6 +67,10 @@ fetchPost();
 </script>
 
 <style lang="scss">
+::selection {
+  background-color: hsl(var(--s));
+  color: hsl(var(--sc));
+}
 .detail {
 	table {
 		border-collapse: collapse;

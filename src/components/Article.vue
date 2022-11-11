@@ -26,10 +26,33 @@
             <tr class="sticky top-0 z-1">
               <th class="tracking-widest">제목</th>
               <th class="w-[20%] tracking-widest">작성자</th>
+              <th class="w-[15%] tracking-widest">수정일</th>
               <th class="w-[15%] tracking-widest">작성일</th>
             </tr>
           </thead>
           <tbody>
+            <tr v-for="(data, index) in notices" :key="index">
+              <td>
+                <p
+                  class="hover:cursor-pointer w-max hover:after:content-['#'] hover:after:ml-2 hover:after:font-semibold hover:after:text-secondary-focus hover:text-secondary-focus"
+                  @click="goPage(data)"
+                >
+                <b> [공지] 
+                  {{ truncate(data.Title) }}
+                </b>
+                  <span
+                    v-if="(data.UpdateTime ?? data.WriteTime) > today()"
+                    class="badge leading-[unset]"
+                    >new</span
+                  >
+                </p>
+              </td>
+              <td>
+                <p>공지</p>
+              </td>
+              <td>{{ formatDate(data.UpdateTime ?? data.WriteTime) }}</td>
+              <td>{{ formatDate(data.WriteTime) }}</td>
+            </tr>
             <tr v-for="(data, index) in posts" :key="index">
               <td>
                 <p
@@ -48,6 +71,7 @@
                 <p>{{ truncate(data.Author, 10) }}</p>
               </td>
               <td>{{ formatDate(data.UpdateTime ?? data.WriteTime) }}</td>
+              <td>{{ formatDate(data.WriteTime) }}</td>
             </tr>
           </tbody>
         </table>
@@ -71,7 +95,7 @@
 import { computed, onBeforeMount, ref, watchEffect, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAxios } from '@/hooks/useAxios';
-import { getLists } from '@/api/posts';
+import { getLists, getNotices } from '@/api/posts';
 import sidebarCategory from '@/assets/sidebarCategory';
 import { inject } from 'vue';
 
@@ -148,6 +172,7 @@ const goPage = (dataMap) => {
 var posts = ref([]);
 var totalCnt = ref(null);
 var allData = [];
+var notices = ref([]);
 
 const today = () => {
   var date = new Date();
@@ -170,15 +195,20 @@ const fetchList = async () => {
   condition[1] = pageRoute.value[1];
   condition[2] = pageRoute.value[2];
 
-  if (pageRoute.value[0] == '기타') condition = ['전체', '전체', '전체'];
+  console.log(condition);
+
+  // if (pageRoute.value[0] == '기타') condition = ['전체', '전체', '전체'];
   condition[3] = searchKeyword.value;
   try {
     const { data } = await getLists(condition);
+    const notice = await getNotices();
     for (var i = 0; i <= data.length / 10; i++) {
       allData[i] = data.slice(i * 10, i * 10 + 10);
     }
     totalCnt.value = allData.length;
     posts.value = allData[0];
+    notices.value = notice.data;
+    console.log(notice);
   } catch (err) {
     console.error(err);
   }

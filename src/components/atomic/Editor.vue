@@ -314,22 +314,14 @@ const editor = new Editor({
     autoFocus: true,
   },
   onUpdate: ({ editor }) => {
-    console.log("html : ", editor.getHTML());
-    // console.log(editor.view.dom.innerHTML);
     const content = editor.getHTML();
-    console.log("prev: ", content);
     let result = "";
     if (content.indexOf("<pre><code") > -1) {
-      console.log("코드 있음");
       result = chkCodeblock(content);
     } else {
-      console.log("코드 없음");
       result = content;
     }
-    console.log("result: ", result);
-    // console.log("result : ", result);
     emit("update:modelValue", result);
-    // emit("update:modelValue", editor.getHTML());
   },
 });
 </script>

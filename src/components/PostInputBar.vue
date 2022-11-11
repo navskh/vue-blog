@@ -95,8 +95,12 @@ const thisUpper = ref("");
 const thisSub = ref("");
 const thisDetail = ref("");
 const headTitle = ref(props?.title);
-const author = ref(props?.author);
 const content = ref(props?.content);
+// 최초 글쓰기 시 localStorage에서 가져옴
+let author = ref(window.localStorage.getItem('localNickName'));
+if (!window.localStorage.getItem('localNickName')) {
+  author = ref(props?.author);
+}
 
 async function doSave() {
   var params = {
@@ -109,6 +113,7 @@ async function doSave() {
     idx: id,
   };
   console.log("params", params);
+  window.localStorage.setItem('localNickName', author.value);
 
   if (doValidate(params)) {
     var response = {};

@@ -2,10 +2,17 @@ import axios from 'axios';
 
 const baseURL = 'http://treasure-back.jinhakapply.com';
 
+// develp 전용 링크
+// const baseURL = 'http://localhost:3002';
+
 export function getLists(condition) {
 	return axios.get(`${baseURL}/treasure/list`, {
 		params: { condition: condition },
 	});
+}
+
+export function getNotices() {
+	return axios.get(`${baseURL}/treasure/notice`);
 }
 
 export function getPostById(id) {
