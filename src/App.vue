@@ -1,5 +1,5 @@
 <template>
-  <div class="relative h-screen">
+  <div class="relative h-screen overflow-hidden">
     <Header />
     <div class="max-w-[1500px] flex gap-1 m-auto">
       <Sidebar />

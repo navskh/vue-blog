@@ -1,6 +1,5 @@
 <template>
-  <div class="sticky">
-    <div class="p-4 w-[18rem] text-md text-base-content h-full">
+    <div class="SIDEBAR p-4 w-[18rem] text-md text-base-content h-[calc(100vh-140px)] ">
       <button
         type="button"
         class="btn btn-primary w-full mb-6"
@@ -8,7 +7,7 @@
       >
         글쓰기
       </button>
-      <div class="SIDEBAR pb-11 overflow-y-auto">
+      <div class="pb-11">
         <div class="py-2 px-3">
           <router-link
             to="/"
@@ -17,10 +16,10 @@
             >전체보기</router-link
           >
         </div>
-        <SidebarItem :list="sidebarCategory" :selectPath="selectPath" />
+        <div class="MENU h-[calc(100vh-270px)] overflow-y-auto">
+        <SidebarItem :list="sidebarCategory" :selectPath="selectPath" /></div>
       </div>
     </div>
-  </div>
 </template>
 <script setup>
 import sidebarCategory from '@/assets/sidebarCategory.js';
@@ -52,9 +51,15 @@ const goWrite = async () => {
   });
 };
 </script>
-<style>
-.SIDEBAR::-webkit-scrollbar {
-  display: none;
+<style >
+.MENU::-webkit-scrollbar {
+  width: 2px;
+  background-color: rgba(255, 255, 255, 0);
+}
+.MENU::-webkit-scrollbar-thumb {
+  border-bottom: 20px solid rgba(255, 255, 255, 0); 
+  background-clip: padding-box;
+  background-color: rgba(140, 140, 140, 0.295);
 }
 .selected {
   @apply text-secondary-focus font-bold;
