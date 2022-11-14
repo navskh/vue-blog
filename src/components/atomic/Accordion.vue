@@ -50,4 +50,7 @@ const open = (e) => {
 .selected {
   @apply text-secondary-focus font-bold;
 }
+.side-link {
+  @apply focus:outline-none focus:border-secondary-focus focus:border rounded m-1;
+}
 </style>

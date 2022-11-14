@@ -5,74 +5,89 @@
         class="btn btn-ghost my-btn ri-bold h-8"
         :class="{ 'btn-active': editor.isActive('bold') }"
         @click="editor.chain().focus().toggleBold().run()"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-italic h-8"
         :class="{ 'btn-active': editor.isActive('italic') }"
         @click="editor.chain().focus().toggleItalic().run()"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-underline h-8"
         :class="{ 'btn-active': editor.isActive('underline') }"
         @click="editor.chain().focus().toggleUnderline().run()"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-strikethrough h-8"
         :class="{ 'btn-active': editor.isActive('strike') }"
         @click="editor.chain().focus().toggleStrike().run()"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-h-1 h-8"
         :class="{ 'btn-active': editor.isActive('heading', { level: 1 }) }"
         @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-h-2 h-8"
         :class="{ 'btn-active': editor.isActive('heading', { level: 2 }) }"
         @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-h-3 h-8"
         :class="{ 'btn-active': editor.isActive('heading', { level: 3 }) }"
         @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-paragraph h-8"
         :class="{ 'btn-active': editor.isActive('paragraph') }"
         @click="editor.chain().focus().toggleParagraph().run()"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-list-unordered h-8"
         :class="{ 'btn-active': editor.isActive('bulletList') }"
         @click="editor.chain().focus().toggleBulletList().run()"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-list-ordered h-8"
         :class="{ 'btn-active': editor.isActive('orderedList') }"
         @click="editor.chain().focus().toggleOrderedList().run()"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-mark-pen-line h-8"
         @click="editor.chain().focus().toggleHighlight().run()"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-code-view h-8"
         :class="{ 'btn-active': editor.isActive('codeBlock') }"
         @click="editor.chain().focus().toggleCodeBlock().run()"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-double-quotes-l h-8"
         :class="{ 'btn-active': editor.isActive('blockquote') }"
         @click="editor.chain().focus().toggleBlockquote().run()"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-arrow-left-right-line h-8"
         @click="changeMarkdown(props.modelValue)"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn ri-links-line h-8"
         :class="{ 'btn-active': editor.isActive('link') }"
         @click="setLink"
+        tabindex="-1"
       />
       <button
         class="btn btn-ghost my-btn h-8"
@@ -87,6 +102,7 @@
             })
             .run()
         "
+        tabindex="-1"
       >
         <img class="icon h-4" src="@/assets/images/icons/table.svg" />
       </button>
@@ -180,9 +196,9 @@ import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
 import Link from "@tiptap/extension-link";
-import ListItem from '@tiptap/extension-list-item';
-import OrderedList from '@tiptap/extension-ordered-list';
-import BulletList from '@tiptap/extension-bullet-list';
+import ListItem from "@tiptap/extension-list-item";
+import OrderedList from "@tiptap/extension-ordered-list";
+import BulletList from "@tiptap/extension-bullet-list";
 
 import { getMarkAttributes, mergeAttributes } from "@tiptap/core";
 
@@ -280,32 +296,22 @@ const chkCodeblock = (content) => {
 };
 
 const setLink = () => {
-  const previousUrl = editor.getAttributes('link').href
-  const url = window.prompt('URL', previousUrl)
+  const previousUrl = editor.getAttributes("link").href;
+  const url = window.prompt("URL", previousUrl);
 
   // cancelled
   if (url === null) {
-    return
+    return;
   }
 
   // empty
-  if (url === '') {
-    editor
-      .chain()
-      .focus()
-      .extendMarkRange('link')
-      .unsetLink()
-      .run()
-    return
+  if (url === "") {
+    editor.chain().focus().extendMarkRange("link").unsetLink().run();
+    return;
   }
 
   // update link
-  editor
-    .chain()
-    .focus()
-    .extendMarkRange('link')
-    .setLink({ href: url })
-    .run()
+  editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
 };
 
 const editor = new Editor({
@@ -320,12 +326,11 @@ const editor = new Editor({
       allowBase64: true,
     }),
     History,
-    CodeBlockLowlight
-      .configure({
-        languageClassPrefix: "language-",
-        defaultLanguage: "sql",
-        lowlight,
-      }),
+    CodeBlockLowlight.configure({
+      languageClassPrefix: "language-",
+      defaultLanguage: "sql",
+      lowlight,
+    }),
     Placeholder.configure({
       emptyEditorClass: "is-editor-empty",
       placeholder: "무엇이든 기록하세요",
@@ -338,7 +343,7 @@ const editor = new Editor({
     TableHeader,
     TableCell,
     Link.configure({
-      HTMLAttributes: { class: 'link-type'},
+      HTMLAttributes: { class: "link-type" },
       linkOnPaste: false,
       openOnClick: true,
     }),
@@ -383,7 +388,7 @@ const editor = new Editor({
   padding: 0.25rem;
   border-bottom: 1px solid rgb(209, 213, 219);
 }
-.link-type{
+.link-type {
   color: hsl(var(--in)) !important;
 }
 .ProseMirror {
@@ -399,7 +404,6 @@ const editor = new Editor({
   ol {
     padding: 0 1rem;
   }
-
 
   pre {
     background: #0d0d0d;

@@ -17,9 +17,7 @@
         </div>
         <h1 class="text-2xl font-bold mb-7">{{ pageName }}</h1>
       </div>
-      <div
-        class="CONTENT w-full overflow-y-auto overflow-x-hidden"
-      >
+      <div class="CONTENT w-full overflow-y-auto overflow-x-hidden">
         <table class="table w-[90%] mx-5 border-collapse">
           <!-- head -->
           <thead>
@@ -37,9 +35,10 @@
                   class="hover:cursor-pointer w-max hover:after:content-['#'] hover:after:ml-2 hover:after:font-semibold hover:after:text-secondary-focus hover:text-secondary-focus"
                   @click="goPage(data)"
                 >
-                <b> [공지] 
-                  {{ truncate(data.Title) }}
-                </b>
+                  <b>
+                    [공지]
+                    {{ truncate(data.Title) }}
+                  </b>
                   <span
                     v-if="(data.UpdateTime ?? data.WriteTime) > today()"
                     class="badge leading-[unset]"
@@ -59,6 +58,13 @@
                   class="hover:cursor-pointer w-max hover:after:content-['#'] hover:after:ml-2 hover:after:font-semibold hover:after:text-secondary-focus hover:text-secondary-focus"
                   @click="goPage(data)"
                 >
+                  <span class="kbd-xs">
+                    {{
+                      data.UpperCategory == "0"
+                        ? "기타"
+                        : data.UpperCategoryName
+                    }}
+                  </span>
                   {{ truncate(data.Title) }}
                   <span
                     v-if="(data.UpdateTime ?? data.WriteTime) > today()"
@@ -92,26 +98,26 @@
 
 <script setup>
 /* eslint-disable */
-import { computed, onBeforeMount, ref, watchEffect, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import { useAxios } from '@/hooks/useAxios';
-import { getLists, getNotices } from '@/api/posts';
-import sidebarCategory from '@/assets/sidebarCategory';
-import { inject } from 'vue';
+import { computed, onBeforeMount, ref, watchEffect, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { useAxios } from "@/hooks/useAxios";
+import { getLists, getNotices } from "@/api/posts";
+import sidebarCategory from "@/assets/sidebarCategory";
+import { inject } from "vue";
 
 const router = useRouter();
 
 const route = useRoute();
 
-const pageName = ref('');
+const pageName = ref("");
 const pageRoute = ref([]);
-const searchKeyword = ref('');
+const searchKeyword = ref("");
 
 var isSearch = false;
 const searchResult = () => {
-  pageRoute.value[0] = '-';
-  pageRoute.value[1] = '-';
-  pageRoute.value[2] = '-';
+  pageRoute.value[0] = "-";
+  pageRoute.value[1] = "-";
+  pageRoute.value[2] = "-";
   pageName.value = `'${searchKeyword.value}' 검색결과`;
 };
 
@@ -129,34 +135,34 @@ const matchName = (thisRoute) => {
     (category) => category.params.nav[2] == thisRoute.nav[2]
   );
 
-  pageRoute.value[0] = result1 == undefined ? '전체' : result1.name;
-  pageRoute.value[1] = result2 == undefined ? '전체' : result2.name;
-  pageRoute.value[2] = result3 == undefined ? '전체' : result3.name;
+  pageRoute.value[0] = result1 == undefined ? "전체" : result1.name;
+  pageRoute.value[1] = result2 == undefined ? "전체" : result2.name;
+  pageRoute.value[2] = result3 == undefined ? "전체" : result3.name;
 
-  pageName.value = '전체';
+  pageName.value = "전체";
   pageRoute.value.forEach((ele) => {
-    if (ele != '전체') pageName.value = ele;
+    if (ele != "전체") pageName.value = ele;
   });
 };
 
 const truncate = (text, maxLength = 45) => {
   if (text.length > maxLength) {
-    return text.substring(0, maxLength) + '...';
+    return text.substring(0, maxLength) + "...";
   } else {
     return text;
   }
 };
 
 const formatDate = (dateData) => {
-  var thisData = dateData.substring(2, 10).replaceAll('-', '.');
+  var thisData = dateData.substring(2, 10).replaceAll("-", ".");
   return thisData;
 };
 
 const goPage = (dataMap) => {
   router.push({
-    name: 'detail',
+    name: "detail",
     params: {
-      nav: 'wonseo',
+      nav: "wonseo",
       id: dataMap.idx,
     },
   });
@@ -170,10 +176,10 @@ var notices = ref([]);
 const today = () => {
   var date = new Date();
   var year = date.getFullYear();
-  var month = ('0' + (1 + date.getMonth())).slice(-2);
-  var day = ('0' + (date.getDate() - 1)).slice(-2);
+  var month = ("0" + (1 + date.getMonth())).slice(-2);
+  var day = ("0" + (date.getDate() - 1)).slice(-2);
 
-  return year + '-' + month + '-' + day;
+  return year + "-" + month + "-" + day;
 };
 
 let isActive = ref(1);
@@ -187,7 +193,6 @@ const fetchList = async () => {
   condition[0] = pageRoute.value[0];
   condition[1] = pageRoute.value[1];
   condition[2] = pageRoute.value[2];
-
 
   // if (pageRoute.value[0] == '기타') condition = ['전체', '전체', '전체'];
   condition[3] = searchKeyword.value;
@@ -206,9 +211,9 @@ const fetchList = async () => {
 };
 const monitorRoute = () => {
   var thisRoute = route.params;
-  if (thisRoute.nav.indexOf('search') > -1) {
+  if (thisRoute.nav.indexOf("search") > -1) {
     isSearch = true;
-    searchKeyword.value = thisRoute.nav.split('search')[1];
+    searchKeyword.value = thisRoute.nav.split("search")[1];
   }
 
   // route param을 받아서 한글 naming을 만들어줌
@@ -220,7 +225,7 @@ const monitorRoute = () => {
   }
   fetchList();
   isSearch = false;
-  searchKeyword.value = '';
+  searchKeyword.value = "";
 };
 
 watchEffect(monitorRoute);

@@ -1,5 +1,8 @@
 <template>
-  <div class="DETAIL max-w-[calc(1500px-18rem)] h-full pb-1 overflow-y-scroll">
+  <div
+    class="DETAIL max-w-[calc(1500px-18rem)] h-full pb-1 overflow-y-scroll"
+    @scroll="showTopBtn"
+  >
     <div class="flex justify-between">
       <div class="text-sm breadcrumbs text-primary-focus flex-row">
         <ul>
@@ -43,7 +46,7 @@
 <script setup>
 import { ShareIcon, PencilIcon, TrashIcon } from "@heroicons/vue/24/solid";
 import { useRouter, useRoute } from "vue-router";
-import { defineProps } from "vue";
+import { defineProps, defineEmits } from "vue";
 import { deletePost } from "@/api/posts";
 import { sweetalert, sweetconfirm } from "@/assets/common";
 
@@ -52,6 +55,8 @@ const router = useRouter();
 const route = useRoute();
 
 const id = route.params.id;
+
+const emits = defineEmits(["update:scroll"]);
 
 const props = defineProps({
   title: String,
@@ -95,6 +100,11 @@ const doDelete = async () => {
       router.push({ name: "main", params: { nav: "wonseo" } });
     });
   }
+};
+
+const showTopBtn = () => {
+  const length = document.getElementsByClassName("DETAIL")[0].scrollTop;
+  emits("update:scroll", length);
 };
 </script>
 <style scoped>

@@ -20,8 +20,8 @@
   </div>
 </template>
 <script setup>
-import { defineProps } from 'vue';
-import Accordion from '../atomic/Accordion.vue';
+import { defineProps } from "vue";
+import Accordion from "../atomic/Accordion.vue";
 
 defineProps({
   list: { required: true },
@@ -33,6 +33,6 @@ defineProps({
   @apply text-secondary-focus font-bold;
 }
 .side-link {
-  @apply hover:font-bold rounded-full;
+  @apply focus:outline-none focus:border-secondary-focus focus:border hover:font-bold rounded m-1;
 }
 </style>
