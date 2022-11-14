@@ -70,6 +70,11 @@
         @click="changeMarkdown(props.modelValue)"
       />
       <button
+        class="btn btn-ghost my-btn ri-links-line h-8"
+        :class="{ 'btn-active': editor.isActive('link') }"
+        @click="setLink"
+      />
+      <button
         class="btn btn-ghost my-btn h-8"
         @click="
           editor
@@ -174,6 +179,10 @@ import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
+import Link from "@tiptap/extension-link";
+import ListItem from '@tiptap/extension-list-item';
+import OrderedList from '@tiptap/extension-ordered-list';
+import BulletList from '@tiptap/extension-bullet-list';
 
 import { getMarkAttributes, mergeAttributes } from "@tiptap/core";
 
@@ -233,8 +242,6 @@ const chkCodeblock = (content) => {
   let contents = content.split("<pre><code");
   let codes = document.querySelectorAll("pre>code");
   let result = "";
-  console.log("codes, ", codes);
-  console.log("contents, ", contents);
   for (let i = 0; i < codes.length; i++) {
     if (i == 0 && codes.length > 1) {
       result += contents[0];
@@ -272,6 +279,35 @@ const chkCodeblock = (content) => {
   return result;
 };
 
+const setLink = () => {
+  const previousUrl = editor.getAttributes('link').href
+  const url = window.prompt('URL', previousUrl)
+
+  // cancelled
+  if (url === null) {
+    return
+  }
+
+  // empty
+  if (url === '') {
+    editor
+      .chain()
+      .focus()
+      .extendMarkRange('link')
+      .unsetLink()
+      .run()
+    return
+  }
+
+  // update link
+  editor
+    .chain()
+    .focus()
+    .extendMarkRange('link')
+    .setLink({ href: url })
+    .run()
+};
+
 const editor = new Editor({
   content: props.modelValue,
   // content: `<span class="hello">This is span </span>`,
@@ -285,11 +321,6 @@ const editor = new Editor({
     }),
     History,
     CodeBlockLowlight
-      // .extend({
-      // addNodeView() {
-      //   return VueNodeViewRenderer(CodeBlockComponent);
-      // },
-      // })
       .configure({
         languageClassPrefix: "language-",
         defaultLanguage: "sql",
@@ -306,10 +337,18 @@ const editor = new Editor({
     TableRow,
     TableHeader,
     TableCell,
+    Link.configure({
+      HTMLAttributes: { class: 'link-type'},
+      linkOnPaste: false,
+      openOnClick: true,
+    }),
+    BulletList,
+    OrderedList,
+    ListItem,
   ],
   editorProps: {
     attributes: {
-      class: "prose-lg m-5 focus:outline-none",
+      class: "prose m-5 focus:outline-none",
     },
     autoFocus: true,
   },
@@ -344,9 +383,24 @@ const editor = new Editor({
   padding: 0.25rem;
   border-bottom: 1px solid rgb(209, 213, 219);
 }
+.link-type{
+  color: hsl(var(--in)) !important;
+}
 .ProseMirror {
   height: fit-content;
   font-family: "Fira Coding";
+
+  a {
+    color: hsl(var(--in));
+    cursor: pointer;
+  }
+
+  ul,
+  ol {
+    padding: 0 1rem;
+  }
+
+
   pre {
     background: #0d0d0d;
     color: #fff;

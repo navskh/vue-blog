@@ -35,7 +35,7 @@
 			</button>
 		</div>
 	</div>
-	<div v-html="props.content" class="ProseMirror prose-lg h-max my-5"></div>
+	<div v-html="props.content" class="ProseMirror prose h-max my-5 w-[1500px]"></div>
 </div>
 </template>
 <script setup>
