@@ -3,14 +3,18 @@
 @tailwind utilities;
 
 .my-btn {
-	border-radius: 10px;
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
-	padding-top: 0;
-	padding-bottom: 0;
-	min-height: 5px;
+  border-radius: 10px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  min-height: 5px;
 }
 
 .editor-height {
-	height: 500px;
+  height: 500px;
+}
+
+.ProseMirror.prose:not(code) {
+  @apply text-base-content;
 }
