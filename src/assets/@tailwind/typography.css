@@ -1,6 +1,6 @@
 .prose {
 	color: #374151;
-	max-width: 65ch;
+	/* max-width: 65ch; */
 }
 .prose [class~='lead'] {
 	color: #4b5563;
