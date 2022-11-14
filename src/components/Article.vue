@@ -199,6 +199,7 @@ const fetchList = async () => {
   try {
     const { data } = await getLists(condition);
     const notice = await getNotices();
+    allData = [];
     for (var i = 0; i <= data.length / 10; i++) {
       allData[i] = data.slice(i * 10, i * 10 + 10);
     }

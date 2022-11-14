@@ -21,3 +21,6 @@
 strong {
   @apply !text-base-content;
 }
+hr{
+  border-color: hsl(var(--p)) !important;
+}
