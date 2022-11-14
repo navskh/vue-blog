@@ -108,13 +108,6 @@ const pageRoute = ref([]);
 const searchKeyword = ref('');
 
 var isSearch = false;
-const emitter = inject('emitter');
-emitter.on('Search', (e) => {
-  searchKeyword.value = e.value;
-  searchResult();
-  isSearch = true;
-});
-
 const searchResult = () => {
   pageRoute.value[0] = '-';
   pageRoute.value[1] = '-';
@@ -195,7 +188,6 @@ const fetchList = async () => {
   condition[1] = pageRoute.value[1];
   condition[2] = pageRoute.value[2];
 
-  console.log(condition);
 
   // if (pageRoute.value[0] == '기타') condition = ['전체', '전체', '전체'];
   condition[3] = searchKeyword.value;
@@ -208,14 +200,21 @@ const fetchList = async () => {
     totalCnt.value = allData.length;
     posts.value = allData[0];
     notices.value = notice.data;
-    console.log(notice);
   } catch (err) {
     console.error(err);
   }
 };
 const monitorRoute = () => {
   var thisRoute = route.params;
+  if (thisRoute.nav.indexOf('search') > -1) {
+    isSearch = true;
+    searchKeyword.value = thisRoute.nav.split('search')[1];
+  }
+
+  // route param을 받아서 한글 naming을 만들어줌
   matchName(thisRoute);
+
+  // Search가 on이 되면
   if (isSearch) {
     searchResult();
   }
