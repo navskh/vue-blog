@@ -11,8 +11,8 @@
         </h3>
       </router-link>
       <div @click="open">
-        <ChevronUpIcon class="h-6 w-6 text-gray-700" v-show="isOpen" />
-        <ChevronDownIcon class="h-6 w-6 text-gray-700" v-show="!isOpen" />
+        <ChevronUpIcon class="h-6 w-6 text-base-content" v-show="isOpen" />
+        <ChevronDownIcon class="h-6 w-6 text-base-content" v-show="!isOpen" />
       </div>
     </div>
     <div v-if="isOpen" class="pl-2">
