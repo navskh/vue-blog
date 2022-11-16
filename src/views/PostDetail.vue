@@ -11,25 +11,17 @@
       :detail="post.detailCategory"
       @update:scroll="showTopBtn"
     />
-    <button
-      id="topButton"
-      @click="goToTop()"
-      title="Go To Top"
-      class="hidden fixed z-90 bottom-[3.5rem] right-[9rem] border-0 w-16 h-16 rounded-full drop-shadow-md bg-primary text-primary-content text-3xl font-bold"
-    >
-      <ArrowUpIcon class="w-10 m-auto" />
-    </button>
+    <TopButton />
   </div>
 </template>
 <script setup>
 /* eslint-disable */
 import { ref, toRefs, watch, watchEffect, defineEmits } from "vue";
 import PostInfoBar from "@/components/PostInfoBar.vue";
+import TopButton from "@/components/atomic/Button/TopButton.vue";
 import { useRoute, useRouter } from "vue-router";
 import { computed } from "@vue/reactivity";
 import { getPostById } from "@/api/posts";
-
-import { ArrowUpIcon } from "@heroicons/vue/24/outline";
 
 const route = useRoute();
 // const router = useRouter();
@@ -38,9 +30,8 @@ const id = route.params.id;
 
 const emits = defineEmits(["update:scroll"]);
 
-// When the user scrolls down 200px from the top of the document, show the button
+/** scroll 길이가 200 이상일 경우 top 버튼 show */
 function showTopBtn(scrollLength) {
-  console.log("evet: ", scrollLength);
   if (scrollLength > 200 || document.documentElement.scrollTop > 200) {
     document.getElementById("topButton").classList.remove("hidden");
   } else {
@@ -48,13 +39,6 @@ function showTopBtn(scrollLength) {
   }
 }
 
-// When the user clicks on the button, scroll to the top of the document
-function goToTop() {
-  console.log("gototop");
-  document
-    .getElementsByClassName("DETAIL")[0]
-    .scrollTo({ top: 0, behavior: "smooth" });
-}
 const post = ref({
   title: null,
   content: null,

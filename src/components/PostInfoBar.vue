@@ -102,6 +102,7 @@ const doDelete = async () => {
   }
 };
 
+/** scroll 이벤트 발생 시 scroll 길이를 PostDetail 페이지로 update:scroll emit */
 const showTopBtn = () => {
   const length = document.getElementsByClassName("DETAIL")[0].scrollTop;
   emits("update:scroll", length);
