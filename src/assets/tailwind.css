@@ -15,12 +15,9 @@
   height: 500px;
 }
 
-.ProseMirror.prose:not(code) {
+.prose > div *:not(pre, mark) {
   @apply text-base-content;
 }
-strong {
-  @apply !text-base-content;
-}
-hr{
+hr {
   border-color: hsl(var(--p)) !important;
 }
