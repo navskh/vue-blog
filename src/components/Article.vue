@@ -36,7 +36,7 @@
                   @click="goPage(data)"
                 >
                   <b>
-                    [공지]
+                    <span class="kbd-sm">[공지]</span>
                     {{ truncate(data.Title) }}
                   </b>
                   <span

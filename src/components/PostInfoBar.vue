@@ -46,7 +46,6 @@
 <script setup>
 import { ShareIcon, PencilIcon, TrashIcon } from "@heroicons/vue/24/solid";
 import { useRouter, useRoute } from "vue-router";
-import { defineProps, defineEmits } from "vue";
 import { deletePost } from "@/api/posts";
 import { sweetalert, sweetconfirm } from "@/assets/common";
 
