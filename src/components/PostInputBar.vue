@@ -1,5 +1,6 @@
 <template>
   <div class="w-full pb-1">
+    <AlertBox :warningContent="warningContent" />
     <div
       class="text-sm breadcrumbs text-primary-focus"
       style="overflow: inherit"
@@ -19,6 +20,8 @@
             :type="ref('SubCategory')"
             :code="props.sub"
             @update:model-value="changeSub"
+            :isSubRefreshed="isSubRefreshed"
+            @update:isRefreshed="changeIsRefreshed"
           ></ListBox>
         </li>
         <li>
@@ -26,6 +29,9 @@
             ref="thisDetail"
             :code="props.detail"
             :type="ref('DetailCategory')"
+            @update:model-value="changeDetail"
+            :isDetailRefreshed="isDetailRefreshed"
+            @update:isRefreshed="changeIsRefreshed"
           ></ListBox>
         </li>
       </ul>
@@ -64,6 +70,7 @@
 <script setup>
 import { FolderArrowDownIcon } from "@heroicons/vue/24/outline";
 import ListBox from "@/components/atomic/ListBox.vue";
+import AlertBox from "./atomic/AlertBox.vue";
 import { ref } from "vue";
 import Editor from "./atomic/Editor.vue";
 import { createPost, updatePost } from "@/api/posts";
@@ -96,9 +103,13 @@ const thisSub = ref("");
 const thisDetail = ref("");
 const headTitle = ref(props?.title);
 const content = ref(props?.content);
+const isSubRefreshed = ref(false);
+const isDetailRefreshed = ref(false);
+const warningContent = ref("");
+
 // 최초 글쓰기 시 localStorage에서 가져옴
-let author = ref(window.localStorage.getItem('localNickName'));
-if (!window.localStorage.getItem('localNickName')) {
+let author = ref(window.localStorage.getItem("localNickName"));
+if (!window.localStorage.getItem("localNickName")) {
   author = ref(props?.author);
 }
 
@@ -113,7 +124,7 @@ async function doSave() {
     idx: id,
   };
   console.log("params", params);
-  window.localStorage.setItem('localNickName', author.value);
+  window.localStorage.setItem("localNickName", author.value);
 
   if (doValidate(params)) {
     var response = {};
@@ -136,15 +147,15 @@ async function doSave() {
 }
 
 function doValidate(params) {
-  console.log('validate!', params);
-  if (params.headTitle == undefined || params.headTitle == '') {
-    sweetalert('제목을 입력하세요.', 'error');
+  console.log("validate!", params);
+  if (params.headTitle == undefined || params.headTitle == "") {
+    sweetalert("제목을 입력하세요.", "error");
     return false;
-  } else if (params.author == undefined || params.author == '') {
-    sweetalert('작성자를 입력하세요.', 'error');
+  } else if (params.author == undefined || params.author == "") {
+    sweetalert("작성자를 입력하세요.", "error");
     return false;
-  } else if (params.content == undefined || params.content == '') {
-    sweetalert('내용을 입력하세요.', 'error');
+  } else if (params.content == undefined || params.content == "") {
+    sweetalert("내용을 입력하세요.", "error");
     return false;
   } else return true;
 }
@@ -158,9 +169,50 @@ function changeUpper(value) {
 
 function changeSub(value) {
   let condition = {};
+
+  //상위 카테고리 미선택 시 경고창
+  if (
+    thisUpper.value.bringCategory() == "0" &&
+    thisSub.value.bringCategory() != "0"
+  ) {
+    warningContent.value = "상위 분류를 먼저 선택해 주세요";
+    isSubRefreshed.value = true;
+    setTimeout(() => {
+      warningContent.value = "";
+    }, 1500);
+    return;
+  } else {
+    warningContent.value = "";
+  }
   condition.upperCategoryCode = thisUpper.value.bringCategory();
   condition.subCategoryCode = value.Code;
   thisDetail.value.fetchCategory(condition);
 }
+
+/**소분류 카테고리 선택 이벤트 */
+function changeDetail() {
+  //상위 카테고리 미선택 시 경고창
+  if (
+    thisUpper.value.bringCategory() == "0" ||
+    thisSub.value.bringCategory() == "0"
+  ) {
+    warningContent.value = "상위 분류를 먼저 선택해 주세요";
+    isDetailRefreshed.value = true;
+    setTimeout(() => {
+      warningContent.value = "";
+    }, 1500);
+    return;
+  } else {
+    warningContent.value = "";
+  }
+}
+
+/** 상위 카테고리 미선택 시 선택 초기화 후 flag값 변경 */
+function changeIsRefreshed(category) {
+  if (category == "sub") {
+    isSubRefreshed.value = !isSubRefreshed.value;
+  } else if (category == "detail") {
+    isDetailRefreshed.value = !isDetailRefreshed.value;
+  }
+}
 </script>
-<style></style>
