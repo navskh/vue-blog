@@ -173,13 +173,9 @@
 </template>
 
 <script setup>
+import { ref, watchEffect } from "vue";
 /*eslint-disable*/
-import {
-  Editor,
-  useEditor,
-  EditorContent,
-  VueNodeViewRenderer,
-} from "@tiptap/vue-3";
+import { Editor, useEditor, EditorContent } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
@@ -187,9 +183,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Image from "@tiptap/extension-image";
 import { lowlight } from "lowlight";
-import { ref, watchEffect } from "vue";
 import { marked } from "marked";
-import parseMd from "@/assets/md";
 import Iframe from "@/components/atomic/EditorComponent/Iframe";
 import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
@@ -200,14 +194,10 @@ import ListItem from "@tiptap/extension-list-item";
 import OrderedList from "@tiptap/extension-ordered-list";
 import BulletList from "@tiptap/extension-bullet-list";
 
-import { getMarkAttributes, mergeAttributes } from "@tiptap/core";
-
 import css from "highlight.js/lib/languages/css";
 import js from "highlight.js/lib/languages/javascript";
 import html from "highlight.js/lib/languages/xml";
 import sql from "highlight.js/lib/languages/sql";
-
-// import CodeBlockComponent from './EditorComponent/CodeBlockComponent.vue';
 
 lowlight.registerLanguage("html", html);
 lowlight.registerLanguage("css", css);
@@ -218,6 +208,9 @@ const props = defineProps({
   modelValue: {
     type: String,
     default: "",
+  },
+  isPimsCall: {
+    type: Boolean,
   },
 });
 
@@ -316,7 +309,6 @@ const setLink = () => {
 
 const editor = new Editor({
   content: props.modelValue,
-  // content: `<span class="hello">This is span </span>`,
   extensions: [
     StarterKit,
     Underline,
@@ -359,6 +351,7 @@ const editor = new Editor({
   },
   onUpdate: ({ editor }) => {
     const content = editor.getHTML();
+    console.log("content::", content);
     let result = "";
     if (content.indexOf("<pre><code") > -1) {
       result = chkCodeblock(content);
@@ -367,6 +360,17 @@ const editor = new Editor({
     }
     emit("update:modelValue", result);
   },
+});
+
+const isFirstChanged = ref(true);
+watchEffect(() => {
+  if (props.isPimsCall && isFirstChanged.value) {
+    editor.commands.setContent(props.modelValue);
+    isFirstChanged.value = false;
+  } else if (!props.isPimsCall && !isFirstChanged.value) {
+    editor.commands.setContent("");
+    isFirstChanged.value = true;
+  }
 });
 </script>
 

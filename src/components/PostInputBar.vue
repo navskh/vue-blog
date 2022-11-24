@@ -65,7 +65,7 @@
       </div>
     </div>
   </div>
-  <Editor v-model:modelValue="content" />
+  <Editor v-model:modelValue="content" :isPimsCall="isPimsCall" />
 </template>
 <script setup>
 import { FolderArrowDownIcon } from "@heroicons/vue/24/outline";
@@ -76,6 +76,8 @@ import Editor from "./atomic/Editor.vue";
 import { createPost, updatePost } from "@/api/posts";
 import { useRoute, useRouter } from "vue-router";
 import { sweetalert } from "@/assets/common";
+
+import { pimsCallContent } from "@/assets/pimsCallContent";
 
 const router = useRouter();
 
@@ -106,6 +108,7 @@ const content = ref(props?.content);
 const isSubRefreshed = ref(false);
 const isDetailRefreshed = ref(false);
 const warningContent = ref("");
+const isPimsCall = ref(false);
 
 // 최초 글쓰기 시 localStorage에서 가져옴
 let author = ref(window.localStorage.getItem("localNickName"));
@@ -123,7 +126,7 @@ async function doSave() {
     content: content.value.replaceAll("'", "''"),
     idx: id,
   };
-  console.log("params", params);
+  // console.log("params", params);
   window.localStorage.setItem("localNickName", author.value);
 
   if (doValidate(params)) {
@@ -165,6 +168,15 @@ function changeUpper(value) {
   let condition = {};
   condition.upperCategoryCode = value.Code;
   thisSub.value.fetchCategory(condition);
+  /**
+   * 작성페이지이면서 카테고리가 'PIMS>전화 요청'에서 다른 카테고리로 변경된 경우
+   * 제목, 내용 초기화 및 isPimsCall 값을 false로 변경
+   */
+  if (!props.isEdit && isPimsCall.value) {
+    isPimsCall.value = false;
+    headTitle.value = "";
+    content.value = "";
+  }
 }
 
 function changeSub(value) {
@@ -184,6 +196,21 @@ function changeSub(value) {
   } else {
     warningContent.value = "";
   }
+
+  if (
+    thisUpper.value.bringCategory() == "6" &&
+    thisSub.value.bringCategory() == "1" &&
+    !props.isEdit
+  ) {
+    isPimsCall.value = true;
+    headTitle.value = "[전화 요청] ";
+    content.value = pimsCallContent;
+  } else {
+    isPimsCall.value = false;
+    headTitle.value = "";
+    content.value = "";
+  }
+
   condition.upperCategoryCode = thisUpper.value.bringCategory();
   condition.subCategoryCode = value.Code;
   thisDetail.value.fetchCategory(condition);
@@ -215,4 +242,19 @@ function changeIsRefreshed(category) {
     isDetailRefreshed.value = !isDetailRefreshed.value;
   }
 }
+
+// watchEffect(() => {
+//   //PIMS > 전화요청 카테고리 선택 시 지정 템플릿 이벤트 요청
+//   if (
+//     thisUpper.value.bringCategory == "6" &&
+//     thisSub.value.bringCategory == "1"
+//   ) {
+//     console.log("들어왔니?");
+//     isPimsCall.value = true;
+//     headTitle.value = "[전화 요청] ";
+//   } else {
+//     isPimsCall.value = false;
+//     headTitle.value = "";
+//   }
+// });
 </script>

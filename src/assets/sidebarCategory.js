@@ -145,7 +145,14 @@ const sidebarCategory = [
     name: "PIMS",
     params: { nav: ["pims"] },
     path: "/pims",
-    children: [],
+    children: [
+      {
+        name: "전화 요청",
+        params: { nav: ["pims", "call"] },
+        path: "/pims/call",
+        children: [],
+      },
+    ],
   },
   {
     name: "대학별 특이사항",

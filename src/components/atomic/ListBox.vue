@@ -101,7 +101,6 @@ watchEffect(() => {
 const emits = defineEmits(["update:modelValue", "update:isRefreshed"]);
 
 const fetchCategory = async (condition) => {
-  // console.log(props.code);
   const { data } = await getCategory(props.type?.value, condition);
   categorys.value = [...data];
 
