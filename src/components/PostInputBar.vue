@@ -242,19 +242,4 @@ function changeIsRefreshed(category) {
     isDetailRefreshed.value = !isDetailRefreshed.value;
   }
 }
-
-// watchEffect(() => {
-//   //PIMS > 전화요청 카테고리 선택 시 지정 템플릿 이벤트 요청
-//   if (
-//     thisUpper.value.bringCategory == "6" &&
-//     thisSub.value.bringCategory == "1"
-//   ) {
-//     console.log("들어왔니?");
-//     isPimsCall.value = true;
-//     headTitle.value = "[전화 요청] ";
-//   } else {
-//     isPimsCall.value = false;
-//     headTitle.value = "";
-//   }
-// });
 </script>

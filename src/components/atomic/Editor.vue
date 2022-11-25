@@ -453,6 +453,7 @@ watchEffect(() => {
 
     .hljs-string,
     .hljs-symbol,
+    .hljs-operator,
     .hljs-bullet {
       color: #b9f18d;
     }
