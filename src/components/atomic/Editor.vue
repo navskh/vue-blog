@@ -447,6 +447,7 @@ watchEffect(() => {
     .hljs-builtin-name,
     .hljs-literal,
     .hljs-type,
+    .hljs-property,
     .hljs-params {
       color: #fbbc88;
     }
