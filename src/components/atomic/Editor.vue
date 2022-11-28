@@ -329,7 +329,8 @@ const editor = new Editor({
     }),
     Iframe,
     Table.configure({
-      resizable: true,
+      resizable: false,
+      handleWidth: 10,
     }),
     TableRow,
     TableHeader,
@@ -479,7 +480,7 @@ watchEffect(() => {
   table {
     border-collapse: collapse;
     table-layout: fixed;
-    width: 100%;
+    width: 80% !important;
     margin: 0;
     overflow: hidden;
 
