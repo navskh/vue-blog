@@ -16,7 +16,7 @@
 </template>
 <script setup>
 /* eslint-disable */
-import { ref, toRefs, watch, watchEffect, defineEmits } from "vue";
+import { ref, toRefs, watch, watchEffect } from "vue";
 import PostInfoBar from "@/components/PostInfoBar.vue";
 import TopButton from "@/components/atomic/Button/TopButton.vue";
 import { useRoute, useRouter } from "vue-router";

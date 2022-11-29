@@ -98,12 +98,10 @@
 
 <script setup>
 /* eslint-disable */
-import { computed, onBeforeMount, ref, watchEffect, watch } from "vue";
+import { ref, watchEffect } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { useAxios } from "@/hooks/useAxios";
 import { getLists, getNotices } from "@/api/posts";
 import sidebarCategory from "@/assets/sidebarCategory";
-import { inject } from "vue";
 
 const router = useRouter();
 

@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref } from "vue";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/vue/24/solid";
 
 defineProps({

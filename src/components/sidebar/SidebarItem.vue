@@ -20,7 +20,6 @@
   </div>
 </template>
 <script setup>
-import { defineProps } from "vue";
 import Accordion from "../atomic/Accordion.vue";
 
 defineProps({

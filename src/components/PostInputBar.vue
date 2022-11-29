@@ -115,6 +115,7 @@ let author = ref(window.localStorage.getItem("localNickName"));
 if (!window.localStorage.getItem("localNickName")) {
   author = ref(props?.author);
 }
+checkPimsCall();
 
 async function doSave() {
   var params = {
@@ -126,7 +127,6 @@ async function doSave() {
     content: content.value.replaceAll("'", "''"),
     idx: id,
   };
-  // console.log("params", params);
   window.localStorage.setItem("localNickName", author.value);
 
   if (doValidate(params)) {
@@ -164,7 +164,6 @@ function doValidate(params) {
 }
 
 function changeUpper(value) {
-  console.log("value, ", value);
   let condition = {};
   condition.upperCategoryCode = value.Code;
   thisSub.value.fetchCategory(condition);
@@ -197,19 +196,20 @@ function changeSub(value) {
     warningContent.value = "";
   }
 
-  if (
-    thisUpper.value.bringCategory() == "6" &&
-    thisSub.value.bringCategory() == "1" &&
-    !props.isEdit
-  ) {
-    isPimsCall.value = true;
-    headTitle.value = "[전화 요청] ";
-    content.value = pimsCallContent;
-  } else {
-    isPimsCall.value = false;
-    headTitle.value = "";
-    content.value = "";
-  }
+  checkPimsCall();
+  // if (
+  //   thisUpper.value.bringCategory() == "6" &&
+  //   thisSub.value.bringCategory() == "1" &&
+  //   !props.isEdit
+  // ) {
+  //   isPimsCall.value = true;
+  //   headTitle.value = "[전화 요청] ";
+  //   content.value = pimsCallContent;
+  // } else {
+  //   isPimsCall.value = false;
+  //   headTitle.value = "";
+  //   content.value = "";
+  // }
 
   condition.upperCategoryCode = thisUpper.value.bringCategory();
   condition.subCategoryCode = value.Code;
@@ -231,6 +231,19 @@ function changeDetail() {
     return;
   } else {
     warningContent.value = "";
+  }
+}
+
+/** 카테고리가 PIMS>전화 요청인 경우 템플릿 에디터에 불러오기 */
+function checkPimsCall() {
+  if (props.upper == "PIMS" && props.sub == "전화 요청" && !props.isEdit) {
+    isPimsCall.value = true;
+    headTitle.value = "[전화 요청] ";
+    content.value = pimsCallContent;
+  } else if (!props.isEdit) {
+    isPimsCall.value = false;
+    headTitle.value = "";
+    content.value = "";
   }
 }
 
