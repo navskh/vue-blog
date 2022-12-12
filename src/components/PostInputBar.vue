@@ -57,7 +57,7 @@
       </div>
       <div>
         <button
-          class="btn btn-outline min-h-0 h-8 w-28 flex-row flex-nowrap"
+          class="btn btn-outline min-h-0 h-8 w-24 flex-row flex-nowrap"
           @click="doSave()"
         >
           <FolderArrowDownIcon class="mr-2 w-6" />저장
