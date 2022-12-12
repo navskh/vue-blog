@@ -2,7 +2,7 @@
   <button
     id="topButton"
     @click="goToTop()"
-    class="hidden fixed z-90 bottom-[4rem] right-[10.5rem] border-0 w-12 h-12 rounded-full drop-shadow-md bg-primary text-primary-content text-3xl font-bold"
+    class="hidden fixed z-90 bottom-[1.5rem] right-[12rem] border-0 w-12 h-12 rounded-full drop-shadow-md bg-primary text-primary-content text-3xl font-bold"
   >
     <ArrowUpIcon class="w-8 m-auto" />
   </button>

@@ -1,6 +1,6 @@
 <template>
     <div class="max-w-[1500px] m-auto">
-      <div class="navbar flex justify-between px-4 h-[100px]">
+      <div class="navbar flex justify-between pl-1 h-[100px]">
         <router-link to="/" class="btn btn-ghost uppercase text-2xl"
           >Treasure Blog</router-link
         >

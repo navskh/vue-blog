@@ -1,6 +1,6 @@
 <template>
   <div
-    class="DETAIL max-w-[calc(1500px-18rem)] h-full pb-1 overflow-y-scroll"
+    class="DETAIL max-w-[calc(1500px-18rem)] h-full pb-1 overflow-y-scroll pr-3"
     @scroll="showTopBtn"
   >
     <div class="flex justify-between">
@@ -27,7 +27,7 @@
         >
       </div>
       <div>
-        <button class="btn btn-ghost btn-sm">
+        <button class="btn btn-ghost btn-sm" @click="doUrlCopy()">
           <ShareIcon class="w-5 h-5" />
         </button>
         <button class="btn btn-ghost btn-sm" @click="goEdit()">
@@ -38,7 +38,7 @@
         </button>
       </div>
     </div>
-    <div class="ProseMirror prose h-max my-5">
+    <div class="ProseMirror prose h-max">
       <div v-html="props.content"></div>
     </div>
   </div>
@@ -106,18 +106,22 @@ const showTopBtn = () => {
   const length = document.getElementsByClassName("DETAIL")[0].scrollTop;
   emits("update:scroll", length);
 };
+
+const doUrlCopy = () => {
+  sweetalert("글 주소가 복사되었습니다!", "success", function () {
+    navigator.clipboard.writeText(window.location.href);
+  });
+}
+
 </script>
 <style scoped>
 .DETAIL::-webkit-scrollbar {
-  width: 24px;
-}
-::-webkit-scrollbar {
-  background-color: rgba(255, 255, 255, 0);
+  width: 5px;
 }
 .DETAIL::-webkit-scrollbar-thumb {
-  border-left: 20px solid rgba(255, 255, 255, 0);
   background-clip: padding-box;
   background-color: hsl(var(--p));
+  border-radius: 20px;
 }
 .DETAIL::-webkit-scrollbar-track {
   background-color: rgba(255, 255, 255, 0);

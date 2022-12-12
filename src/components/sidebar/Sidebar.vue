@@ -1,12 +1,12 @@
 <template>
   <div
-    class="SIDEBAR p-4 w-[18rem] text-md text-base-content h-[calc(100vh-140px)]"
+    class="SIDEBAR py-4 px-4 mr-3 w-[15rem] text-md text-base-content h-[calc(100vh-140px)]"
   >
     <button type="button" class="btn btn-primary w-full mb-6" @click="goWrite">
       글쓰기
     </button>
     <div class="pb-11">
-      <div class="py-2 px-3">
+      <div class="py-2 pl-1">
         <router-link
           to="/"
           class="side-link"

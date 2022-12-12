@@ -1,5 +1,5 @@
 <template>
-  <div class="py-2 px-3 h-max" v-for="item in list" :key="item.name">
+  <div class="py-2 pr-1 h-max" v-for="item in list" :key="item.name">
     <Accordion
       :header="item.name"
       :params="item.params"

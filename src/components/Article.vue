@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full mt-4 min-w-[1000px] h-full overflow-y-auto">
-    <div class="flex flex-col items-center pl-3">
-      <div class="TITLE w-full pl-5">
+  <div class="w-[80%] min-w-[1000px] h-full overflow-y-auto">
+    <div class="CONTAINER flex flex-col items-center justify-center pb-6">
+      <div class="TITLE w-full">
         <div class="text-sm breadcrumbs text-primary-focus flex-row">
           <ul>
             <li>
@@ -15,17 +15,17 @@
             </li>
           </ul>
         </div>
-        <h1 class="text-2xl font-bold mb-7">{{ pageName }}</h1>
+        <h1 class="text-2xl font-bold mb-6">{{ pageName }}</h1>
       </div>
-      <div class="CONTENT w-full overflow-y-auto overflow-x-hidden">
-        <table class="table w-[90%] mx-5 border-collapse">
+      <div class="CONTENT w-full overflow-y-auto overflow-x-hidden flex justify-center flex-col">
+        <table class="table w-[99%] border-collapse">
           <!-- head -->
           <thead>
-            <tr class="sticky top-0 z-1">
-              <th class="tracking-widest">제목</th>
-              <th class="w-[20%] tracking-widest">작성자</th>
-              <th class="w-[15%] tracking-widest">수정일</th>
-              <th class="w-[15%] tracking-widest">작성일</th>
+            <tr>
+              <th class="tracking-widest w-[70%]">제목</th>
+              <th class="w-[10%] tracking-widest">작성자</th>
+              <th class="w-[10%] tracking-widest">수정일</th>
+              <th class="w-[10%] tracking-widest">작성일</th>
             </tr>
           </thead>
           <tbody>
@@ -81,7 +81,7 @@
             </tr>
           </tbody>
         </table>
-        <div class="m-7 px-7 flex justify-center gap-3 text-lg">
+        <div class="m-3 flex justify-center gap-3 text-lg">
           <button
             v-for="n in totalCnt"
             :key="n"
