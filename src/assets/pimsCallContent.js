@@ -20,14 +20,6 @@ export const pimsCallContent = `<table style="max-width: 80%;">
   </tr>
   <tr>
     <th colspan="1" rowspan="1">
-      <span>서비스코드</span>
-    </th>
-    <td colspan="1" rowspan="1">
-      <span></span>
-    </td>
-  </tr>
-  <tr>
-    <th colspan="1" rowspan="1">
       <span>전화번호</span>
     </th>
     <td colspan="1" rowspan="1">
