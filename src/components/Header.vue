@@ -2,9 +2,7 @@
   <div class="max-w-[1500px] m-auto">
     <div class="navbar flex justify-between pl-1 h-[100px]">
       <div>
-        <router-link to="/" class="font-bold uppercase text-2xl"
-          >Treasure Blog</router-link
-        >
+        <router-link to="/" class="font-bold uppercase text-2xl">Treasure Blog</router-link>
         <label className="swap swap-flip text-sm ml-2">
           <!-- this hidden checkbox controls the state -->
           <input v-model="isApply" type="checkbox" />
@@ -14,13 +12,9 @@
         </label>
       </div>
       <div>
-        <input
-          type="text"
-          placeholder="Search..."
-          class="input input-bordered rounded-md mr-3 w-full max-w-xs focus:outline-none"
-          v-model="searchData"
-          @keyup.enter="submit"
-        />
+        <input type="text" placeholder="Search..."
+          class="input input-bordered rounded-md mr-3 w-full max-w-xs focus:outline-none" v-model="searchData"
+          @keyup.enter="submit" />
         <theme-vue></theme-vue>
       </div>
     </div>
@@ -34,7 +28,9 @@ import { useRouter, useRoute } from "vue-router";
 const emitter = inject("emitter");
 const searchData = ref("");
 
-const isApply = ref(true);
+let thisMode = localStorage.getItem('thisMode');
+
+const isApply = ref(thisMode == 'pims' ? false : true);
 
 const router = useRouter();
 const route = useRoute();
@@ -44,12 +40,14 @@ watchEffect(() => {
     isApply.value &&
     (route.path.indexOf("pims") > -1 || route.path.indexOf("call") > -1)
   ) {
+    localStorage.setItem('thisMode', 'apply');
     router.push("/");
   } else if (
     !isApply.value &&
     route.path.indexOf("pims") == -1 &&
     route.path.indexOf("call") == -1
   ) {
+    localStorage.setItem('thisMode', 'pims');
     router.push("/pims");
   }
 }, [isApply.value]);
@@ -62,4 +60,6 @@ emitter.on("Init", () => {
   searchData.value = "";
 });
 </script>
-<style></style>
+<style>
+
+</style>
