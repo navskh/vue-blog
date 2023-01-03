@@ -75,11 +75,13 @@ const formatDate = (dateData) => {
   return thisData;
 };
 
+const nav = route.path.split("/detail").shift().split("/");
+nav.shift();
 const goEdit = () => {
   router.push({
     name: "edit",
     params: {
-      nav: "wonseo",
+      nav,
       id: id,
     },
   });
@@ -111,8 +113,7 @@ const doUrlCopy = () => {
   sweetalert("글 주소가 복사되었습니다!", "success", function () {
     navigator.clipboard.writeText(window.location.href);
   });
-}
-
+};
 </script>
 <style scoped>
 .DETAIL::-webkit-scrollbar {

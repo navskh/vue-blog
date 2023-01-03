@@ -1,4 +1,4 @@
-const sidebarCategory = [
+const ApplySidebarCategory = [
   {
     name: "원서",
     params: { nav: ["wonseo"] },
@@ -141,19 +141,19 @@ const sidebarCategory = [
     path: "/nesin",
     children: [],
   },
-  {
-    name: "PIMS",
-    params: { nav: ["pims"] },
-    path: "/pims",
-    children: [
-      {
-        name: "전화 요청",
-        params: { nav: ["pims", "call"] },
-        path: "/pims/call",
-        children: [],
-      },
-    ],
-  },
+  // {
+  //   name: "PIMS",
+  //   params: { nav: ["pims"] },
+  //   path: "/pims",
+  //   children: [
+  //     {
+  //       name: "전화 요청",
+  //       params: { nav: ["pims", "call"] },
+  //       path: "/pims/call",
+  //       children: [],
+  //     },
+  //   ],
+  // },
   {
     name: "대학별 특이사항",
     params: { nav: ["univ"] },
@@ -179,5 +179,18 @@ const sidebarCategory = [
     children: [],
   },
 ];
-
-export default sidebarCategory;
+export default ApplySidebarCategory;
+export const PimsSidebarCategory = [
+  {
+    name: "PIMS",
+    params: { nav: ["pims"] },
+    path: "/pims",
+    children: [],
+  },
+  {
+    name: "전화 요청",
+    params: { nav: ["call"] },
+    path: "/call",
+    children: [],
+  },
+];

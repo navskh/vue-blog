@@ -11,23 +11,35 @@
           to="/"
           class="side-link"
           :class="selectPath === '/' && 'selected'"
+          v-if="
+            route.path.indexOf('pims') == -1 && route.path.indexOf('call') == -1
+          "
           >전체보기</router-link
         >
       </div>
       <div class="MENU h-[calc(100vh-270px)] overflow-y-auto">
-        <SidebarItem :list="sidebarCategory" :selectPath="selectPath" />
+        <SidebarItem
+          :list="
+            route.path.indexOf('pims') > -1 || route.path.indexOf('call') > -1
+              ? PimsSidebarCategory
+              : ApplySidebarCategory
+          "
+          :selectPath="selectPath"
+        />
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import sidebarCategory from "@/assets/sidebarCategory.js";
+import ApplySidebarCategory, {
+  PimsSidebarCategory,
+} from "@/assets/sidebarCategory.js";
 import { computed, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import SidebarItem from "./SidebarItem.vue";
-import { inject } from "vue";
-const emitter = inject("emitter");
+// import { inject } from "vue";
+// const emitter = inject("emitter");
 
 const route = useRoute();
 const router = useRouter();
@@ -37,32 +49,50 @@ onBeforeMount(async () => {
 });
 
 const selectPath = computed(() => {
-  emitter.emit("Init");
+  // emitter.emit("Init");
   return route.path;
 });
 
 const goWrite = async () => {
-  if (route.path != "/") {
-    const nav = route.path.split("/");
-    nav.shift();
-    router.push({
-      name: "write",
-      params: {
-        nav: "wonseo",
-      },
-      query: {
-        category: JSON.stringify(nav),
-      },
-    });
-
-    return;
-  }
+  // if (
+  //   route.path != "/" &&
+  //   route.path.indexOf("pims") == -1 &&
+  //   route.path.indexOf("call") == -1
+  // ) {
+  const nav = route.path.split("/");
+  nav.shift();
   router.push({
     name: "write",
     params: {
-      nav: "wonseo",
+      nav,
     },
+    // query: {
+    //   category: JSON.stringify(nav),
+    // },
   });
+  // } else if (
+  //   route.path.indexOf("pims") > -1 ||
+  //   route.path.indexOf("call") > -1
+  // ) {
+  //   const nav = route.path.split("/");
+  //   nav.shift();
+  //   router.push({
+  //     name: "write",
+  //     params: {
+  //       nav: "pims",
+  //     },
+  //     query: {
+  //       category: JSON.stringify(nav),
+  //     },
+  //   });
+  // } else {
+  //   router.push({
+  //     name: "write",
+  //     params: {
+  //       nav: "wonseo",
+  //     },
+  //   });
+  // }
 };
 </script>
 <style>

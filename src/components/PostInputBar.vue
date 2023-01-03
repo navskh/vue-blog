@@ -197,19 +197,6 @@ function changeSub(value) {
   }
 
   checkPimsCall();
-  // if (
-  //   thisUpper.value.bringCategory() == "6" &&
-  //   thisSub.value.bringCategory() == "1" &&
-  //   !props.isEdit
-  // ) {
-  //   isPimsCall.value = true;
-  //   headTitle.value = "[전화 요청] ";
-  //   content.value = pimsCallContent;
-  // } else {
-  //   isPimsCall.value = false;
-  //   headTitle.value = "";
-  //   content.value = "";
-  // }
 
   condition.upperCategoryCode = thisUpper.value.bringCategory();
   condition.subCategoryCode = value.Code;
@@ -234,9 +221,9 @@ function changeDetail() {
   }
 }
 
-/** 카테고리가 PIMS>전화 요청인 경우 템플릿 에디터에 불러오기 */
+/** 카테고리가 전화 요청인 경우 템플릿 에디터에 불러오기 */
 function checkPimsCall() {
-  if (props.upper == "PIMS" && props.sub == "전화 요청" && !props.isEdit) {
+  if (props.upper == "전화 요청" && !props.isEdit) {
     isPimsCall.value = true;
     headTitle.value = "[전화 요청] ";
     content.value = pimsCallContent;

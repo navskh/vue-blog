@@ -184,6 +184,7 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Image from "@tiptap/extension-image";
 import { lowlight } from "lowlight";
 import { marked } from "marked";
+import parseMd from "@/assets/md.js";
 import Iframe from "@/components/atomic/EditorComponent/Iframe";
 import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
@@ -234,9 +235,12 @@ const changeMarkdown = (data) => {
     xhtml: false,
   });
 
-  var replaceData = data.replaceAll("<p>", "").replaceAll("</p>", "");
-  // editor.view.dom.innerHTML = marked(parseMd(replaceData));
+  var replaceData = data.replace(/<[^>]*>?/g, "");
+  // console.log(`Data = ${replaceData}`);
+  // console.log(`replaceData111 = ${marked(parseMd(replaceData))}`);
+  // console.log(`replaceData222 = ${marked.parse(replaceData)}`);
   editor.view.dom.innerHTML = marked.parse(replaceData);
+  // editor.view.dom.innerHTML = marked(parseMd(replaceData));
 };
 
 const addImage = () => {
@@ -352,7 +356,6 @@ const editor = new Editor({
   },
   onUpdate: ({ editor }) => {
     const content = editor.getHTML();
-    console.log("content::", content);
     let result = "";
     if (content.indexOf("<pre><code") > -1) {
       result = chkCodeblock(content);

@@ -17,7 +17,9 @@
         </div>
         <h1 class="text-2xl font-bold mb-6">{{ pageName }}</h1>
       </div>
-      <div class="CONTENT w-full overflow-y-auto overflow-x-hidden flex justify-center flex-col">
+      <div
+        class="CONTENT w-full overflow-y-auto overflow-x-hidden flex justify-center flex-col"
+      >
         <table class="table w-[99%] border-collapse">
           <!-- head -->
           <thead>
@@ -41,7 +43,7 @@
                   </b>
                   <span
                     v-if="(data.UpdateTime ?? data.WriteTime) > today()"
-                    class="badge leading-[unset]"
+                    class="badge leading-[unset] ml-2"
                     >new</span
                   >
                 </p>
@@ -101,7 +103,9 @@
 import { ref, watchEffect } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { getLists, getNotices } from "@/api/posts";
-import sidebarCategory from "@/assets/sidebarCategory";
+import ApplySidebarCategory, {
+  PimsSidebarCategory,
+} from "@/assets/sidebarCategory.js";
 
 const router = useRouter();
 
@@ -120,10 +124,14 @@ const searchResult = () => {
 };
 
 const matchName = (thisRoute) => {
+  const categoryList =
+    route.path.indexOf("pims") > -1 || route.path.indexOf("call") > -1
+      ? PimsSidebarCategory
+      : ApplySidebarCategory;
   var result1 = {},
     result2 = {},
     result3 = {};
-  result1 = sidebarCategory.find(
+  result1 = categoryList.find(
     (category) => category.params.nav[0] == thisRoute.nav[0]
   );
   result2 = result1?.children.find(
@@ -157,10 +165,29 @@ const formatDate = (dateData) => {
 };
 
 const goPage = (dataMap) => {
+  const categoryList =
+    route.path.indexOf("pims") > -1 || route.path.indexOf("call") > -1
+      ? PimsSidebarCategory
+      : ApplySidebarCategory;
+  var upper = {},
+    sub = {},
+    detail = {};
+  upper = categoryList.find((e) => e.name == dataMap.UpperCategoryName);
+  sub = upper?.children.find((e) => e.name == dataMap.SubCategoryName);
+  detail = sub?.children.find((e) => e.name == dataMap.DetailCategoryName);
+
+  const nav = detail
+    ? detail.params.nav
+    : sub
+    ? sub.params.nav
+    : upper
+    ? upper.params.nav
+    : [];
+
   router.push({
     name: "detail",
     params: {
-      nav: "wonseo",
+      nav,
       id: dataMap.idx,
     },
   });
