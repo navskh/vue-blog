@@ -30,6 +30,8 @@ function doYouWannaBuildaSnowMan() {
 
   const MIN_DURATION = 10;
 
+  var count = 0;
+
   function makeSnowFlake() {
     const snowflake = document.createElement("div");
     const delay = Math.random() * 10;
@@ -46,7 +48,8 @@ function doYouWannaBuildaSnowMan() {
 
     setTimeout(() => {
       body.removeChild(snowflake);
-      // makeSnowFlake();
+      if(count <= 100) makeSnowFlake();
+      count++;
     }, (duration + delay) * 1000);
   }
 
@@ -61,7 +64,7 @@ function doYouWannaBuildaSnowMan() {
 .snowflake {
   width: 8px;
   height: 8px;
-  background-color: rgb(199, 199, 199);
+  background-color: hsl(var(--in));
   border-radius: 50%;
   position: absolute;
   top: -8px;
