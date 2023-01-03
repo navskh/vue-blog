@@ -20,7 +20,7 @@
 }
 
 .editor-height {
-  height: 600px;
+  height: calc(65vh - 50px);
 }
 
 .prose > *:not(pre, mark) {
