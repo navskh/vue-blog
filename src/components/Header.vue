@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-[1500px] m-auto">
-    <div class="navbar flex justify-between pl-1 h-[100px]">
+    <div class="navbar flex justify-between pl-1 h-[80px]">
       <div>
         <router-link to="/" class="font-bold uppercase text-2xl">Treasure Blog</router-link>
         <label className="swap swap-flip text-sm ml-2">
