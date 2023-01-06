@@ -13,14 +13,26 @@ const date = new Date();
 const router = useRouter();
 
 const emitter = inject('emitter');
-emitter.on('Search', (e) => {
-  console.log(e);
-  router.push({
-    name: 'main',
-    params: {
-      nav: 'search' + e.value,
-    },
-  },)
+emitter.on('Search', (data) => {
+  console.log(data.isApply.value);
+  console.log(data.searchData.value);
+
+  if (data.isApply.value) {
+    router.push({
+      name: 'main',
+      params: {
+        nav: 'search_' + data.searchData.value,
+      },
+    },)
+  }
+  else {
+    router.push({
+      name: 'main',
+      params: {
+        nav: ['pims', 'search_' + data.searchData.value],
+      },
+    },)
+  }
 });
 </script>
 

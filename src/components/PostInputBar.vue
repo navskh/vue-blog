@@ -9,7 +9,7 @@
         <li>
           <ListBox
             ref="thisUpper"
-            :type="ref('UpperCategory')"
+            type="UpperCategory"
             :code="props.upper"
             @update:model-value="changeUpper"
           ></ListBox>
@@ -17,7 +17,7 @@
         <li>
           <ListBox
             ref="thisSub"
-            :type="ref('SubCategory')"
+            type="SubCategory"
             :code="props.sub"
             @update:model-value="changeSub"
             :isSubRefreshed="isSubRefreshed"
@@ -28,7 +28,7 @@
           <ListBox
             ref="thisDetail"
             :code="props.detail"
-            :type="ref('DetailCategory')"
+            type="DetailCategory"
             @update:model-value="changeDetail"
             :isDetailRefreshed="isDetailRefreshed"
             @update:isRefreshed="changeIsRefreshed"
@@ -71,7 +71,7 @@
 import { FolderArrowDownIcon } from "@heroicons/vue/24/outline";
 import ListBox from "@/components/atomic/ListBox.vue";
 import AlertBox from "./atomic/AlertBox.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import Editor from "./atomic/Editor.vue";
 import { createPost, updatePost } from "@/api/posts";
 import { useRoute, useRouter } from "vue-router";
@@ -95,9 +95,10 @@ const props = defineProps({
   content: String,
   author: String,
   isEdit: Boolean,
-  upper: String,
-  sub: String,
-  detail: String,
+  upper: Object,
+  sub: Object,
+  detail: Object,
+  initCondition: Object,
 });
 
 const thisUpper = ref("");
@@ -178,7 +179,7 @@ function changeUpper(value) {
   }
 }
 
-function changeSub(value) {
+function changeSub(value, isUpper) {
   let condition = {};
 
   //상위 카테고리 미선택 시 경고창
@@ -198,7 +199,12 @@ function changeSub(value) {
 
   checkPimsCall();
 
-  condition.upperCategoryCode = thisUpper.value.bringCategory();
+  if (thisUpper.value.bringCategory() === undefined) {
+    condition.upperCategoryCode = isUpper.Code;
+  }
+  else {
+    condition.upperCategoryCode = thisUpper.value.bringCategory();
+  }
   condition.subCategoryCode = value.Code;
   thisDetail.value.fetchCategory(condition);
 }
@@ -242,4 +248,11 @@ function changeIsRefreshed(category) {
     isDetailRefreshed.value = !isDetailRefreshed.value;
   }
 }
+
+onMounted(() => {
+  console.log(props);
+  thisUpper.value.fetchCategory('');
+  changeUpper(props.initCondition.upper);
+  changeSub(props.initCondition.sub, props.initCondition.upper);
+})
 </script>

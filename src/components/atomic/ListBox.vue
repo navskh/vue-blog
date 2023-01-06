@@ -81,11 +81,12 @@ import { getCategory } from "@/api/posts";
 const categorys = ref({});
 const selected = ref({ Name: null });
 const props = defineProps({
-  type: {},
-  code: String,
+  type: String,
+  code: Object,
   isSubRefreshed: Boolean,
   isDetailRefreshed: Boolean,
 });
+
 
 /** PostInputBar에서 카테고리 변경 이벤트 발생, 상위 카테고리를 선택하지 않았을 경우 선택값 초기화  */
 watchEffect(() => {
@@ -101,12 +102,11 @@ watchEffect(() => {
 const emits = defineEmits(["update:modelValue", "update:isRefreshed"]);
 
 const fetchCategory = async (condition) => {
-  const { data } = await getCategory(props.type?.value, condition);
+  const { data } = await getCategory(props.type, condition);
   categorys.value = [...data];
 
-  if (props.code) {
-    // console.log(data);
-    var result = data.find((d) => d.Name == props.code);
+  if (props.code.CategoryCode) {
+    var result = data.find((d) => d.Name == props.code.CategoryName);
     selected.value = result;
   } else {
     selected.value = categorys.value[0];
@@ -118,7 +118,7 @@ const initCondition = {
   subCategoryCode: 0,
 };
 
-fetchCategory(initCondition);
+// fetchCategory(initCondition);
 
 function bringCategory() {
   return selected.value.Code;

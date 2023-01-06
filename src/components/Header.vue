@@ -53,7 +53,8 @@ watchEffect(() => {
 }, [isApply.value]);
 
 const submit = () => {
-  emitter.emit("Search", searchData);
+  var data = { isApply: isApply, searchData: searchData };
+  emitter.emit("Search", data);
 };
 
 emitter.on("Init", () => {

@@ -5,9 +5,9 @@ const baseURL = 'http://treasure-back.jinhakapply.com';
 // develp 전용 링크
 // const baseURL = 'http://localhost:3002';
 
-export function getLists(condition) {
+export function getLists(condition, thisMode) {
 	return axios.get(`${baseURL}/treasure/list`, {
-		params: { condition: condition },
+		params: { condition: condition, mode: thisMode },
 	});
 }
 

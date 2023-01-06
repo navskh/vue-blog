@@ -120,6 +120,7 @@ const searchKeyword = ref("");
 
 var isSearch = false;
 const searchResult = () => {
+  console.log('search REsult!');
   pageRoute.value[0] = "-";
   pageRoute.value[1] = "-";
   pageRoute.value[2] = "-";
@@ -225,8 +226,10 @@ const fetchList = async () => {
 
   // if (pageRoute.value[0] == '기타') condition = ['전체', '전체', '전체'];
   condition[3] = searchKeyword.value;
+
+  var thisMode = localStorage.getItem('thisMode');
   try {
-    const { data } = await getLists(condition);
+    const { data } = await getLists(condition, thisMode);
     const notice = await getNotices();
     allData = [];
     allLength.value = data.length;
@@ -242,12 +245,23 @@ const fetchList = async () => {
     console.error(err);
   }
 };
+
+// Router가 바뀌는지 확인
 const monitorRoute = () => {
+  console.log('monitor');
   var thisRoute = route.params;
-  if (thisRoute.nav.indexOf("search") > -1) {
-    isSearch = true;
-    searchKeyword.value = thisRoute.nav.split("search")[1];
+
+  if (thisRoute.nav.length == 2 && thisRoute.nav[0] == 'pims') {
+      if (thisRoute.nav[1].indexOf("search_") > -1) {
+        isSearch = true;
+        searchKeyword.value = thisRoute.nav[1].split("search_")[1];
+      }  
   }
+  else if (thisRoute.nav.indexOf('search_') > -1) {
+    isSearch = true;
+    searchKeyword.value = thisRoute.nav.split("search_")[1];
+  }
+  
 
   // route param을 받아서 한글 naming을 만들어줌
   matchName(thisRoute);
@@ -259,6 +273,7 @@ const monitorRoute = () => {
   fetchList();
   isSearch = false;
   searchKeyword.value = "";
+
 };
 
 watchEffect(monitorRoute);

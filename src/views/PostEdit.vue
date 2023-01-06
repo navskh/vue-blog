@@ -9,6 +9,7 @@
 			:upper="post.upperCategory"
 			:sub="post.subCategory"
 			:detail="post.detailCategory"
+      :initCondition="post.initCondition"
 		/>
 	</div>
 </template>
@@ -28,13 +29,17 @@ const post = ref({
 	title: null,
 	content: null,
 	createdAt: null,
-	author: null,
+  author: null,
+  upperCategory: {},
+  subCategory: {},
+  detailCategory: {},
+  initCondition: {}
 });
 
 const fetchPost = async () => {
 	try {
-		const { data } = await getPostById(id);
-		setPost(data[0]);
+    const { data } = await getPostById(id);
+    setPost(data[0]);
 	} catch (err) {
 		console.error(err);
 	}
@@ -45,17 +50,21 @@ const setPost = ({
 	TreasureContent,
 	Author,
 	WriteTime,
-	UpperCategoryName,
-	SubCategoryName,
-	DetailCategoryName,
+  UpperCategoryName,
+  UpperCategory,
+  SubCategoryName,
+  SubCategory,
+  DetailCategoryName,
+  DetailCategory,
 }) => {
 	post.value.title = Title;
 	post.value.content = TreasureContent;
 	post.value.author = Author;
 	post.value.createdAt = WriteTime;
-	post.value.upperCategory = UpperCategoryName;
-	post.value.subCategory = SubCategoryName;
-	post.value.detailCategory = DetailCategoryName;
+  post.value.upperCategory = { CategoryName: UpperCategoryName, CategoryCode: UpperCategory };
+  post.value.subCategory = { CategoryName: SubCategoryName, CategoryCode: SubCategory };
+  post.value.detailCategory = { CategoryName: DetailCategoryName, CategoryCode: DetailCategory };
+  post.value.initCondition = { upper: {Code : UpperCategory}, sub: {Code: SubCategory}, detail: {Code: DetailCategory} };
 };
 
 watchEffect(fetchPost);
