@@ -1,6 +1,6 @@
 <template>
   <div class="w-[80%] min-w-[1000px] h-full overflow-y-auto">
-    <div class="CONTAINER flex flex-col items-center justify-center pb-6">
+    <div class="CONTAINER flex flex-col items-center justify-center pb-4">
       <div class="TITLE w-full">
         <div class="text-sm breadcrumbs text-primary-focus">
           <ul>
@@ -15,8 +15,8 @@
             </li>
           </ul>
         </div>
-        <div class="flex justify-between pr-4 items-center">
-          <h1 class="text-2xl font-bold mb-6">{{ pageName }}</h1>
+        <div class="flex justify-between pr-4 items-center mb-4">
+          <h1 class="text-2xl font-bold">{{ pageName }}</h1>
           <span class="text-right"><b>{{ allLength }}</b>개의 글</span>
         </div>
       </div>
@@ -27,8 +27,8 @@
           <!-- head -->
           <thead>
             <tr>
-              <th class="tracking-widest w-[70%]">제목</th>
-              <th class="w-[10%] tracking-widest">작성자</th>
+              <th class="tracking-widest w-[60%]">제목</th>
+              <th class="w-[15%] tracking-widest">작성자</th>
               <th class="w-[10%] tracking-widest">수정일</th>
               <th class="w-[10%] tracking-widest">작성일</th>
             </tr>
@@ -86,9 +86,9 @@
             </tr>
           </tbody>
         </table>
-        <div class="m-3 flex justify-center gap-3 text-lg">
+        <div class="m-1 mt-2 flex justify-center gap-3 text-lg btn-group">
           <button
-            v-for="n in totalCnt"
+            v-for="n in pagingCnt"
             :key="n"
             :class="{ 'btn-selected': isActive === n }"
             @click="handleButtonClick(n)"
@@ -198,7 +198,7 @@ const goPage = (dataMap) => {
 };
 
 var posts = ref([]);
-var totalCnt = ref(null);
+var pagingCnt = ref(null);
 var allData = [];
 var allLength = ref(null);
 var notices = ref([]);
@@ -237,7 +237,7 @@ const fetchList = async () => {
     for (var i = 0; i <= data.length / 10; i++) {
       allData[i] = data.slice(i * 10, i * 10 + 10);
     }
-    totalCnt.value = allData.length;
+    pagingCnt.value = allData.length;
 
     posts.value = allData[0];
     notices.value = notice.data;
