@@ -48,7 +48,9 @@ function doYouWannaBuildaSnowMan() {
 
     setTimeout(() => {
       body.removeChild(snowflake);
-      if(count <= 100) makeSnowFlake();
+      if (count <= 100) {
+        makeSnowFlake();
+      }
       count++;
     }, (duration + delay) * 1000);
   }

@@ -2,7 +2,7 @@
   <div class="w-[80%] min-w-[1000px] h-full overflow-y-auto">
     <div class="CONTAINER flex flex-col items-center justify-center pb-6">
       <div class="TITLE w-full">
-        <div class="text-sm breadcrumbs text-primary-focus flex-row">
+        <div class="text-sm breadcrumbs text-primary-focus">
           <ul>
             <li>
               <a>{{ pageRoute[0] }}</a>
@@ -15,7 +15,10 @@
             </li>
           </ul>
         </div>
-        <h1 class="text-2xl font-bold mb-6">{{ pageName }}</h1>
+        <div class="flex justify-between pr-4 items-center">
+          <h1 class="text-2xl font-bold mb-6">{{ pageName }}</h1>
+          <span class="text-right"><b>{{ allLength }}</b>개의 글</span>
+        </div>
       </div>
       <div
         class="CONTENT w-full overflow-y-auto overflow-x-hidden flex justify-center flex-col"
@@ -196,6 +199,7 @@ const goPage = (dataMap) => {
 var posts = ref([]);
 var totalCnt = ref(null);
 var allData = [];
+var allLength = ref(null);
 var notices = ref([]);
 
 const today = () => {
@@ -225,10 +229,13 @@ const fetchList = async () => {
     const { data } = await getLists(condition);
     const notice = await getNotices();
     allData = [];
+    allLength.value = data.length;
+
     for (var i = 0; i <= data.length / 10; i++) {
       allData[i] = data.slice(i * 10, i * 10 + 10);
     }
     totalCnt.value = allData.length;
+
     posts.value = allData[0];
     notices.value = notice.data;
   } catch (err) {
