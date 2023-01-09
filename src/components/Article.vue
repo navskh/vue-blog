@@ -115,6 +115,9 @@ import { useRouter, useRoute } from "vue-router";
 import { getLists, getNotices, getRequestLists } from "@/api/posts";
 import useTreasureInfoStore from "@/stores/TreasureData";
 import Pagebar from "@/components/atomic/Pagebar.vue";
+import ApplySidebarCategory, {
+  PimsSidebarCategory,
+} from "@/assets/sidebarCategory";
 
 const treasureInfo = useTreasureInfoStore();
 
@@ -135,10 +138,11 @@ const searchResult = () => {
 };
 
 const matchName = (thisRoute) => {
-  const categoryList =
-    "/pims|/call|/request".indexOf(route.path) > -1
-      ? PimsSidebarCategory
-      : ApplySidebarCategory;
+  // const categoryList =
+  //   "/pims|/call|/request".indexOf(route.path) > -1
+  //     ? PimsSidebarCategory
+  //     : ApplySidebarCategory;
+  const categoryList = treasureInfo.categoryList;
   var result1 = {},
     result2 = {},
     result3 = {};
@@ -207,7 +211,7 @@ const goPage = (dataMap) => {
 };
 
 var posts = ref([]);
-var totalCnt = ref(null);
+var pagingCnt = ref(null);
 var allData = [];
 var allLength = ref(null);
 var notices = ref([]);
