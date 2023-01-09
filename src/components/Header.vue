@@ -44,17 +44,10 @@ const router = useRouter();
 const route = useRoute();
 
 watchEffect(() => {
-  if (
-    treasureInfo.mode &&
-    "/pims|/call|/request".indexOf(route.path) > -1
-    // (route.path.indexOf("pims") > -1 || route.path.indexOf("call") > -1)
-  ) {
+  if (treasureInfo.mode) {
     localStorage.setItem("thisMode", "apply");
     router.push("/");
-  } else if (
-    !treasureInfo.mode &&
-    "/pims|/call|/request".indexOf(route.path) == -1
-  ) {
+  } else if (!treasureInfo.mode) {
     localStorage.setItem("thisMode", "pims");
     router.push("/pims");
   }
