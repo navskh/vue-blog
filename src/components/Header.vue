@@ -7,7 +7,8 @@
         >
         <label className="swap swap-flip text-sm ml-2">
           <!-- this hidden checkbox controls the state -->
-          <input v-model="treasureInfo.mode" type="checkbox" />
+          <!-- <input v-model="treasureInfo.mode" type="checkbox" /> -->
+          <input v-model="mode" @click="chgMode" type="checkbox" />
 
           <div className="swap-on">APPLY</div>
           <div className="swap-off">PIMS</div>
@@ -38,20 +39,28 @@ const searchData = ref("");
 
 let thisMode = localStorage.getItem("thisMode");
 
-treasureInfo.mode = thisMode == "pims" ? false : true;
+treasureInfo.mode = thisMode;
 
 const router = useRouter();
 const route = useRoute();
 
-watchEffect(() => {
-  if (treasureInfo.mode) {
+const mode = ref("");
+mode.value = thisMode == 'pims' ? false : true;
+
+
+const chgMode = () => {
+  console.log("mode: ", mode.value);
+  console.log("treasure: ", treasureInfo.mode);
+  if (treasureInfo.mode == 'pims') {
     localStorage.setItem("thisMode", "apply");
+    treasureInfo.mode = 'apply';
     router.push("/");
-  } else if (!treasureInfo.mode) {
+  } else if (treasureInfo.mode == 'apply') {
     localStorage.setItem("thisMode", "pims");
+    treasureInfo.mode = 'pims';
     router.push("/pims");
   }
-}, [treasureInfo.mode]);
+};
 
 const submit = () => {
   var data = { isApply: treasureInfo.mode, searchData: searchData };

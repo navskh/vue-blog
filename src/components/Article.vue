@@ -276,7 +276,7 @@ const fetchList = async () => {
 
 // Router가 바뀌는지 확인
 const monitorRoute = () => {
-  console.log("monitor");
+  // console.log("monitor");
   var thisRoute = route.params;
 
   if (thisRoute.nav.length == 2 && thisRoute.nav[0] == "pims") {

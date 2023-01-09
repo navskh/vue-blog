@@ -11,18 +11,16 @@
           to="/"
           class="side-link"
           :class="selectPath === '/' && 'selected'"
-          v-if="
-          '/pims|/call|/request'.indexOf(route.path) == -1
-          "
+          v-if="treasureInfo.mode == 'apply'"
           >전체보기</router-link
         >
       </div>
       <div class="MENU h-[calc(100vh-270px)] overflow-y-auto">
         <SidebarItem
           :list="
-          '/pims|/call|/request'.indexOf(route.path) > -1
-              ? PimsSidebarCategory
-              : ApplySidebarCategory
+          treasureInfo.mode == 'apply'
+              ? ApplySidebarCategory
+              : PimsSidebarCategory
           "
           :selectPath="selectPath"
         />
@@ -36,13 +34,15 @@ import ApplySidebarCategory, {
 } from "@/assets/sidebarCategory.js";
 import { computed, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router";
-
+import useTreasureInfoStore from '@/stores/TreasureData';
 import SidebarItem from "./SidebarItem.vue";
 // import { inject } from "vue";
 // const emitter = inject("emitter");
 
 const route = useRoute();
 const router = useRouter();
+
+const treasureInfo = useTreasureInfoStore();
 
 onBeforeMount(async () => {
   await router.isReady();

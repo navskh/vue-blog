@@ -7,12 +7,13 @@ import ApplySidebarCategory, {
 
 const useTreasureInfoStore = defineStore("treasureInfoData", {
   state: () => ({
-    mode: true,
+    mode: 'apply',
   }),
   actions: {},
   getters: {
     categoryList: (state) => {
-      return state.mode ? ApplySidebarCategory : PimsSidebarCategory;
+      console.log(state.mode);
+      return state.mode == 'apply' ? ApplySidebarCategory : PimsSidebarCategory;
     },
   },
 });
