@@ -105,7 +105,7 @@
 /* eslint-disable */
 import { ref, watchEffect } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { getLists, getNotices } from "@/api/posts";
+import { getLists, getNotices, getRequestLists } from "@/api/posts";
 import ApplySidebarCategory, {
   PimsSidebarCategory,
 } from "@/assets/sidebarCategory.js";
@@ -128,7 +128,6 @@ const searchResult = () => {
 };
 
 const matchName = (thisRoute) => {
-  console.log(route.path);
   const categoryList = 
     "/pims|/call|/request".indexOf(route.path) > -1
       ? PimsSidebarCategory
@@ -229,19 +228,38 @@ const fetchList = async () => {
   condition[3] = searchKeyword.value;
 
   var thisMode = localStorage.getItem('thisMode');
+
+  console.log(route.path);
   try {
-    const { data } = await getLists(condition, thisMode);
-    const notice = await getNotices();
-    allData = [];
-    allLength.value = data.length;
+    if (route.path == '/request') {
 
-    for (var i = 0; i <= data.length / 10; i++) {
-      allData[i] = data.slice(i * 10, i * 10 + 10);
+      const { data } = await getRequestLists(condition, thisMode);
+      console.log(data[0]);
+      allData = [];
+      allLength.value = data.length;
+      
+      for (var i = 0; i <= data.length / 10; i++) {
+        allData[i] = data.slice(i * 10, i * 10 + 10);
+      }
+      pagingCnt.value = allData.length;
+      
+      notices.value = '';
+      // posts.value = allData[0];
     }
-    pagingCnt.value = allData.length;
-
-    posts.value = allData[0];
-    notices.value = notice.data;
+    else {
+      const { data } = await getLists(condition, thisMode);
+      const notice = await getNotices();
+      allData = [];
+      allLength.value = data.length;
+  
+      for (var i = 0; i <= data.length / 10; i++) {
+        allData[i] = data.slice(i * 10, i * 10 + 10);
+      }
+      pagingCnt.value = allData.length;
+  
+      posts.value = allData[0];
+      notices.value = notice.data;
+    }
   } catch (err) {
     console.error(err);
   }
