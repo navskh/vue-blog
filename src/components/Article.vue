@@ -17,7 +17,10 @@
         </div>
         <div class="flex justify-between pr-4 items-center mb-4">
           <h1 class="text-2xl font-bold">{{ pageName }}</h1>
-          <span class="text-right"><b>{{ allLength }}</b>개의 글</span>
+          <span class="text-right"
+            ><b>{{ allLength }}</b
+            >개의 글</span
+          >
         </div>
       </div>
       <div
@@ -106,12 +109,11 @@
 import { ref, watchEffect } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { getLists, getNotices } from "@/api/posts";
-import ApplySidebarCategory, {
-  PimsSidebarCategory,
-} from "@/assets/sidebarCategory.js";
+import useTreasureInfoStore from "@/stores/TreasureData";
+
+const treasureInfo = useTreasureInfoStore();
 
 const router = useRouter();
-
 const route = useRoute();
 
 const pageName = ref("");
@@ -120,7 +122,7 @@ const searchKeyword = ref("");
 
 var isSearch = false;
 const searchResult = () => {
-  console.log('search REsult!');
+  console.log("search REsult!");
   pageRoute.value[0] = "-";
   pageRoute.value[1] = "-";
   pageRoute.value[2] = "-";
@@ -128,14 +130,10 @@ const searchResult = () => {
 };
 
 const matchName = (thisRoute) => {
-  const categoryList =
-    route.path.indexOf("pims") > -1 || route.path.indexOf("call") > -1
-      ? PimsSidebarCategory
-      : ApplySidebarCategory;
   var result1 = {},
     result2 = {},
     result3 = {};
-  result1 = categoryList.find(
+  result1 = treasureInfo.categoryList.find(
     (category) => category.params.nav[0] == thisRoute.nav[0]
   );
   result2 = result1?.children.find(
@@ -169,14 +167,12 @@ const formatDate = (dateData) => {
 };
 
 const goPage = (dataMap) => {
-  const categoryList =
-    route.path.indexOf("pims") > -1 || route.path.indexOf("call") > -1
-      ? PimsSidebarCategory
-      : ApplySidebarCategory;
   var upper = {},
     sub = {},
     detail = {};
-  upper = categoryList.find((e) => e.name == dataMap.UpperCategoryName);
+  upper = treasureInfo.categoryList.find(
+    (e) => e.name == dataMap.UpperCategoryName
+  );
   sub = upper?.children.find((e) => e.name == dataMap.SubCategoryName);
   detail = sub?.children.find((e) => e.name == dataMap.DetailCategoryName);
 
@@ -227,9 +223,9 @@ const fetchList = async () => {
   // if (pageRoute.value[0] == '기타') condition = ['전체', '전체', '전체'];
   condition[3] = searchKeyword.value;
 
-  var thisMode = localStorage.getItem('thisMode');
+  // var thisMode = localStorage.getItem("thisMode");
   try {
-    const { data } = await getLists(condition, thisMode);
+    const { data } = await getLists(condition, treasureInfo.mode);
     const notice = await getNotices();
     allData = [];
     allLength.value = data.length;
@@ -248,20 +244,18 @@ const fetchList = async () => {
 
 // Router가 바뀌는지 확인
 const monitorRoute = () => {
-  console.log('monitor');
+  console.log("monitor");
   var thisRoute = route.params;
 
-  if (thisRoute.nav.length == 2 && thisRoute.nav[0] == 'pims') {
-      if (thisRoute.nav[1].indexOf("search_") > -1) {
-        isSearch = true;
-        searchKeyword.value = thisRoute.nav[1].split("search_")[1];
-      }  
-  }
-  else if (thisRoute.nav.indexOf('search_') > -1) {
+  if (thisRoute.nav.length == 2 && thisRoute.nav[0] == "pims") {
+    if (thisRoute.nav[1].indexOf("search_") > -1) {
+      isSearch = true;
+      searchKeyword.value = thisRoute.nav[1].split("search_")[1];
+    }
+  } else if (thisRoute.nav.indexOf("search_") > -1) {
     isSearch = true;
     searchKeyword.value = thisRoute.nav.split("search_")[1];
   }
-  
 
   // route param을 받아서 한글 naming을 만들어줌
   matchName(thisRoute);
@@ -273,7 +267,6 @@ const monitorRoute = () => {
   fetchList();
   isSearch = false;
   searchKeyword.value = "";
-
 };
 
 watchEffect(monitorRoute);

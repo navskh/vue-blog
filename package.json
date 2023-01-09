@@ -39,6 +39,7 @@
 		"lowlight": "^2.7.0",
 		"marked": "^4.1.0",
 		"mitt": "^3.0.0",
+		"pinia": "^2.0.28",
 		"postcss": "^8",
 		"remixicon": "^2.5.0",
 		"sweetalert2": "^11.4.35",
