@@ -1,9 +1,9 @@
 import axios from "axios";
 
-// const baseURL = "http://treasure-back.jinhakapply.com";
+const baseURL = "http://treasure-back.jinhakapply.com";
 
 // develp 전용 링크
-const baseURL = "http://localhost:3002";
+// const baseURL = "http://localhost:3002";
 
 export function getRequestLists() {
   return axios.get(`${baseURL}/treasure/request`);
