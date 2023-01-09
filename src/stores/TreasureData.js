@@ -13,6 +13,10 @@ const useTreasureInfoStore = defineStore("treasureInfoData", {
   getters: {
     categoryList: (state) => {
       console.log(state.mode);
+      if (!state.mode) {
+				return ApplySidebarCategory;
+			}
+      
       return state.mode == 'apply' ? ApplySidebarCategory : PimsSidebarCategory;
     },
   },

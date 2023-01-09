@@ -39,13 +39,12 @@ const searchData = ref("");
 
 let thisMode = localStorage.getItem("thisMode");
 
-treasureInfo.mode = thisMode;
+treasureInfo.mode = thisMode ?? 'apply';
 
 const router = useRouter();
 const route = useRoute();
 
-const mode = ref("");
-mode.value = thisMode == 'pims' ? false : true;
+const mode = ref(true);
 
 
 const chgMode = () => {
@@ -56,6 +55,10 @@ const chgMode = () => {
     treasureInfo.mode = 'apply';
     router.push("/");
   } else if (treasureInfo.mode == 'apply') {
+    localStorage.setItem("thisMode", "pims");
+    treasureInfo.mode = 'pims';
+    router.push("/pims");
+  } else {
     localStorage.setItem("thisMode", "pims");
     treasureInfo.mode = 'pims';
     router.push("/pims");
