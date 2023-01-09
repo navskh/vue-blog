@@ -89,7 +89,11 @@
             </tr>
           </tbody>
         </table>
-        <div class="m-1 mt-2 flex justify-center gap-3 text-lg btn-group">
+        <Pagebar
+          :totalCnt="totalCnt"
+          @update:handleButtonClick="handleButtonClick"
+        />
+        <!-- <div class="m-1 mt-2 flex justify-center gap-3 text-lg btn-group">
           <button
             v-for="n in pagingCnt"
             :key="n"
@@ -98,7 +102,7 @@
           >
             {{ n }}
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -110,6 +114,7 @@ import { ref, watchEffect } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { getLists, getNotices } from "@/api/posts";
 import useTreasureInfoStore from "@/stores/TreasureData";
+import Pagebar from "@/components/atomic/Pagebar.vue";
 
 const treasureInfo = useTreasureInfoStore();
 
@@ -194,7 +199,7 @@ const goPage = (dataMap) => {
 };
 
 var posts = ref([]);
-var pagingCnt = ref(null);
+var totalCnt = ref(null);
 var allData = [];
 var allLength = ref(null);
 var notices = ref([]);
@@ -208,9 +213,9 @@ const today = () => {
   return year + "-" + month + "-" + day;
 };
 
-let isActive = ref(1);
+// let isActive = ref(1);
 const handleButtonClick = (n) => {
-  isActive.value = n;
+  // isActive.value = n;
   posts.value = allData[n - 1];
 };
 
@@ -233,7 +238,7 @@ const fetchList = async () => {
     for (var i = 0; i <= data.length / 10; i++) {
       allData[i] = data.slice(i * 10, i * 10 + 10);
     }
-    pagingCnt.value = allData.length;
+    totalCnt.value = data.length;
 
     posts.value = allData[0];
     notices.value = notice.data;
