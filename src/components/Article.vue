@@ -73,10 +73,11 @@
                         : data.UpperCategoryName
                     }}
                   </span>
-                  {{ truncate(data.Title) }}
+                  <span v-html="(data.Title)"/>
+                  <!-- {{ truncate(data.Title) }} -->
                   <span
                     v-if="(data.UpdateTime ?? data.WriteTime) > today()"
-                    class="badge leading-[unset]"
+                    class="badge leading-[unset] ml-1"
                     >new</span
                   >
                 </p>
@@ -254,7 +255,9 @@ const fetchList = async () => {
       pagingCnt.value = allData.length;
 
       notices.value = "";
-      // posts.value = allData[0];
+      console.log(allData);
+      posts.value = allData[0];
+      console.log(posts.value);
     } else {
       const { data } = await getLists(condition, thisMode);
       const notice = await getNotices();
@@ -310,5 +313,17 @@ watchEffect(monitorRoute);
 }
 .CONTENT::-webkit-scrollbar {
   display: none;
+}
+.badgeinfo {
+  background-color: hsl(var(--in));
+  color: hsl(var(--inc));
+}
+.badgeerror {
+  background-color: hsl(var(--er));
+  color: hsl(var(--erc));
+}
+.badgewarning {
+  background-color: hsl(var(--wa));
+  color: hsl(var(--wac));
 }
 </style>

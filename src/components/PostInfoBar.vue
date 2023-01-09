@@ -23,8 +23,8 @@
       <div class="text-sm">
         <span class="mr-1">{{ formatDate(props.createdAt) }}</span>
         <span class="text-xs">
-          마지막으로 수정한 사람 : {{ props.author }}</span
-        >
+          마지막으로 수정한 사람 : <span v-html="props.author"/>
+        </span>
       </div>
       <div>
         <button class="btn btn-ghost btn-sm" @click="doUrlCopy()">

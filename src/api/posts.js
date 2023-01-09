@@ -9,6 +9,10 @@ export function getRequestLists() {
   return axios.get(`${baseURL}/treasure/request`);
 }
 
+export function getRequestById(id) {
+  return axios.get(`${baseURL}/treasure/reqdetail`, { params: { id: id } });
+}
+
 export function getLists(condition, thisMode) {
   return axios.get(`${baseURL}/treasure/list`, {
     params: { condition: condition, mode: thisMode },

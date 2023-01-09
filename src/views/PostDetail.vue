@@ -21,7 +21,7 @@ import PostInfoBar from "@/components/PostInfoBar.vue";
 import TopButton from "@/components/atomic/Button/TopButton.vue";
 import { useRoute, useRouter } from "vue-router";
 import { computed } from "@vue/reactivity";
-import { getPostById } from "@/api/posts";
+import { getPostById, getRequestById } from "@/api/posts";
 
 const route = useRoute();
 // const router = useRouter();
@@ -51,8 +51,15 @@ const post = ref({
 
 const fetchPost = async () => {
   try {
-    const { data } = await getPostById(id);
-    setPost(data[0]);
+    if (route.path.indexOf('request') > -1) {
+      console.log('request');
+      const { data } = await getRequestById(id);
+      setPost(data[0]);
+    }
+    else {
+      const { data } = await getPostById(id);
+      setPost(data[0]);
+    }
   } catch (err) {
     console.error(err);
   }
@@ -117,5 +124,18 @@ fetchPost();
       margin: 0;
     }
   }
+}
+
+.badgeinfo {
+  background-color: hsl(var(--in));
+  color: hsl(var(--inc));
+}
+.badgeerror {
+  background-color: hsl(var(--er));
+  color: hsl(var(--erc));
+}
+.badgewarning {
+  background-color: hsl(var(--wa));
+  color: hsl(var(--wac));
 }
 </style>
