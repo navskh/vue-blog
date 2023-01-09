@@ -45,15 +45,15 @@ const route = useRoute();
 
 watchEffect(() => {
   if (
-    treasureInfo.mode &&
-    (route.path.indexOf("pims") > -1 || route.path.indexOf("call") > -1)
+    isApply.value &&
+    "/pims|/call|/request".indexOf(route.path) > -1
+    // (route.path.indexOf("pims") > -1 || route.path.indexOf("call") > -1)
   ) {
     localStorage.setItem("thisMode", "apply");
     router.push("/");
   } else if (
-    !treasureInfo.mode &&
-    route.path.indexOf("pims") == -1 &&
-    route.path.indexOf("call") == -1
+    !isApply.value &&
+    "/pims|/call|/request".indexOf(route.path) == -1
   ) {
     localStorage.setItem("thisMode", "pims");
     router.push("/pims");

@@ -112,7 +112,7 @@
 /* eslint-disable */
 import { ref, watchEffect } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { getLists, getNotices } from "@/api/posts";
+import { getLists, getNotices, getRequestLists } from "@/api/posts";
 import useTreasureInfoStore from "@/stores/TreasureData";
 import Pagebar from "@/components/atomic/Pagebar.vue";
 
@@ -135,6 +135,10 @@ const searchResult = () => {
 };
 
 const matchName = (thisRoute) => {
+  const categoryList =
+    "/pims|/call|/request".indexOf(route.path) > -1
+      ? PimsSidebarCategory
+      : ApplySidebarCategory;
   var result1 = {},
     result2 = {},
     result3 = {};
@@ -172,6 +176,10 @@ const formatDate = (dateData) => {
 };
 
 const goPage = (dataMap) => {
+  const categoryList =
+    "/pims|/call|/request".indexOf(route.path) > -1
+      ? PimsSidebarCategory
+      : ApplySidebarCategory;
   var upper = {},
     sub = {},
     detail = {};
@@ -228,20 +236,35 @@ const fetchList = async () => {
   // if (pageRoute.value[0] == '기타') condition = ['전체', '전체', '전체'];
   condition[3] = searchKeyword.value;
 
-  // var thisMode = localStorage.getItem("thisMode");
+  var thisMode = localStorage.getItem("thisMode");
   try {
-    const { data } = await getLists(condition, treasureInfo.mode);
-    const notice = await getNotices();
-    allData = [];
-    allLength.value = data.length;
+    if (route.path == "/request") {
+      const { data } = await getRequestLists(condition, thisMode);
+      console.log(data[0]);
+      allData = [];
+      allLength.value = data.length;
 
-    for (var i = 0; i <= data.length / 10; i++) {
-      allData[i] = data.slice(i * 10, i * 10 + 10);
+      for (var i = 0; i <= data.length / 10; i++) {
+        allData[i] = data.slice(i * 10, i * 10 + 10);
+      }
+      pagingCnt.value = allData.length;
+
+      notices.value = "";
+      // posts.value = allData[0];
+    } else {
+      const { data } = await getLists(condition, thisMode);
+      const notice = await getNotices();
+      allData = [];
+      allLength.value = data.length;
+
+      for (var i = 0; i <= data.length / 10; i++) {
+        allData[i] = data.slice(i * 10, i * 10 + 10);
+      }
+      pagingCnt.value = allData.length;
+
+      posts.value = allData[0];
+      notices.value = notice.data;
     }
-    totalCnt.value = data.length;
-
-    posts.value = allData[0];
-    notices.value = notice.data;
   } catch (err) {
     console.error(err);
   }

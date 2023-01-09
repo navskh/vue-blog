@@ -222,4 +222,11 @@ export const PimsSidebarCategory = [
     code: "10",
     children: [],
   },
+  {
+    name: "업무요청게시판",
+    params: { nav: ["request"] },
+    path: "/request",
+    code: "11",
+    children: [],
+  },
 ];
