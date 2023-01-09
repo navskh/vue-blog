@@ -128,8 +128,9 @@ const searchResult = () => {
 };
 
 const matchName = (thisRoute) => {
-  const categoryList =
-    route.path.indexOf("pims") > -1 || route.path.indexOf("call") > -1
+  console.log(route.path);
+  const categoryList = 
+    "/pims|/call|/request".indexOf(route.path) > -1
       ? PimsSidebarCategory
       : ApplySidebarCategory;
   var result1 = {},
@@ -170,7 +171,7 @@ const formatDate = (dateData) => {
 
 const goPage = (dataMap) => {
   const categoryList =
-    route.path.indexOf("pims") > -1 || route.path.indexOf("call") > -1
+  "/pims|/call|/request".indexOf(route.path) > -1
       ? PimsSidebarCategory
       : ApplySidebarCategory;
   var upper = {},

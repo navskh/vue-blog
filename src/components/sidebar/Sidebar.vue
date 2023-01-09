@@ -12,7 +12,7 @@
           class="side-link"
           :class="selectPath === '/' && 'selected'"
           v-if="
-            route.path.indexOf('pims') == -1 && route.path.indexOf('call') == -1
+          '/pims|/call|/request'.indexOf(route.path) == -1
           "
           >전체보기</router-link
         >
@@ -20,7 +20,7 @@
       <div class="MENU h-[calc(100vh-270px)] overflow-y-auto">
         <SidebarItem
           :list="
-            route.path.indexOf('pims') > -1 || route.path.indexOf('call') > -1
+          '/pims|/call|/request'.indexOf(route.path) > -1
               ? PimsSidebarCategory
               : ApplySidebarCategory
           "
